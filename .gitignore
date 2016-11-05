@@ -32,3 +32,6 @@ sysinfo.txt
 VSCode
 VSCode/*
 /VSCode/
+
+.vscode
+VSCode.meta
