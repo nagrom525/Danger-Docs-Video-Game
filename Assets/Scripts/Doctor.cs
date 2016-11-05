@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class Doctor : MonoBehaviour {
-    // CurrentTool can only be set by the Doctor when it interacts with a tool
-    public Tool curentTool {get; private set;}
+    // currentTool can only be set by the Doctor when it interacts with a tool
+    public Tool currentTool {get; private set;}
 
 	// Radius of sphere for checking for interactiables.
 	private float nearbyInteractableRange = 3f;
@@ -15,7 +15,7 @@ public class Doctor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
     // Doctor control code (needs to be added)
@@ -32,6 +32,16 @@ public class Doctor : MonoBehaviour {
 		joystickVec.z = 0f;
 		// Move in the direction of the joystick.
 		pos += joystickVec * Time.deltaTime;
+	}
+
+	public void OnPickupButtonPressed() {
+		// TODO: If there is a tool in range ...
+		
+		// For now, just acquire the tool regardless of position
+		GameObject defib = GameObject.Find("TempDefibulator");
+		
+		currentTool = defib.GetComponent<TempDefibulator>();
+		defib.transform.parent = this.transform;
 	}
 
 
