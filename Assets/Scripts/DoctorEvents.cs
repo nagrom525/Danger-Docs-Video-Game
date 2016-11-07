@@ -176,6 +176,7 @@ public class DoctorEvents : MonoBehaviour {
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
     public void OnPatientDeath() {
+        Time.timeScale = 0.0f;
         if(GameOver != null) {
             GameOver(0.0f);
         }
