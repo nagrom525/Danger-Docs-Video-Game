@@ -7,16 +7,24 @@ public class LevelUserInterface : MonoBehaviour {
     enum StatusIndicatorState { INACTIVE, BLUE_HEART_ATTACK, GREEN_HEART_ATTACK, RED_HEART_ATTACK, ORANGE_HEART_ATTACK }
 
 	public Text heartrate;
-	public Image EventSignal;
+	public Image statusIndicator;
     public float statusIndicatorDuration = 5.0f;
     public float statusIndicatorBlinkDuration = 1.0f;
     public GameObject gameLostPanel;
 
     private StatusIndicatorState status_state = StatusIndicatorState.INACTIVE;
     private float statusIndicatorStart = 0.0f;
+    private float statusIndicatorLastBlinkTime = 0.0f;
 
+	public static LevelUserInterface UI;
 
-
+	void Awake() {
+		if (UI == null) {
+			UI = this;
+		} else {
+			Debug.Log("UI only be set once");
+		}
+	}
 	// Use this for initialization
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
@@ -35,25 +43,50 @@ public class LevelUserInterface : MonoBehaviour {
 	
 	}
 
-    void StatusIndicatorActiveUpdate() {
+	public void UpdateBpm(float bpm) {
+		heartrate.text = bpm.ToString () + " BPM";
+	}
 
+    void StatusIndicatorActiveUpdate() {
+        if((Time.time - statusIndicatorStart) > statusIndicatorDuration) {
+            statusIndicator.gameObject.SetActive(false);
+            statusIndicator.color = Color.white;
+        } else {
+            if((Time.time - statusIndicatorLastBlinkTime) > statusIndicatorBlinkDuration) {
+                if (statusIndicator.gameObject.activeSelf) {
+                    statusIndicator.gameObject.SetActive(false);
+                } else {
+                    statusIndicator.gameObject.SetActive(true);
+                }
+                statusIndicatorLastBlinkTime = Time.time;
+            }
+
+        }
     }
 
     // -- Listen for events -- //
     void OnBlueHeartAttack(float duration) {
-        EventSignal.material.color = Color.blue;
+        statusIndicator.color = Color.blue;
+        statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.BLUE_HEART_ATTACK;
     }
 
     void OnGreenHeartAttack(float duration) {
-        EventSignal.material.color = Color.green;
+        statusIndicator.color = Color.green;
+        statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.GREEN_HEART_ATTACK;
     }
 
     void OnRedHeartAttack(float duration) {
-        EventSignal.material.color = Color.red;
+        statusIndicator.color = Color.red;
+        statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.RED_HEART_ATTACK;
     }
 
     void OnOrangeHeartAttack(float duration) {
-        EventSignal.material.color = Color.ora
+        statusIndicator.color = UtilityFunctions.orange;
+        statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.ORANGE_HEART_ATTACK;
     }
 
     void OnGameOver(float duration) {

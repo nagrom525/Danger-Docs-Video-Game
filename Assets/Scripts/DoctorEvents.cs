@@ -99,7 +99,7 @@ public class DoctorEvents : MonoBehaviour {
                         break;
                     case 1:
                         activeTool = Tool.ToolType.TYPE_2;
-                        if (heartAttackBlueEvent != null) {
+                        if (heartAttackGreenEvent != null) {
                             heartAttackGreenEvent(heartAttackDuration);
                         }
                         break;

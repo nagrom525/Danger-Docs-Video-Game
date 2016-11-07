@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Patient : MonoBehaviour {
-
+	enum FlashColor {NORMAL, BLUE, GREEN, RED, ORANGE}
+	enum StateOfAttack {NORMAL, ATTACKING, FINISHED}
 
 	public float bpm;
     public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
@@ -11,39 +12,144 @@ public class Patient : MonoBehaviour {
 	private float next_beat_time;
 	private bool heart_attack;
 	private float duration = 0.0f;
+	private float durationOfPost = 0.0f;
 
-	public void OnHeartAttack (float duration) {
-		heart_attack = true;
-		this.duration = duration;
-	}
+	private FlashColor flash_color;
+	private StateOfAttack state_attack;
+	private Material NormalStateMaterial;
+//	private float flash_timer = 0.0f;
+//	private float flash_duration = 0.5f;
+//	private float flash_time = 0.0f;
 
 	private static Patient _instance;
 	public static Patient Instance {
 		get { return _instance; }
+
+	}
+
+	void Awake() {
+		if (_instance == null) {
+			_instance = this;
+		} else {
+			Debug.Log("Patient can only be set once");
+		}
+	}
+
+	public void OnHeartAttack (float duration) {
+		print ("happening");
+		heart_attack = true;
+		state_attack = StateOfAttack.ATTACKING;
+		bpm = 120f;
+		//flash_timer = duration;
+		LevelUserInterface.UI.UpdateBpm (bpm);	
+		//this.duration = duration;
+	}
+		
+	public void OnEnd(float duration) {
+		state_attack = StateOfAttack.FINISHED;
+		//this.durationOfPost = duration;
+		//flash_timer = duration;
+	}
+
+	public void OnGreenHeartAttack(float duration) {
+		flash_color = FlashColor.GREEN;
+		OnHeartAttack (duration);
+	}
+
+	public void OnBlueHeartAttack(float duration) {
+		flash_color = FlashColor.BLUE;
+		OnHeartAttack (duration);
+	}
+		
+	public void OnRedHeartAttack(float duration) {
+		flash_color = FlashColor.RED;
+		OnHeartAttack (duration);
+	}
+
+	public void OnOrangeHeartAttack(float duration) {
+		flash_color = FlashColor.ORANGE;
+		OnHeartAttack (duration);
 	}
 
 	// Use this for initialization
 	void Start () {
-		_instance = this;
 
 		// Dummy BPM for now.
 		bpm = 80f;
-
+		LevelUserInterface.UI.UpdateBpm (bpm);
 		last_beat_time = Time.time;
-		DoctorEvents.Instance.heartAttackBlueEvent += OnHeartAttack;
+		DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
+		DoctorEvents.Instance.heartAttackGreenEvent += OnGreenHeartAttack;
+		DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
+		DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
+
+		DoctorEvents.Instance.heartAttackGreenEvent += OnEnd;
+		DoctorEvents.Instance.heartAttackBlueEvent += OnEnd;
+		DoctorEvents.Instance.heartAttackRedEvent += OnEnd;
+		DoctorEvents.Instance.heartAttackOrangeEvent += OnEnd;
+
+		NormalStateMaterial = GetComponent <Renderer> ().material;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (heart_attack) {
-			if (duration <= 0.0f) {
-				bpm = 120f;
+		if (heart_attack || state_attack == StateOfAttack.ATTACKING) {
+			if (duration <= 0.0f || state_attack == StateOfAttack.FINISHED) {
+				bpm = 80f;
+				LevelUserInterface.UI.UpdateBpm (bpm);
 				heart_attack = false;
 			} else {
 				duration -= Time.deltaTime;
 			}
+				
+			if(flash_color == FlashColor.BLUE) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.blue;
+				GetComponent <Renderer> ().material = temp;
+			} else if(flash_color == FlashColor.RED) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.red;
+				GetComponent <Renderer> ().material = temp;
+
+			} else if(flash_color == FlashColor.GREEN) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.green;
+				GetComponent <Renderer> ().material = temp;
+
+			} else if(flash_color == FlashColor.ORANGE) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = UtilityFunctions.orange;
+				GetComponent <Renderer> ().material = temp;
+			}
 		}
+
+		/*if (state_attack == StateOfAttack.FINISHED) {
+			if (durationOfPost <= 0.0f) {
+				state_attack = StateOfAttack.NORMAL;
+				GetComponent <Material>() = NormalStateMaterial;
+			} else {
+				durationOfPost -= Time.deltaTime;
+			}
+
+			if(flash_color == FlashColor.BLUE) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.blue;
+				GetComponent <Renderer> ().material = temp;
+			} else if(flash_color == FlashColor.RED) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.red;
+				GetComponent <Renderer> ().material = temp;
+
+			} else if(flash_color == FlashColor.GREEN) {
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = Color.green;
+				GetComponent <Renderer> ().material = temp;
+
+			} else if(flash_color == FlashColor.ORANGE) {
+
+			}
+		}*/
 
 
 		// if the time since the last heart beat has passed.
