@@ -9,18 +9,34 @@ public class Patient : MonoBehaviour {
 
 	private float last_beat_time;
 	private float next_beat_time;
+	private bool heart_attack;
+	private float duration = 0.0f;
+
+	public void OnHeartAttack (float duration) {
+		heart_attack = true;
+		this.duration = duration;
+	}
 
 	// Use this for initialization
 	void Start () {
 		// Dummy BPM for now.
-		bpm = 120f;
+		bpm = 80f;
 
 		last_beat_time = Time.time;
+		DoctorEvents.Instance.heartAttackBlueEvent += OnHeartAttack;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		if (heart_attack) {
+			if (duration <= 0.0f) {
+				bpm = 120f;
+				heart_attack = false;
+			} else {
+				duration -= Time.deltaTime;
+			}
+		}
 
 
 		// if the time since the last heart beat has passed.

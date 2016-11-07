@@ -29,6 +29,9 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent heartAttackOrangeEvent;
     public DoctorEvent heartAttackOrangeEnded;
 
+    // -- Game over event -- //
+    public DoctorEvent GameOver;
+
 
 
     // ----------- Heart Attack Values ---------------------- //
@@ -67,17 +70,20 @@ public class DoctorEvents : MonoBehaviour {
 	void Update () {
         switch (heartState) {
             case HeartState.NORMAL:
+                HeartNormalUpdate();
                 break;
             case HeartState.HEART_ATTACK:
+                HeartAttackUpdate();
                 break;
             case HeartState.POST_HEART_ATTACK:
+                HeartPostAttackUpdate();
                 break;
         }
 	}
 
     //////////////////// ----------- HEART ATTACK FUNCTIONS -----------//////////////////////
     private void HeartNormalUpdate() {
-        if(Time.time - lastTimeHeartAttackChecked >= 1.0f) {
+        if((Time.time - lastTimeHeartAttackChecked) >= 1.0f) {
             lastTimeHeartAttackChecked = Time.time;
 
             if(Random.value < probabiltyHeartAttack) {
@@ -110,9 +116,6 @@ public class DoctorEvents : MonoBehaviour {
                         }
                         break;
                 }
-                if (heartAttackBlueEvent != null) {
-                    heartAttackBlueEvent(heartAttackDuration);
-                }
                 heartEventStartTime = Time.time;
             }
         }
@@ -120,13 +123,13 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     private void HeartAttackUpdate() {
-        if(Time.time - heartEventStartTime > heartAttackDuration) {
+        if((Time.time - heartEventStartTime) > heartAttackDuration) {
             EndHeartAttack();
         }
     } 
 
     private void HeartPostAttackUpdate() {
-        if(Time.time - heartEventStartTime > postHeartAttackDuration) {
+        if((Time.time - heartEventStartTime) > postHeartAttackDuration) {
             heartState = HeartState.NORMAL;
             lastTimeHeartAttackChecked = Time.time;
             heartEventStartTime = Time.time;
@@ -137,8 +140,27 @@ public class DoctorEvents : MonoBehaviour {
     private void EndHeartAttack() {
         heartState = HeartState.POST_HEART_ATTACK;
         heartEventStartTime = Time.time;
-        if(heartAttackBlueEnded != null) {
-            heartAttackBlueEnded(postHeartAttackDuration);
+        switch (activeTool) {
+            case Tool.ToolType.TYPE_1:
+                if (heartAttackBlueEnded != null) {
+                    heartAttackBlueEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_2:
+                if (heartAttackGreenEnded != null) {
+                    heartAttackGreenEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_3:
+                if (heartAttackRedEnded != null) {
+                    heartAttackRedEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_4:
+                if (heartAttackOrangeEnded != null) {
+                    heartAttackOrangeEnded(postHeartAttackDuration);
+                }
+                break;
         }
     }
 
@@ -152,7 +174,9 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
-    public void EndGame() {
-
+    public void OnPatientDeath() {
+        if(GameOver != null) {
+            GameOver(0.0f);
+        }
     }
 }
