@@ -17,8 +17,9 @@ public class Patient : MonoBehaviour {
 	private FlashColor flash_color;
 	private StateOfAttack state_attack;
 	private Material NormalStateMaterial;
-	private float flash_timer = 0.0f;
-	private float flash_wait_time = 0.5f;
+//	private float flash_timer = 0.0f;
+//	private float flash_duration = 0.5f;
+//	private float flash_time = 0.0f;
 
 	private static Patient _instance;
 	public static Patient Instance {
@@ -39,12 +40,15 @@ public class Patient : MonoBehaviour {
 		heart_attack = true;
 		state_attack = StateOfAttack.ATTACKING;
 		bpm = 120f;
+		//flash_timer = duration;
 		LevelUserInterface.UI.UpdateBpm (bpm);	
-		this.duration = duration;
+		//this.duration = duration;
 	}
 		
-	public void OnEnd() {
+	public void OnEnd(float duration) {
 		state_attack = StateOfAttack.FINISHED;
+		//this.durationOfPost = duration;
+		//flash_timer = duration;
 	}
 
 	public void OnGreenHeartAttack(float duration) {
@@ -98,34 +102,29 @@ public class Patient : MonoBehaviour {
 			} else {
 				duration -= Time.deltaTime;
 			}
-
+				
 			if(flash_color == FlashColor.BLUE) {
 				Material temp = GetComponent <Renderer> ().material;
 				temp.color = Color.blue;
 				GetComponent <Renderer> ().material = temp;
-				GetComponent <Renderer> ().material = NormalStateMaterial;
-
-
 			} else if(flash_color == FlashColor.RED) {
 				Material temp = GetComponent <Renderer> ().material;
 				temp.color = Color.red;
 				GetComponent <Renderer> ().material = temp;
-
-				GetComponent <Renderer> ().material = NormalStateMaterial;
 
 			} else if(flash_color == FlashColor.GREEN) {
 				Material temp = GetComponent <Renderer> ().material;
 				temp.color = Color.green;
 				GetComponent <Renderer> ().material = temp;
 
-				GetComponent <Renderer> ().material = NormalStateMaterial;
-
 			} else if(flash_color == FlashColor.ORANGE) {
-
+				Material temp = GetComponent <Renderer> ().material;
+				temp.color = UtilityFunctions.orange;
+				GetComponent <Renderer> ().material = temp;
 			}
 		}
 
-		if (state_attack == StateOfAttack.FINISHED) {
+		/*if (state_attack == StateOfAttack.FINISHED) {
 			if (durationOfPost <= 0.0f) {
 				state_attack = StateOfAttack.NORMAL;
 				GetComponent <Material>() = NormalStateMaterial;
@@ -150,7 +149,7 @@ public class Patient : MonoBehaviour {
 			} else if(flash_color == FlashColor.ORANGE) {
 
 			}
-		}
+		}*/
 
 
 		// if the time since the last heart beat has passed.
