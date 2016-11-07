@@ -13,9 +13,13 @@ public class Patient : MonoBehaviour {
 	private float duration = 0.0f;
 
 	public void OnHeartAttack (float duration) {
+		print ("happening");
 		heart_attack = true;
+		bpm = 120f;
+		LevelUserInterface.UI.UpdateBpm (bpm);
 		this.duration = duration;
 	}
+
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +28,9 @@ public class Patient : MonoBehaviour {
 
 		last_beat_time = Time.time;
 		DoctorEvents.Instance.heartAttackBlueEvent += OnHeartAttack;
+		DoctorEvents.Instance.heartAttackGreenEvent += OnHeartAttack;
+		DoctorEvents.Instance.heartAttackRedEvent += OnHeartAttack;
+		DoctorEvents.Instance.heartAttackOrangeEvent += OnHeartAttack;
 	}
 	
 	// Update is called once per frame
@@ -31,7 +38,7 @@ public class Patient : MonoBehaviour {
 
 		if (heart_attack) {
 			if (duration <= 0.0f) {
-				bpm = 120f;
+				bpm = 80f;
 				heart_attack = false;
 			} else {
 				duration -= Time.deltaTime;
