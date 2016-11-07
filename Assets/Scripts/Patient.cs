@@ -24,6 +24,9 @@ public class Patient : MonoBehaviour {
 //	private float flash_duration = 0.5f;
 //	private float flash_time = 0.0f;
 
+	Color tempColor;
+	public Material mat;
+
 	private static Patient _instance;
 	public static Patient Instance {
 		get { return _instance; }
@@ -45,7 +48,7 @@ public class Patient : MonoBehaviour {
 		bpm = 120f;
 		//flash_timer = duration;
 		LevelUserInterface.UI.UpdateBpm (bpm);	
-		//this.duration = duration;
+		this.duration = duration;
 	}
 		
 	public void OnEnd(float duration) {
@@ -95,12 +98,12 @@ public class Patient : MonoBehaviour {
 		DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
 		DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
 
-		DoctorEvents.Instance.heartAttackGreenEvent += OnEnd;
-		DoctorEvents.Instance.heartAttackBlueEvent += OnEnd;
-		DoctorEvents.Instance.heartAttackRedEvent += OnEnd;
-		DoctorEvents.Instance.heartAttackOrangeEvent += OnEnd;
-
-		NormalStateMaterial = GetComponent <Renderer> ().material;
+		DoctorEvents.Instance.heartAttackGreenEnded += OnEnd;
+		DoctorEvents.Instance.heartAttackBlueEnded += OnEnd;
+		DoctorEvents.Instance.heartAttackRedEnded += OnEnd;
+		DoctorEvents.Instance.heartAttackOrangeEnded += OnEnd;
+		tempColor = mat.GetColor ("_EmissionColor");
+		print ("first temp color " + tempColor);
 	}
 	
 	// Update is called once per frame
@@ -111,28 +114,26 @@ public class Patient : MonoBehaviour {
 				bpm = 80f;
 				LevelUserInterface.UI.UpdateBpm (bpm);
 				heart_attack = false;
+				state_attack = StateOfAttack.NORMAL; //take this out later
+				print ("finished");
+				mat.SetColor ("_EmissionColor", tempColor);
 			} else {
 				duration -= Time.deltaTime;
-			}
+			
 				
-			if(flash_color == FlashColor.BLUE) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.blue;
-				GetComponent <Renderer> ().material = temp;
-			} else if(flash_color == FlashColor.RED) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.red;
-				GetComponent <Renderer> ().material = temp;
-
-			} else if(flash_color == FlashColor.GREEN) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.green;
-				GetComponent <Renderer> ().material = temp;
-
-			} else if(flash_color == FlashColor.ORANGE) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = UtilityFunctions.orange;
-				GetComponent <Renderer> ().material = temp;
+				if (flash_color == FlashColor.BLUE) {
+					mat.SetColor ("_EmissionColor", Color.blue);
+					//mat.color = Color.blue;
+				} else if (flash_color == FlashColor.RED) {
+					mat.SetColor ("_EmissionColor", Color.red);
+					//mat.color = Color.red;
+				} else if (flash_color == FlashColor.GREEN) {
+					mat.SetColor ("_EmissionColor", Color.green);
+					//mat.color = Color.green;
+				} else if (flash_color == FlashColor.ORANGE) {
+					mat.SetColor ("_EmissionColor", UtilityFunctions.orange);
+					//mat.color = UtilityFunctions.orange;
+				}
 			}
 		}
 
