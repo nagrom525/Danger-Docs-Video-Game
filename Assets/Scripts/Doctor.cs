@@ -29,7 +29,7 @@ public class Doctor : MonoBehaviour {
 	// recieved from input manager.
 	public void OnJoystickMovement(Vector3 joystickVec) {
 		// We should never be moving in the z direction.
-		joystickVec.z = 0f;
+		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.
 		pos += joystickVec * Time.deltaTime;
 	}
