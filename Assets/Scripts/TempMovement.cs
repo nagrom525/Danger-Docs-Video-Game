@@ -26,7 +26,7 @@ public class TempMovement : MonoBehaviour {
 			target.transform.position += Vector3.forward * speed * Time.deltaTime;
 		}
 
-		if (Input.GetKey(KeyCode.Space)) {
+		if (Input.GetKeyDown(KeyCode.Space)) {
 			target.GetComponent<Doctor>().OnPickupButtonPressed();
 		}
 	}
