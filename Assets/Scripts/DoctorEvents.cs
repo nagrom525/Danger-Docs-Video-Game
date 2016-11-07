@@ -11,6 +11,8 @@ public class DoctorEvents : MonoBehaviour {
     public delegate void DoctorEvent();
     DoctorEvent patientCriticalEvent;
 
+
+
     private static DoctorEvents _instance;
     public static DoctorEvents Instance {
         get { return _instance; }
