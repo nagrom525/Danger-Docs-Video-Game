@@ -13,6 +13,7 @@ public class Patient : MonoBehaviour {
 	private bool heart_attack;
 	private float duration = 0.0f;
 	private float durationOfPost = 0.0f;
+	private Tool.ToolType requiredTool;
 
 	// Defibulations needed to stabilize patient
 	private int defibulationsRemaining;
@@ -61,6 +62,7 @@ public class Patient : MonoBehaviour {
 	public void OnGreenHeartAttack(float duration) {
 		flash_color = FlashColor.GREEN;
 		OnHeartAttack (duration);
+		requiredTool = Tool.ToolType.TYPE_3;
 		defibulationsRemaining = Random.Range(3, 6);
 		print (defibulationsRemaining);
 	}
@@ -68,6 +70,7 @@ public class Patient : MonoBehaviour {
 	public void OnBlueHeartAttack(float duration) {
 		flash_color = FlashColor.BLUE;
 		OnHeartAttack (duration);
+		requiredTool = Tool.ToolType.TYPE_1;
 		defibulationsRemaining = Random.Range(3, 6);
 		print (defibulationsRemaining);
 	}
@@ -75,6 +78,7 @@ public class Patient : MonoBehaviour {
 	public void OnRedHeartAttack(float duration) {
 		flash_color = FlashColor.RED;
 		OnHeartAttack (duration);
+		requiredTool = Tool.ToolType.TYPE_2;
 		defibulationsRemaining = Random.Range(3, 6);
 		print (defibulationsRemaining);
 	}
@@ -82,6 +86,7 @@ public class Patient : MonoBehaviour {
 	public void OnOrangeHeartAttack(float duration) {
 		flash_color = FlashColor.ORANGE;
 		OnHeartAttack (duration);
+		requiredTool = Tool.ToolType.TYPE_4;
 		defibulationsRemaining = Random.Range(3, 6);
 		print (defibulationsRemaining);
 	}
@@ -188,19 +193,8 @@ public class Patient : MonoBehaviour {
 	public void receiveOperation(Tool tool) {
 		print ("defibulationsRemaining: " + defibulationsRemaining);
 		if (defibulationsRemaining > 0) {
-			switch(tool.GetToolType()) {
-			case Tool.ToolType.TYPE_1:
+			if (tool.GetToolType() == requiredTool) {
 				defibulationsRemaining--;
-				break;
-			case Tool.ToolType.TYPE_2:
-				defibulationsRemaining--;
-				break;
-			case Tool.ToolType.TYPE_3:
-				defibulationsRemaining--;
-				break;
-			case Tool.ToolType.TYPE_4:
-				defibulationsRemaining--;
-				break;
 			}
 		}
 
