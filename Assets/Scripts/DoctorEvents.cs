@@ -67,17 +67,20 @@ public class DoctorEvents : MonoBehaviour {
 	void Update () {
         switch (heartState) {
             case HeartState.NORMAL:
+                HeartNormalUpdate();
                 break;
             case HeartState.HEART_ATTACK:
+                HeartAttackUpdate();
                 break;
             case HeartState.POST_HEART_ATTACK:
+                HeartPostAttackUpdate();
                 break;
         }
 	}
 
     //////////////////// ----------- HEART ATTACK FUNCTIONS -----------//////////////////////
     private void HeartNormalUpdate() {
-        if(Time.time - lastTimeHeartAttackChecked >= 1.0f) {
+        if((Time.time - lastTimeHeartAttackChecked) >= 1.0f) {
             lastTimeHeartAttackChecked = Time.time;
 
             if(Random.value < probabiltyHeartAttack) {
@@ -117,13 +120,13 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     private void HeartAttackUpdate() {
-        if(Time.time - heartEventStartTime > heartAttackDuration) {
+        if((Time.time - heartEventStartTime) > heartAttackDuration) {
             EndHeartAttack();
         }
     } 
 
     private void HeartPostAttackUpdate() {
-        if(Time.time - heartEventStartTime > postHeartAttackDuration) {
+        if((Time.time - heartEventStartTime) > postHeartAttackDuration) {
             heartState = HeartState.NORMAL;
             lastTimeHeartAttackChecked = Time.time;
             heartEventStartTime = Time.time;
