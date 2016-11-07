@@ -64,6 +64,15 @@ public class Doctor : MonoBehaviour {
 		tool.transform.localPosition = new Vector3 (1, 3, 0);
 	}
 
+	private void useCurrentToolOnPatient() {
+		// if in range of patient ...
+		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
+		if (distToPatient <= nearbyInteractableRange) {
+			// Use current tool on patient.
+			Patient.Instance.receiveOperation (currentTool);
+		}
+	}
+
 
 	// Basically the same as getNearestInteractableInRange
 	private Tool getNearestToolInRange (float range) {
@@ -115,23 +124,25 @@ public class Doctor : MonoBehaviour {
 
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] interactiablesInRange = Physics.OverlapSphere(pos, range);
+		Collider[] interactablesInRange = Physics.OverlapSphere(pos, range);
 		
 		// Setup linear search for nearest interactable.
 		Interactable nearestInteractable = null;
 		float runningNearestDistance = Mathf.Infinity;
 
-		for (int i = 0; i < interactiablesInRange.Length; i++) {
-			// Get Vector3 between pos of doctor and interactable
-			Vector3 interactablePos = interactiablesInRange[i].transform.position;
-			// Comparing sqrDistances is faster than mag. Avoids sqrt op.
-			float sqrDist = (interactablePos - pos).sqrMagnitude;
-			
-			// If this interactable is closer than the current closest, update
-			// to this one.
-			if (runningNearestDistance > sqrDist) { 
-				runningNearestDistance = sqrDist;
-				nearestInteractable = interactiablesInRange[i].gameObject.GetComponent<Interactable>();
+		for (int i = 0; i < interactablesInRange.Length; i++) {
+			if (interactablesInRange[i].gameObject.CompareTag ("Interactable")) {
+				// Get Vector3 between pos of doctor and interactable
+				Vector3 interactablePos = interactablesInRange[i].transform.position;
+				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
+				float sqrDist = (interactablePos - pos).sqrMagnitude;
+
+				// If this interactable is closer than the current closest, update
+				// to this one.
+				if (runningNearestDistance > sqrDist) { 
+					runningNearestDistance = sqrDist;
+					nearestInteractable = interactablesInRange[i].gameObject.GetComponent<Interactable>();
+				}
 			}
 		}
 

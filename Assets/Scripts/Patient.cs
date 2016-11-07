@@ -10,8 +10,15 @@ public class Patient : MonoBehaviour {
 	private float last_beat_time;
 	private float next_beat_time;
 
+	private static Patient _instance;
+	public static Patient Instance {
+		get { return _instance; }
+	}
+
 	// Use this for initialization
 	void Start () {
+		_instance = this;
+
 		// Dummy BPM for now.
 		bpm = 120f;
 
@@ -40,5 +47,17 @@ public class Patient : MonoBehaviour {
 
 	private float bpmToSecondsInterval(float bpm) {
 		return (1f / (bpm / 60f));
+	}
+
+
+	public void receiveOperation(Tool tool) {
+		switch(tool.GetToolType()) {
+		case Tool.ToolType.TYPE_1:
+			// React to tool 1!
+		break;
+		case Tool.ToolType.TYPE_2:
+			// React to tool 2!
+		break;
+		}
 	}
 }
