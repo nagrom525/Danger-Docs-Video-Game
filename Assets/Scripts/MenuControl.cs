@@ -14,15 +14,15 @@ public class MenuControl : MonoBehaviour {
 	
 	}
 
-    public static void RestartLevel() {
+    public void RestartLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public static void ExitGame() {
+    public void ExitGame() {
         Application.Quit();
     }
 
-    public static void MainMenu() {
+    public void MainMenu() {
         SceneManager.LoadScene(0);
     }
 }
