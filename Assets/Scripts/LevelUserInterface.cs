@@ -9,11 +9,33 @@ public class LevelUserInterface : MonoBehaviour {
 	public float doctorBlinkDuration;
 	// Use this for initialization
 	void Start () {
-	    // We probably want to register private member functions with DoctorEvents delegates
+        // We probably want to register private member functions with DoctorEvents delegates
+        DoctorEvents.Instance.heartAttackGreenEvent += OnGreenHeartAttack;
+        DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
+        DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
+        DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    // -- Listen for events -- //
+    void OnBlueHeartAttack(float duration) {
+
+    }
+
+    void OnGreenHeartAttack(float duration) {
+
+    }
+
+    void OnRedHeartAttack(float duration) {
+
+    }
+
+    void OnOrangeHeartAttack(float duration) {
+
+    }
+
 }

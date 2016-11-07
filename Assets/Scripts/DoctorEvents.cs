@@ -110,9 +110,6 @@ public class DoctorEvents : MonoBehaviour {
                         }
                         break;
                 }
-                if (heartAttackBlueEvent != null) {
-                    heartAttackBlueEvent(heartAttackDuration);
-                }
                 heartEventStartTime = Time.time;
             }
         }
@@ -145,17 +142,17 @@ public class DoctorEvents : MonoBehaviour {
                 break;
             case Tool.ToolType.TYPE_2:
                 if (heartAttackGreenEnded != null) {
-                    heartAttackBlueEnded(postHeartAttackDuration);
+                    heartAttackGreenEnded(postHeartAttackDuration);
                 }
                 break;
             case Tool.ToolType.TYPE_3:
                 if (heartAttackGreenEnded != null) {
-                    heartAttackGreenEnded(postHeartAttackDuration);
+                    heartAttackRedEnded(postHeartAttackDuration);
                 }
                 break;
             case Tool.ToolType.TYPE_4:
                 if (heartAttackGreenEnded != null) {
-                    heartAttackGreenEnded(postHeartAttackDuration);
+                    heartAttackOrangeEnded(postHeartAttackDuration);
                 }
                 break;
         }
