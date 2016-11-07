@@ -36,11 +36,6 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void OnPickupButtonPressed() {
-
-		// TODO: If there is a tool in range ...
-
-		// If there is a tool in range, get that tool.
-
 		// If we currently have a tool, drop the tool.
 		if (currentTool != null) {
 			print ("entered if statement");
@@ -49,6 +44,8 @@ public class Doctor : MonoBehaviour {
 			// Set current tool to null.
 			currentTool = null;
 		} else {
+			// If there is a tool in range, get that tool.
+			// Otherwise, nearestTool == null
 			Tool nearestTool = getNearestToolInRange(nearbyInteractableRange);
 
 			// If there is a nearby tool, equip it.
@@ -99,7 +96,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	// When the interaction button is pressed, we must check to see if there
-	// is and interactiable nearby. If there is, then we send a message to
+	// is and interactable nearby. If there is, then we send a message to
 	// the interactable that the doctor is initiating an interaction. The
 	// interactiable accepts the interaction message and acts on it only if
 	// it is valid.
