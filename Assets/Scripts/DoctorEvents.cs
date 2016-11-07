@@ -9,7 +9,7 @@ public class DoctorEvents : MonoBehaviour {
     enum HeartState { NORMAL, HEART_ATTACK, POST_HEART_ATTACK}
 
     // Doctors / UI elements should register with the events they care about
-    public delegate void DoctorEvent();
+    public delegate void DoctorEvent(float duration);
     public DoctorEvent patientCriticalEvent;
     public DoctorEvent heartAttackEvent;
 
@@ -61,7 +61,7 @@ public class DoctorEvents : MonoBehaviour {
             if(Random.value < probabiltyHeartAttack) {
                 heartState = HeartState.HEART_ATTACK;
                 if(heartAttackEvent != null) {
-                    heartAttackEvent();
+                    heartAttackEvent(heartAttackDuration);
                 }
                 heartAttackEventStartTime = Time.time;
             }
@@ -77,10 +77,12 @@ public class DoctorEvents : MonoBehaviour {
 
     }
 
+    private void EndHeart
+
     // called by external function when the heart attack has been adverted
     public void HeartAttackAdverted() {
         if(heartState == HeartState.HEART_ATTACK) {
-
+            
         }else {
             Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
         }
