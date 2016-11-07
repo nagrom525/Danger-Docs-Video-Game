@@ -46,6 +46,7 @@ public class LevelUserInterface : MonoBehaviour {
 
 	public void UpdateBpm(float bpm) {
 		heartrate.text = bpm.ToString () + " BPM";
+		print (heartrate.text);
 	}
 
     void StatusIndicatorActiveUpdate() {
