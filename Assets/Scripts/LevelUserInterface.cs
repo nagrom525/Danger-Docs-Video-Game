@@ -51,6 +51,7 @@ public class LevelUserInterface : MonoBehaviour {
     void StatusIndicatorActiveUpdate() {
         if((Time.time - statusIndicatorStart) > statusIndicatorDuration) {
             statusIndicator.gameObject.SetActive(false);
+            statusIndicator.color = Color.white;
         } else {
             if((Time.time - statusIndicatorLastBlinkTime) > statusIndicatorBlinkDuration) {
                 if (statusIndicator.gameObject.activeSelf) {
