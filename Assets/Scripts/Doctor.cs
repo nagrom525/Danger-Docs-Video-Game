@@ -6,10 +6,11 @@ public class Doctor : MonoBehaviour {
     public Tool currentTool {get; private set;}
 
 	// Radius of sphere for checking for interactiables.
-	private float nearbyInteractableRange = 3f;
+	private float nearbyInteractableRange = 8f;
 
 	// Use this for initialization
 	void Start () {
+		currentTool = null;
 	    // TODO: NEED to register event listner functions to the DoctorEvents singleton delegates
 	}
 	
@@ -35,15 +36,67 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void OnPickupButtonPressed() {
+
 		// TODO: If there is a tool in range ...
-		
-		// For now, just acquire the tool regardless of position
-		GameObject defib = GameObject.Find("TempDefibulator");
-		
-		currentTool = defib.GetComponent<TempDefibulator>();
-		defib.transform.parent = this.transform;
+
+		// If there is a tool in range, get that tool.
+
+		// If we currently have a tool, drop the tool.
+		if (currentTool != null) {
+			print ("entered if statement");
+			// Add the tool back to the scene by removing parent.
+			currentTool.transform.parent = null;
+			// Set current tool to null.
+			currentTool = null;
+		} else {
+			Tool nearestTool = getNearestToolInRange(nearbyInteractableRange);
+
+			// If there is a nearby tool, equip it.
+			if (nearestTool != null) {
+				// Possible Bug: Must be passed by reference? Or are game objects
+				// sufficiently unique.
+				equipTool (nearestTool);
+			}
+		}
 	}
 
+	private void equipTool(Tool tool) {
+		currentTool = tool;
+		tool.transform.parent = this.transform;
+		// Transform tool position to doctor.
+		tool.transform.localPosition = new Vector3 (1, 3, 0);
+	}
+
+
+	// Basically the same as getNearestInteractableInRange
+	private Tool getNearestToolInRange (float range) {
+
+		// Get the interactables. Eventually, this should take a third agrument
+		// (layer mask) which ignores everything that isn't an interactable.
+		Collider[] toolsInRange = Physics.OverlapSphere(pos, range);
+
+		// Setup linear search for nearest interactable.
+		Tool nearestTool = null;
+		float runningNearestTool = Mathf.Infinity;
+
+		for (int i = 0; i < toolsInRange.Length; i++) {
+			if (toolsInRange [i].gameObject.CompareTag ("Tool")) {
+				// Get Vector3 between pos of doctor and interactable
+				Vector3 toolPos = toolsInRange[i].transform.position;
+				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
+				float sqrDist = (toolPos - pos).sqrMagnitude;
+
+				// If this interactable is closer than the current closest, update
+				// to this one.
+				if (runningNearestTool > sqrDist) { 
+					runningNearestTool = sqrDist;
+					nearestTool = toolsInRange[i].gameObject.GetComponent<Tool>();
+				}
+			}
+		}
+
+		return nearestTool;
+	}
 
 	// When the interaction button is pressed, we must check to see if there
 	// is and interactiable nearby. If there is, then we send a message to
@@ -52,7 +105,7 @@ public class Doctor : MonoBehaviour {
 	// it is valid.
 	public void OnInteractionButtonPressed() {
 		// May return null.
-		Interactable nearbyInteractable = getNearbyInteractable(nearbyInteractableRange);
+		Interactable nearbyInteractable = getNearestInteractableInRange(nearbyInteractableRange);
 
 		// If there is a nearby interactable, then begin interacting!
 		if (nearbyInteractable != null) {
@@ -61,7 +114,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	// Gets the nearest nearby interactable within sphere of radius "range".
-	private Interactable getNearbyInteractable(float range) {
+	private Interactable getNearestInteractableInRange(float range) {
 
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
