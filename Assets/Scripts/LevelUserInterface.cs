@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
-using UnityEditor;
 
 public class LevelUserInterface : MonoBehaviour {
     enum StatusIndicatorState { INACTIVE, BLUE_HEART_ATTACK, GREEN_HEART_ATTACK, RED_HEART_ATTACK, ORANGE_HEART_ATTACK }
@@ -52,6 +51,7 @@ public class LevelUserInterface : MonoBehaviour {
     void StatusIndicatorActiveUpdate() {
         if((Time.time - statusIndicatorStart) > statusIndicatorDuration) {
             statusIndicator.gameObject.SetActive(false);
+            statusIndicator.color = Color.white;
         } else {
             if((Time.time - statusIndicatorLastBlinkTime) > statusIndicatorBlinkDuration) {
                 if (statusIndicator.gameObject.activeSelf) {
@@ -59,6 +59,7 @@ public class LevelUserInterface : MonoBehaviour {
                 } else {
                     statusIndicator.gameObject.SetActive(true);
                 }
+                statusIndicatorLastBlinkTime = Time.time;
             }
 
         }
@@ -66,23 +67,27 @@ public class LevelUserInterface : MonoBehaviour {
 
     // -- Listen for events -- //
     void OnBlueHeartAttack(float duration) {
-        statusIndicator.material.color = Color.blue;
+        statusIndicator.color = Color.blue;
         statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.BLUE_HEART_ATTACK;
     }
 
     void OnGreenHeartAttack(float duration) {
-        statusIndicator.material.color = Color.green;
+        statusIndicator.color = Color.green;
         statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.GREEN_HEART_ATTACK;
     }
 
     void OnRedHeartAttack(float duration) {
-        statusIndicator.material.color = Color.red;
+        statusIndicator.color = Color.red;
         statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.RED_HEART_ATTACK;
     }
 
     void OnOrangeHeartAttack(float duration) {
-        statusIndicator.material.color = UtilityFunctions.orange;
+        statusIndicator.color = UtilityFunctions.orange;
         statusIndicatorStart = Time.time;
+        status_state = StatusIndicatorState.ORANGE_HEART_ATTACK;
     }
 
     void OnGameOver(float duration) {

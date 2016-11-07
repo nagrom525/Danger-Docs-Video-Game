@@ -125,6 +125,7 @@ public class DoctorEvents : MonoBehaviour {
     private void HeartAttackUpdate() {
         if((Time.time - heartEventStartTime) > heartAttackDuration) {
             EndHeartAttack();
+            OnPatientDeath();
         }
     } 
 

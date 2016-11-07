@@ -68,5 +68,7 @@ public class DoctorInputController : MonoBehaviour
         var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
         //transform.Translate(direction);
         doctor.OnJoystickMovement(direction);
+
+        transform.LookAt(transform.position + direction);
     }
 }
