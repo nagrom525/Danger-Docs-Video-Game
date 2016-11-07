@@ -10,8 +10,8 @@ public class DoctorEvents : MonoBehaviour {
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent();
-    DoctorEvent patientCriticalEvent;
-    DoctorEvent heartAttackEvent;
+    public DoctorEvent patientCriticalEvent;
+    public DoctorEvent heartAttackEvent;
 
     // ----------- Heart Attack Values ---------------------- //
     
@@ -75,6 +75,15 @@ public class DoctorEvents : MonoBehaviour {
 
     private void HeartPostAttackUpdate() {
 
+    }
+
+    // called by external function when the heart attack has been adverted
+    public void HeartAttackAdverted() {
+        if(heartState == HeartState.HEART_ATTACK) {
+
+        }else {
+            Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
+        }
     }
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
