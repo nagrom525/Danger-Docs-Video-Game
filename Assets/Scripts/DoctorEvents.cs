@@ -6,21 +6,42 @@ using System.Collections;
 // informs the doctor / UI that some has occured
 // main level event code
 public class DoctorEvents : MonoBehaviour {
+    // these states are place holders  will be different events based on 4 different tools later
     enum HeartState { NORMAL, HEART_ATTACK, POST_HEART_ATTACK}
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
     public DoctorEvent patientCriticalEvent;
-    public DoctorEvent heartAttackEvent;
+
+    // -- Heart Attack Blue Delegates -- //
+    public DoctorEvent heartAttackBlueEvent;
+    public DoctorEvent heartAttackBlueEnded;
+
+    // -- Heart Attack Green Delegates -- //
+    public DoctorEvent heartAttackGreenEvent;
+    public DoctorEvent heartAttackGreenEnded;
+
+    // -- Heart Attack Red Delegates -- //
+    public DoctorEvent heartAttackRedEvent;
+    public DoctorEvent heartAttackRedEnded;
+
+    // -- Heart Attack Orange Delegates -- //
+    public DoctorEvent heartAttackOrangeEvent;
+    public DoctorEvent heartAttackOrangeEnded;
+
+
 
     // ----------- Heart Attack Values ---------------------- //
-    
+    // ONE THING WE CAN DO: is start the heart attack duration at a base time, and add some kind of randomness to the rest of the time.
+    //                      That way we have a base time that the heart rate would last, but the duration of the heart attack might still seem a bit random
+
     public float probabiltyHeartAttack = 0.1f; // probability of heart attack per second 
     public float postHeartAttackDuration = 5.0f; // time to wait after heartattack is done before checking for another heart attack
     public float heartAttackDuration = 10.0f; // lengh of time that a heart attack occurs
-    private  float heartAttackEventStartTime = 0.0f; // variable to store start time of a heart attack state
+    private  float heartEventStartTime = 0.0f; // variable to store start time of a heart attack state
     private HeartState heartState = HeartState.NORMAL;
     private float lastTimeHeartAttackChecked = 0.0f;
+    private Tool.ToolType activeTool = Tool.ToolType.NONE;
 
 
     private static DoctorEvents _instance;
@@ -58,31 +79,73 @@ public class DoctorEvents : MonoBehaviour {
     private void HeartNormalUpdate() {
         if(Time.time - lastTimeHeartAttackChecked >= 1.0f) {
             lastTimeHeartAttackChecked = Time.time;
+
             if(Random.value < probabiltyHeartAttack) {
                 heartState = HeartState.HEART_ATTACK;
-                if(heartAttackEvent != null) {
-                    heartAttackEvent(heartAttackDuration);
+                // figure out with tool is required to send out the appropiate event
+                int randomTool = Random.Range(0, 3);
+                switch (randomTool) {
+                    case 0:
+                        activeTool = Tool.ToolType.TYPE_1;
+                        if(heartAttackBlueEvent != null) {
+                            heartAttackBlueEvent(heartAttackDuration);
+                        }
+                        break;
+                    case 1:
+                        activeTool = Tool.ToolType.TYPE_2;
+                        if (heartAttackBlueEvent != null) {
+                            heartAttackGreenEvent(heartAttackDuration);
+                        }
+                        break;
+                    case 2:
+                        activeTool = Tool.ToolType.TYPE_3;
+                        if (heartAttackRedEvent != null) {
+                            heartAttackRedEvent(heartAttackDuration);
+                        }
+                        break;
+                    case 3:
+                        activeTool = Tool.ToolType.TYPE_4;
+                        if (heartAttackOrangeEvent != null) {
+                            heartAttackOrangeEvent(heartAttackDuration);
+                        }
+                        break;
                 }
-                heartAttackEventStartTime = Time.time;
+                if (heartAttackBlueEvent != null) {
+                    heartAttackBlueEvent(heartAttackDuration);
+                }
+                heartEventStartTime = Time.time;
             }
         }
 
     }
 
     private void HeartAttackUpdate() {
-
+        if(Time.time - heartEventStartTime > heartAttackDuration) {
+            EndHeartAttack();
+        }
     } 
 
     private void HeartPostAttackUpdate() {
+        if(Time.time - heartEventStartTime > postHeartAttackDuration) {
+            heartState = HeartState.NORMAL;
+            lastTimeHeartAttackChecked = Time.time;
+            heartEventStartTime = Time.time;
+        }
 
     }
 
-    private void EndHeart
+    private void EndHeartAttack() {
+        heartState = HeartState.POST_HEART_ATTACK;
+        heartEventStartTime = Time.time;
+        if(heartAttackBlueEnded != null) {
+            heartAttackBlueEnded(postHeartAttackDuration);
+        }
+    }
 
     // called by external function when the heart attack has been adverted
     public void HeartAttackAdverted() {
         if(heartState == HeartState.HEART_ATTACK) {
-            
+            EndHeartAttack();
         }else {
             Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
         }
