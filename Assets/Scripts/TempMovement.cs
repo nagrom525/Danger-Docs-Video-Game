@@ -29,5 +29,8 @@ public class TempMovement : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			target.GetComponent<Doctor>().OnPickupButtonPressed();
 		}
+		if (Input.GetKeyDown(KeyCode.Q)) {
+			target.GetComponent<Doctor>().useCurrentToolOnPatient();
+		}
 	}
 }

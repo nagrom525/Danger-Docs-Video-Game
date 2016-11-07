@@ -14,6 +14,9 @@ public class Patient : MonoBehaviour {
 	private float duration = 0.0f;
 	private float durationOfPost = 0.0f;
 
+	// Defibulations needed to stabilize patient
+	private int defibulationsRemaining;
+
 	private FlashColor flash_color;
 	private StateOfAttack state_attack;
 	private Material NormalStateMaterial;
@@ -47,6 +50,7 @@ public class Patient : MonoBehaviour {
 		
 	public void OnEnd(float duration) {
 		state_attack = StateOfAttack.FINISHED;
+		defibulationsRemaining = 0;
 		//this.durationOfPost = duration;
 		//flash_timer = duration;
 	}
@@ -54,21 +58,29 @@ public class Patient : MonoBehaviour {
 	public void OnGreenHeartAttack(float duration) {
 		flash_color = FlashColor.GREEN;
 		OnHeartAttack (duration);
+		defibulationsRemaining = Random.Range(3, 6);
+		print (defibulationsRemaining);
 	}
 
 	public void OnBlueHeartAttack(float duration) {
 		flash_color = FlashColor.BLUE;
 		OnHeartAttack (duration);
+		defibulationsRemaining = Random.Range(3, 6);
+		print (defibulationsRemaining);
 	}
 		
 	public void OnRedHeartAttack(float duration) {
 		flash_color = FlashColor.RED;
 		OnHeartAttack (duration);
+		defibulationsRemaining = Random.Range(3, 6);
+		print (defibulationsRemaining);
 	}
 
 	public void OnOrangeHeartAttack(float duration) {
 		flash_color = FlashColor.ORANGE;
 		OnHeartAttack (duration);
+		defibulationsRemaining = Random.Range(3, 6);
+		print (defibulationsRemaining);
 	}
 
 	// Use this for initialization
@@ -158,7 +170,7 @@ public class Patient : MonoBehaviour {
 
 			// TODO: Add heartbeat message / vitals / things here.
 			// EX: renderHeartBeat();
-			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
+//			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
 
 			// update last_beat_time
 			last_beat_time = Time.time;
@@ -173,13 +185,26 @@ public class Patient : MonoBehaviour {
 
 
 	public void receiveOperation(Tool tool) {
-		switch(tool.GetToolType()) {
-		case Tool.ToolType.TYPE_1:
-			// React to tool 1!
-		break;
-		case Tool.ToolType.TYPE_2:
-			// React to tool 2!
-		break;
+		print ("defibulationsRemaining: " + defibulationsRemaining);
+		if (defibulationsRemaining > 0) {
+			switch(tool.GetToolType()) {
+			case Tool.ToolType.TYPE_1:
+				defibulationsRemaining--;
+				break;
+			case Tool.ToolType.TYPE_2:
+				defibulationsRemaining--;
+				break;
+			case Tool.ToolType.TYPE_3:
+				defibulationsRemaining--;
+				break;
+			case Tool.ToolType.TYPE_4:
+				defibulationsRemaining--;
+				break;
+			}
+		}
+
+		if (defibulationsRemaining == 0) {
+			DoctorEvents.Instance.HeartAttackAdverted ();
 		}
 	}
 }

@@ -64,13 +64,14 @@ public class Doctor : MonoBehaviour {
 		tool.transform.localPosition = new Vector3 (1, 3, 0);
 	}
 
-	private void useCurrentToolOnPatient() {
+	public void useCurrentToolOnPatient() {
+		print ("useCurrentToolOnPatient triggered");
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
-		if (distToPatient <= nearbyInteractableRange) {
+//		if (distToPatient <= nearbyInteractableRange) {
 			// Use current tool on patient.
 			Patient.Instance.receiveOperation (currentTool);
-		}
+//		}
 	}
 
 
