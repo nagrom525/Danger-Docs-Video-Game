@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class TempDefibulator : Tool
+public class RedDefibulator : Tool
 {
     public override ToolType GetToolType()
     {
