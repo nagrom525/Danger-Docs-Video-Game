@@ -149,12 +149,12 @@ public class DoctorEvents : MonoBehaviour {
                 }
                 break;
             case Tool.ToolType.TYPE_3:
-                if (heartAttackGreenEnded != null) {
+                if (heartAttackRedEnded != null) {
                     heartAttackRedEnded(postHeartAttackDuration);
                 }
                 break;
             case Tool.ToolType.TYPE_4:
-                if (heartAttackGreenEnded != null) {
+                if (heartAttackOrangeEnded != null) {
                     heartAttackOrangeEnded(postHeartAttackDuration);
                 }
                 break;
@@ -171,7 +171,7 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
-    public void EndGame() {
+    public void OnPatientDeath() {
 
     }
 }
