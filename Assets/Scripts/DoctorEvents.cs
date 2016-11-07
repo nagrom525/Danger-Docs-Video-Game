@@ -137,8 +137,27 @@ public class DoctorEvents : MonoBehaviour {
     private void EndHeartAttack() {
         heartState = HeartState.POST_HEART_ATTACK;
         heartEventStartTime = Time.time;
-        if(heartAttackBlueEnded != null) {
-            heartAttackBlueEnded(postHeartAttackDuration);
+        switch (activeTool) {
+            case Tool.ToolType.TYPE_1:
+                if (heartAttackBlueEnded != null) {
+                    heartAttackBlueEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_2:
+                if (heartAttackGreenEnded != null) {
+                    heartAttackBlueEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_3:
+                if (heartAttackGreenEnded != null) {
+                    heartAttackGreenEnded(postHeartAttackDuration);
+                }
+                break;
+            case Tool.ToolType.TYPE_4:
+                if (heartAttackGreenEnded != null) {
+                    heartAttackGreenEnded(postHeartAttackDuration);
+                }
+                break;
         }
     }
 
