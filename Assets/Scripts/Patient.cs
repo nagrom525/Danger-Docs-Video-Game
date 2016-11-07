@@ -20,15 +20,29 @@ public class Patient : MonoBehaviour {
 	private float flash_timer = 0.0f;
 	private float flash_wait_time = 0.5f;
 
+	private static Patient _instance;
+	public static Patient Instance {
+		get { return _instance; }
+
+	}
+
+	void Awake() {
+		if (_instance == null) {
+			_instance = this;
+		} else {
+			Debug.Log("Patient can only be set once");
+		}
+	}
+
 	public void OnHeartAttack (float duration) {
 		print ("happening");
 		heart_attack = true;
 		state_attack = StateOfAttack.ATTACKING;
 		bpm = 120f;
-		LevelUserInterface.UI.UpdateBpm (bpm);
+		LevelUserInterface.UI.UpdateBpm (bpm);	
 		this.duration = duration;
 	}
-
+		
 	public void OnEnd() {
 		state_attack = StateOfAttack.FINISHED;
 	}
@@ -55,6 +69,7 @@ public class Patient : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		// Dummy BPM for now.
 		bpm = 80f;
 		LevelUserInterface.UI.UpdateBpm (bpm);
@@ -155,5 +170,17 @@ public class Patient : MonoBehaviour {
 
 	private float bpmToSecondsInterval(float bpm) {
 		return (1f / (bpm / 60f));
+	}
+
+
+	public void receiveOperation(Tool tool) {
+		switch(tool.GetToolType()) {
+		case Tool.ToolType.TYPE_1:
+			// React to tool 1!
+		break;
+		case Tool.ToolType.TYPE_2:
+			// React to tool 2!
+		break;
+		}
 	}
 }

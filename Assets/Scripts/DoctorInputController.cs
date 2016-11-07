@@ -22,7 +22,7 @@ public class DoctorInputController : MonoBehaviour
         if (inputDevice == null)
         {
             // If no controller exists for this doctor make it translucent.
-            playerRenderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.2f);
+            //playerRenderer.material.color = new Color(1.0f, 1.0f, 1.0f, 0.2f);
         }
         else
         {
@@ -35,7 +35,7 @@ public class DoctorInputController : MonoBehaviour
         // Set material color based on which action is pressed.
         if (inputDevice.Action1)
         {
-            playerRenderer.material.color = Color.green;
+            //playerRenderer.material.color = Color.green;
 
             //Pickup
             doctor.OnPickupButtonPressed();
@@ -43,12 +43,12 @@ public class DoctorInputController : MonoBehaviour
         else
         if (inputDevice.Action2)
         {
-            playerRenderer.material.color = Color.red;
+            //playerRenderer.material.color = Color.red;
         }
         else
         if (inputDevice.Action3)
         {
-            playerRenderer.material.color = Color.blue;
+            //playerRenderer.material.color = Color.blue;
 
             //Interact
             doctor.OnInteractionButtonPressed();
@@ -56,11 +56,11 @@ public class DoctorInputController : MonoBehaviour
         else
         if (inputDevice.Action4)
         {
-            playerRenderer.material.color = Color.yellow;
+            //playerRenderer.material.color = Color.yellow;
         }
         else
         {
-            playerRenderer.material.color = Color.white;
+            //playerRenderer.material.color = Color.white;
         }
 
         // Rotate target object with both sticks and d-pad.
