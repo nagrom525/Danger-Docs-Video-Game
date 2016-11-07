@@ -6,7 +6,7 @@ public class RedDefibulator : Tool
 {
     public override ToolType GetToolType()
     {
-        return ToolType.TYPE_1;
+        return ToolType.TYPE_2;
     }
 
 	// 
