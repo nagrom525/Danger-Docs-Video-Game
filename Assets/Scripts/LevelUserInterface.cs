@@ -7,6 +7,9 @@ public class LevelUserInterface : MonoBehaviour {
 	public Text heartrate;
 	public Image EventSignal;
 	public float doctorBlinkDuration;
+
+
+
 	// Use this for initialization
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
