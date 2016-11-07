@@ -7,6 +7,7 @@ public class LevelUserInterface : MonoBehaviour {
 	public Text heartrate;
 	public Image EventSignal;
 	public float doctorBlinkDuration;
+    public GameObject gameLostPanel;
 
 
 
@@ -17,6 +18,7 @@ public class LevelUserInterface : MonoBehaviour {
         DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
         DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
         DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
+        DoctorEvents.Instance.GameOver += OnGameOver;
 	}
 	
 	// Update is called once per frame
@@ -39,6 +41,10 @@ public class LevelUserInterface : MonoBehaviour {
 
     void OnOrangeHeartAttack(float duration) {
 
+    }
+
+    void OnGameOver(float duration) {
+        gameLostPanel.SetActive(true);
     }
 
 }

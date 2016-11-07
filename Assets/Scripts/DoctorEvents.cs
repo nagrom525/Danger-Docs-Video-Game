@@ -29,6 +29,9 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent heartAttackOrangeEvent;
     public DoctorEvent heartAttackOrangeEnded;
 
+    // -- Game over event -- //
+    public DoctorEvent GameOver;
+
 
 
     // ----------- Heart Attack Values ---------------------- //
@@ -172,6 +175,8 @@ public class DoctorEvents : MonoBehaviour {
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
     public void OnPatientDeath() {
-
+        if(GameOver != null) {
+            GameOver(0.0f);
+        }
     }
 }
