@@ -36,4 +36,9 @@ public class DoctorEvents : MonoBehaviour {
 	void Update () {
         
 	}
+
+    // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
+    public void EndGame() {
+
+    }
 }

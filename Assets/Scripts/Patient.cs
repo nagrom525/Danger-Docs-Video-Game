@@ -5,6 +5,7 @@ public class Patient : MonoBehaviour {
 
 
 	public float bpm;
+    public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
 	private float last_beat_time;
 	private float next_beat_time;
@@ -28,7 +29,7 @@ public class Patient : MonoBehaviour {
 
 			// TODO: Add heartbeat message / vitals / things here.
 			// EX: renderHeartBeat();
-			print("Heartbeat Triggered.\nCurrent BPM: ", bpm);
+			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
 
 			// update last_beat_time
 			last_beat_time = Time.time;
