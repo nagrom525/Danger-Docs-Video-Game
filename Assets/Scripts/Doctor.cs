@@ -12,6 +12,7 @@ public class Doctor : MonoBehaviour {
 	void Start () {
 		currentTool = null;
 	    // TODO: NEED to register event listner functions to the DoctorEvents singleton delegates
+
 	}
 	
 	// Update is called once per frame
@@ -65,7 +66,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void useCurrentToolOnPatient() {
-		print ("useCurrentToolOnPatient triggered");
+		print ("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 //		if (distToPatient <= nearbyInteractableRange) {
