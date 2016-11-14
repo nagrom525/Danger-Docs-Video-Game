@@ -84,7 +84,8 @@ public class DoctorEvents : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
- 
+		Time.timeScale = 1f;
+
 	}
 
     void Update() {

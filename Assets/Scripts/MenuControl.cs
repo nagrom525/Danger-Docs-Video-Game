@@ -15,7 +15,7 @@ public class MenuControl : MonoBehaviour {
 	}
 
     public void RestartLevel() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ExitGame() {

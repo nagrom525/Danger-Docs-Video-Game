@@ -5,6 +5,12 @@ public class Doctor : MonoBehaviour {
     // currentTool can only be set by the Doctor when it interacts with a tool
     public Tool currentTool {get; private set;}
 
+	public float dirtLevel;
+	public bool interacting;
+	public bool dirtyHands {
+		get { return dirtLevel > 0f; }
+	}
+
 	// Radius of sphere for checking for interactiables.
 	private float nearbyInteractableRange = 8f;
 
@@ -12,13 +18,19 @@ public class Doctor : MonoBehaviour {
 	void Start () {
 		currentTool = null;
 	    // TODO: NEED to register event listner functions to the DoctorEvents singleton delegates
+
+		// Hands start out dirty.
+		dirtLevel = 1f;
+
+
+		interacting = false;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
     // Doctor control code (needs to be added)
     // for example... 
     public void OnJumpKeyPressed() {
@@ -29,6 +41,11 @@ public class Doctor : MonoBehaviour {
 	// Moves the player according to the Vector3
 	// recieved from input manager.
 	public void OnJoystickMovement(Vector3 joystickVec) {
+		// If interacting, doctor can't move.
+		if (interacting) {
+			print ("currentlying interacting. Cancel interaction with action button");
+			return;
+		}
 		// We should never be moving in the z direction.
 		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.
@@ -65,13 +82,13 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void useCurrentToolOnPatient() {
-		print ("useCurrentToolOnPatient triggered");
+		print ("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
-//		if (distToPatient <= nearbyInteractableRange) {
+		if (distToPatient <= nearbyInteractableRange) {
 			// Use current tool on patient.
 			Patient.Instance.receiveOperation (currentTool);
-//		}
+		}
 	}
 
 
@@ -111,12 +128,25 @@ public class Doctor : MonoBehaviour {
 	// interactiable accepts the interaction message and acts on it only if
 	// it is valid.
 	public void OnInteractionButtonPressed() {
+		// Whether you are currently interacting or not,
+		// we'll want the nearest interactable.
+
 		// May return null.
 		Interactable nearbyInteractable = getNearestInteractableInRange(nearbyInteractableRange);
+		print ("nearbyInteractable ::" + nearbyInteractable);
 
 		// If there is a nearby interactable, then begin interacting!
 		if (nearbyInteractable != null) {
-			nearbyInteractable.DocterIniatesInteracting(this);
+			// If currently interacting, pressing this button again will cancel the interaction.
+			if (interacting) {
+				nearbyInteractable.DoctorTerminatesInteracting (this);
+				interacting = false;
+			}
+			// If not currently interacting, and ...
+			// If successfully inintiated interacting, set interacting to true,
+			// IF THE ACTION REQUIRES SUSTAINED INTERACTION OVER A TIME PERIOD.
+			// Otherwise, false.
+			interacting = nearbyInteractable.DocterIniatesInteracting (this);
 		}
 	}
 

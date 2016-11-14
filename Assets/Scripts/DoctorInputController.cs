@@ -33,7 +33,7 @@ public class DoctorInputController : MonoBehaviour
     void UpdateWithInputDevice(InputDevice inputDevice)
     {
         // Set material color based on which action is pressed.
-        if (inputDevice.Action1)
+		if (inputDevice.Action1.WasPressed)
         {
             //playerRenderer.material.color = Color.green;
 
@@ -46,12 +46,13 @@ public class DoctorInputController : MonoBehaviour
             //playerRenderer.material.color = Color.red;
         }
         else
-        if (inputDevice.Action3)
+		if (inputDevice.Action3.WasPressed)
         {
             //playerRenderer.material.color = Color.blue;
 
             //Interact
             doctor.OnInteractionButtonPressed();
+			doctor.useCurrentToolOnPatient();
         }
         else
         if (inputDevice.Action4)
