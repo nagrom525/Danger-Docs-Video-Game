@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Patient : MonoBehaviour {
 	enum FlashColor {NORMAL, BLUE, GREEN, RED, ORANGE}
-	enum PatientCriticalState {NORMAL, SPEEDING_UP, ATTACKING, FINISHING}
+	enum PatientCriticalState {NORMAL, SPEEDING_UP, ATTACKING, SPEEDING_UP_TO_DIE, ABOUT_TO_DIE, FINISHING, DEAD}
 
     public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
@@ -14,9 +14,10 @@ public class Patient : MonoBehaviour {
 
 	private float last_beat_time;
 	private float next_beat_time;
-	private bool inCriticalState;
-	private float criticalStateDuration = 0.0f;
-	private float critalStatePostDuration = 0.0f;
+	private float criticalCycleDuration = 0.0f;
+    private float timeStartCriticalCycle = 0.0f;
+    private float timeStartCritialState = 0.0f;
+    private float timeToEndCurrentCriticalState = 0.0f;
 	private Tool.ToolType requiredTool;
 
 	// Defibulations needed to stabilize patient
@@ -25,16 +26,16 @@ public class Patient : MonoBehaviour {
 
     // --- Heart rate and patient critical state -- //
     public float normal_bpm = 80.0f;
-    public float critical_bpm = 200.0f;
+    public float critical_bpm = 170.0f;
+    public float about_to_die_bpm = 210.0f;
     public float hear_rate_modulation_range = 20.0f;
+    public float time_to_slow_bpm = 5.0f;
 
     private FlashColor flash_color;
 	private PatientCriticalState critical_state;
 	private Material NormalStateMaterial;
-    private float timeStartCriticalState;
-    private float timeMidleCriticalState;
-    private float timeEndCriticalState;
     private float bpm;
+    private float adverted_bpm;
     //	private float flash_timer = 0.0f;
     //	private float flash_duration = 0.5f;
     //	private float flash_time = 0.0f;
@@ -55,21 +56,6 @@ public class Patient : MonoBehaviour {
 			Debug.Log("Patient can only be set once");
 		}
 	}
-
-	public void OnPatientCriticalEventStart (float duration) {
-		print ("happening");
-		inCriticalState = true;
-		critical_state = PatientCriticalState.ATTACKING;
-		bpm = 120f;
-		//flash_timer = duration;
-		LevelUserInterface.UI.UpdateBpm (bpm);	
-		this.criticalStateDuration = duration;
-	}
-
-    public void OnPatientCriticalEventEnded(float duration) {
-        critical_state = PatientCriticalState.FINISHING;
-        defibulationsRemaining = 0;
-    }
 
 	//Stitches
 	public void OnSuture(float duration)
@@ -94,65 +80,167 @@ public class Patient : MonoBehaviour {
         next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
         DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEventStart;
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
-	
-
 		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
-		tempColor = mat.GetColor ("_EmissionColor");
-		print ("first temp color " + tempColor);
+	
 	}
 
     // Update is called once per frame
     void Update() {
-        if (inCriticalState || critical_state == PatientCriticalState.ATTACKING) {
-            if (criticalStateDuration <= 0.0f || critical_state == PatientCriticalState.FINISHING) {
-                inCriticalState = false;
-                critical_state = PatientCriticalState.NORMAL; //take this out later
-                print("finished");
-                mat.SetColor("_EmissionColor", tempColor);
-            } else {
-                criticalStateDuration -= Time.deltaTime;
-
-
-                if (flash_color == FlashColor.BLUE) {
-                    mat.SetColor("_EmissionColor", Color.blue);
-                    //mat.color = Color.blue;
-                } else if (flash_color == FlashColor.RED) {
-                    mat.SetColor("_EmissionColor", Color.red);
-                    //mat.color = Color.red;
-                } else if (flash_color == FlashColor.GREEN) {
-                    mat.SetColor("_EmissionColor", Color.green);
-                    //mat.color = Color.green;
-                } else if (flash_color == FlashColor.ORANGE) {
-                    mat.SetColor("_EmissionColor", UtilityFunctions.orange);
-                    //mat.color = UtilityFunctions.orange;
-                }
-            }
+        print(critical_bpm);
+        switch (critical_state) {
+            case PatientCriticalState.NORMAL:
+                CriticalStateNormalUpdate();
+                break;
+            case PatientCriticalState.SPEEDING_UP:
+                CriticalStateSpeedingUpUpdate();
+                break;
+            case PatientCriticalState.ATTACKING:
+                CriticalStateAttackingUpdate();
+                break;
+            case PatientCriticalState.SPEEDING_UP_TO_DIE:
+                CriticalStateSpeedingUpToDieUpdate();
+                break;
+            case PatientCriticalState.ABOUT_TO_DIE:
+                CriticalStateAboutToDieUpdate();
+                break;
+            case PatientCriticalState.FINISHING:
+                CriticalStateFinishingUpdate();
+                break;
         }
+        GeneralUpdate();
+        // TODO: Add heartbeat message / vitals / things here.
+        // EX: renderHeartBeat();
+        //			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
+
+    }
+
+
+    //  ---- Handle patient critical state -- //
+    private void CriticalStateNormalUpdate() {
+        // THis should be empty?
+    }
+
+    private void CriticalStateSpeedingUpUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(normal_bpm, critical_bpm, t);
+        if (t >= 1.0f) {
+            bpm = critical_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            critical_state = PatientCriticalState.ATTACKING;
+            timeStartCritialState = Time.time;
+            print("Heart State Attacking Time: " + Time.time);
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 6.0f);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    private void CriticalStateAttackingUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        if (t >= 1.0f) {
+            critical_state = PatientCriticalState.SPEEDING_UP_TO_DIE;
+            timeStartCritialState = Time.time;
+            print("Heart State Speeding up to die Time: " + Time.time);
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 3.0f);
+        } 
+    }
+
+    private void CriticalStateSpeedingUpToDieUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(critical_bpm, about_to_die_bpm, t);
+        if (t >= 1.0f) {
+            bpm = about_to_die_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            print("Heart State About To Die Time: " + Time.time);
+            critical_state = PatientCriticalState.ABOUT_TO_DIE;
+            timeStartCritialState = Time.time;
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 6.0f);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    private void CriticalStateAboutToDieUpdate() {
+        if (Time.time >= (timeStartCriticalCycle + criticalCycleDuration)) {
+            bpm = 0.0f;
+            print("Heart State Dead Time: " + Time.time);
+            critical_state = PatientCriticalState.DEAD;
+            timeStartCritialState = Time.time;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    public void OnPatientCriticalEventStart(float duration) {
+        critical_state = PatientCriticalState.SPEEDING_UP;
+        this.criticalCycleDuration = duration;
+        timeStartCritialState = Time.time;
+        timeToEndCurrentCriticalState = timeStartCritialState + (duration / 3.0f);
+        //flash_timer = duration;
+        LevelUserInterface.UI.UpdateBpm(bpm);
+    }
+
+    public void OnPatientCriticalEventEnded(float duration) {
+        critical_state = PatientCriticalState.FINISHING;
+        timeStartCritialState = Time.time;
+        timeToEndCurrentCriticalState = timeStartCritialState + time_to_slow_bpm;
+        defibulationsRemaining = 0;
+    }
+
+
+    private void CriticalStateFinishingUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(adverted_bpm, normal_bpm, t);
+        if (t >= 1.0f) {
+            bpm = normal_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            critical_state = PatientCriticalState.NORMAL;
+            timeStartCritialState = Time.time;
+            print("Heart State Attacking Time: " + Time.time);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    private void GeneralUpdate() {
         // if the time since the last heart beat has passed.
         if (Time.time > next_beat_time) {
             // update last_beat_time
             last_beat_time = Time.time;
             next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
-            // randomly increment or decrement heart rate within window (add a modulation to the heart rate)
-            if(0.333333f < Random.value) {
-                if (bpm > critical_bpm - 20) {
-                    --bpm;
-                    LevelUserInterface.UI.UpdateBpm(bpm);
-                }
-            } else if(0.666666f < Random.value) {
-              if(bpm < critical_bpm + 20) {
-                    ++bpm;
-                    LevelUserInterface.UI.UpdateBpm(bpm);
+            float referenceHeartRate = normal_bpm;
+            switch (critical_state) {
+                case PatientCriticalState.NORMAL:
+                    referenceHeartRate = normal_bpm;
+                    break;
+                case PatientCriticalState.SPEEDING_UP:
+                    referenceHeartRate = (normal_bpm + critical_bpm) / 2.0f;
+                    break;
+                case PatientCriticalState.ATTACKING:
+                    referenceHeartRate = critical_bpm;
+                    break;
+                case PatientCriticalState.FINISHING:
+                    referenceHeartRate = (normal_bpm + critical_bpm) / 2.0f;
+                    break;
+            }
+            // randomly increment or decrement heart rate within window (add a modulation to the heart rate
+            if(critical_state != PatientCriticalState.DEAD) {
+                float randomValue = Random.value;
+                if (0.333333f > randomValue) {
+                    if (bpm > (referenceHeartRate - hear_rate_modulation_range)) {
+                        bpm--;
+                        LevelUserInterface.UI.UpdateBpm(bpm);
+                    }
+                } else if (0.666666f < randomValue) {
+                    if (bpm < (referenceHeartRate + hear_rate_modulation_range)) {
+                        ++bpm;
+                        LevelUserInterface.UI.UpdateBpm(bpm);
+                    }
                 }
             }
-
         }
-
-
-        // TODO: Add heartbeat message / vitals / things here.
-        // EX: renderHeartBeat();
-        //			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
-
     }
 
 
