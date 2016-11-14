@@ -150,8 +150,7 @@ public class DoctorEvents : MonoBehaviour {
             currentIndexInReciepe++;
 			CallRecipeEventFunction(scene1ReciepeElements[currentIndexInReciepe]);
 			inRecipePostState = false;
-        }
-               
+        }         
     }
 
     private void GamePatientCriticalUpdate() {
@@ -241,6 +240,12 @@ public class DoctorEvents : MonoBehaviour {
     public void SetRecipePostState() {
         inRecipePostState = true;
         timeStartReciepeState = Time.time;
+        if(currentIndexInReciepe == scene1ReciepeElements.Length - 1) {
+            // then we have won the game!
+            if (GameWon != null) {
+                GameWon(0);
+            }
+        }
     }
 
     private void CallRecipeEventFunction(MainReciepeState reciepeState) {

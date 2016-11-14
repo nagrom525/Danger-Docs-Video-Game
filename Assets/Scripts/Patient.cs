@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class Patient : Interactable {
 	enum FlashColor 		{NORMAL, BLUE, GREEN, RED, ORANGE}
-	enum StateOfAttack 		{NORMAL, ATTACKING, FINISHED}
+    enum PatientCriticalState { NORMAL, SPEEDING_UP, ATTACKING, SPEEDING_UP_TO_DIE, ABOUT_TO_DIE, FINISHING, DEAD }
 
-	public float 			bpm;
+    public float 			bpm;
     public float 			anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
 	public Transform  		hotspotSpawnPos;
@@ -25,18 +26,30 @@ public class Patient : Interactable {
 	private float 			durationOfPost = 0.0f;
 	private Tool.ToolType 	requiredTool;
 
-	// Defibulations needed to stabilize patient
-	private int 			defibulationsRemaining;
+    private float criticalCycleDuration = 0.0f;
+    private float timeStartCriticalCycle = 0.0f;
+    private float timeStartCritialState = 0.0f;
+    private float timeToEndCurrentCriticalState = 0.0f;
 
-	private FlashColor 		flash_color;
-	private StateOfAttack 	state_attack;
-	private Material 		NormalStateMaterial;
-//	private float 			flash_timer = 0.0f;
-//	private float 			flash_duration = 0.5f;
-//	private float 			flash_time = 0.0f;
+        // Defibulations needed to stabilize patient
+        private int 			defibulationsRemaining;
 
-	Color 					tempColor;
-	public Material 		mat;
+    // --- Heart rate and patient critical state -- //
+    public float normal_bpm = 80.0f;
+    public float critical_bpm = 170.0f;
+    public float about_to_die_bpm = 210.0f;
+    public float hear_rate_modulation_range = 20.0f;
+    public float time_to_slow_bpm = 5.0f;
+
+    private FlashColor flash_color;
+	private PatientCriticalState critical_state;
+	private Material NormalStateMaterial;
+
+    private float adverted_bpm;
+    //	private float flash_timer = 0.0f;
+    //	private float flash_duration = 0.5f;
+    //	private float flash_time = 0.0f;
+
 
 	private static Patient _instance;
 	public static Patient Instance {
@@ -51,41 +64,6 @@ public class Patient : Interactable {
 		}
 	}
 
-	public void OnHeartAttack (float duration) {
-		print ("happening");
-		heart_attack = true;
-		state_attack = StateOfAttack.ATTACKING;
-		bpm = 120f;
-		//flash_timer = duration;
-		LevelUserInterface.UI.UpdateBpm (bpm);	
-		this.duration = duration;
-	}
-		
-	public void OnEnd(float duration) {
-		state_attack = StateOfAttack.FINISHED;
-		defibulationsRemaining = 0;
-		//this.durationOfPost = duration;
-		//flash_timer = duration;
-	}
-
-	public void OnGreenHeartAttack(float duration) {
-		flash_color = FlashColor.GREEN;
-		OnHeartAttack (duration);
-		requiredTool = Tool.ToolType.TYPE_3;
-		defibulationsRemaining = Random.Range(3, 6);
-		print (defibulationsRemaining);
-	}
-
-
-	public void OnBlueHeartAttack(float duration)
-	{
-		flash_color = FlashColor.BLUE;
-		OnHeartAttack(duration);
-		requiredTool = Tool.ToolType.TYPE_1;
-		defibulationsRemaining = Random.Range(3, 6);
-		print(defibulationsRemaining);
-	}
-
 	//Stitches
 	public void OnSuture(float duration)
 	{
@@ -93,117 +71,191 @@ public class Patient : Interactable {
 		requiredTool = Tool.ToolType.SUTURE;
 	}
 		
-	public void OnRedHeartAttack(float duration) {
-		flash_color = FlashColor.RED;
-		OnHeartAttack (duration);
-		requiredTool = Tool.ToolType.TYPE_2;
-		defibulationsRemaining = Random.Range(3, 6);
-		print (defibulationsRemaining);
-	}
-
-	public void OnOrangeHeartAttack(float duration) {
-		flash_color = FlashColor.ORANGE;
-		OnHeartAttack (duration);
-		requiredTool = Tool.ToolType.TYPE_4;
-		defibulationsRemaining = Random.Range(3, 6);
-		print (defibulationsRemaining);
-	}
 
 	public void OnCutPatientOpen(float duration)
 	{
-		Debug.Log("on cut patient open");
 		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
+	public void OnSoakBlood(float duration)
+	{
+		Instantiate(gauzeHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.GAUZE;
+	}
+
+
 	// Use this for initialization
 	void Start () {
-
-		// Dummy BPM for now.
-		bpm = 80f;
+        bpm = normal_bpm;
 		LevelUserInterface.UI.UpdateBpm (bpm);
 		last_beat_time = Time.time;
-		DoctorEvents.Instance.onPatientCriticalEventStart += OnCutPatientOpen;
-		DoctorEvents.Instance.onPatientCriticalEventEnded += OnEnd;
-
+        next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
+        DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEventStart;
+		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
 		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
-
-		tempColor = mat.GetColor ("_EmissionColor");
-		print ("first temp color " + tempColor);
+		DoctorEvents.Instance.patientNeedsCutOpen += OnCutPatientOpen;
+		DoctorEvents.Instance.patientNeedsBloodSoak += OnSoakBlood;	
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		if (heart_attack || state_attack == StateOfAttack.ATTACKING) {
-			if (duration <= 0.0f || state_attack == StateOfAttack.FINISHED) {
-				bpm = 80f;
-				LevelUserInterface.UI.UpdateBpm (bpm);
-				heart_attack = false;
-				state_attack = StateOfAttack.NORMAL; //take this out later
-				print ("finished");
-				mat.SetColor ("_EmissionColor", tempColor);
-			} else {
-				duration -= Time.deltaTime;
-			
-				
-				if (flash_color == FlashColor.BLUE) {
-					mat.SetColor ("_EmissionColor", Color.blue);
-					//mat.color = Color.blue;
-				} else if (flash_color == FlashColor.RED) {
-					mat.SetColor ("_EmissionColor", Color.red);
-					//mat.color = Color.red;
-				} else if (flash_color == FlashColor.GREEN) {
-					mat.SetColor ("_EmissionColor", Color.green);
-					//mat.color = Color.green;
-				} else if (flash_color == FlashColor.ORANGE) {
-					mat.SetColor ("_EmissionColor", UtilityFunctions.orange);
-					//mat.color = UtilityFunctions.orange;
-				}
-			}
-		}
+    // Update is called once per frame
+    void Update() {
+        print(critical_bpm);
+        switch (critical_state) {
+            case PatientCriticalState.NORMAL:
+                CriticalStateNormalUpdate();
+                break;
+            case PatientCriticalState.SPEEDING_UP:
+                CriticalStateSpeedingUpUpdate();
+                break;
+            case PatientCriticalState.ATTACKING:
+                CriticalStateAttackingUpdate();
+                break;
+            case PatientCriticalState.SPEEDING_UP_TO_DIE:
+                CriticalStateSpeedingUpToDieUpdate();
+                break;
+            case PatientCriticalState.ABOUT_TO_DIE:
+                CriticalStateAboutToDieUpdate();
+                break;
+            case PatientCriticalState.FINISHING:
+                CriticalStateFinishingUpdate();
+                break;
+        }
+        GeneralUpdate();
+        // TODO: Add heartbeat message / vitals / things here.
+        // EX: renderHeartBeat();
+        //			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
 
-		/*if (state_attack == StateOfAttack.FINISHED) {
-			if (durationOfPost <= 0.0f) {
-				state_attack = StateOfAttack.NORMAL;
-				GetComponent <Material>() = NormalStateMaterial;
-			} else {
-				durationOfPost -= Time.deltaTime;
-			}
-
-			if(flash_color == FlashColor.BLUE) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.blue;
-				GetComponent <Renderer> ().material = temp;
-			} else if(flash_color == FlashColor.RED) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.red;
-				GetComponent <Renderer> ().material = temp;
-
-			} else if(flash_color == FlashColor.GREEN) {
-				Material temp = GetComponent <Renderer> ().material;
-				temp.color = Color.green;
-				GetComponent <Renderer> ().material = temp;
-
-			} else if(flash_color == FlashColor.ORANGE) {
-
-			}
-		}*/
+    }
 
 
-		// if the time since the last heart beat has passed.
-		if (Time.time > next_beat_time) {
-			
+    //  ---- Handle patient critical state -- //
+    private void CriticalStateNormalUpdate() {
+        // This should be empty?
+    }
 
-			// TODO: Add heartbeat message / vitals / things here.
-			// EX: renderHeartBeat();
-//			print("Heartbeat Triggered.\nCurrent BPM: " + bpm);
+    private void CriticalStateSpeedingUpUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(normal_bpm, critical_bpm, t);
+        if (t >= 1.0f) {
+            bpm = critical_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            critical_state = PatientCriticalState.ATTACKING;
+            timeStartCritialState = Time.time;
+            print("Heart State Attacking Time: " + Time.time);
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 6.0f);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
 
-			// update last_beat_time
-			last_beat_time = Time.time;
-			next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
-		}
-	}
+    private void CriticalStateAttackingUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        if (t >= 1.0f) {
+            critical_state = PatientCriticalState.SPEEDING_UP_TO_DIE;
+            timeStartCritialState = Time.time;
+            print("Heart State Speeding up to die Time: " + Time.time);
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 3.0f);
+        } 
+    }
+
+    private void CriticalStateSpeedingUpToDieUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(critical_bpm, about_to_die_bpm, t);
+        if (t >= 1.0f) {
+            bpm = about_to_die_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            print("Heart State About To Die Time: " + Time.time);
+            critical_state = PatientCriticalState.ABOUT_TO_DIE;
+            timeStartCritialState = Time.time;
+            timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 6.0f);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    private void CriticalStateAboutToDieUpdate() {
+        if (Time.time >= (timeStartCriticalCycle + criticalCycleDuration)) {
+            bpm = 0.0f;
+            print("Heart State Dead Time: " + Time.time);
+            critical_state = PatientCriticalState.DEAD;
+            timeStartCritialState = Time.time;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    public void OnPatientCriticalEventStart(float duration) {
+        critical_state = PatientCriticalState.SPEEDING_UP;
+        this.criticalCycleDuration = duration;
+        timeStartCritialState = Time.time;
+        timeToEndCurrentCriticalState = timeStartCritialState + (duration / 3.0f);
+        //flash_timer = duration;
+        LevelUserInterface.UI.UpdateBpm(bpm);
+    }
+
+    public void OnPatientCriticalEventEnded(float duration) {
+        critical_state = PatientCriticalState.FINISHING;
+        timeStartCritialState = Time.time;
+        timeToEndCurrentCriticalState = timeStartCritialState + time_to_slow_bpm;
+        defibulationsRemaining = 0;
+    }
+
+
+    private void CriticalStateFinishingUpdate() {
+        float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
+        float newBpm = Mathf.Lerp(adverted_bpm, normal_bpm, t);
+        if (t >= 1.0f) {
+            bpm = normal_bpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+            critical_state = PatientCriticalState.NORMAL;
+            timeStartCritialState = Time.time;
+            print("Heart State Attacking Time: " + Time.time);
+        } else {
+            bpm = newBpm;
+            LevelUserInterface.UI.UpdateBpm(bpm);
+        }
+    }
+
+    private void GeneralUpdate() {
+        // if the time since the last heart beat has passed.
+        if (Time.time > next_beat_time) {
+            // update last_beat_time
+            last_beat_time = Time.time;
+            next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
+            float referenceHeartRate = normal_bpm;
+            switch (critical_state) {
+                case PatientCriticalState.NORMAL:
+                    referenceHeartRate = normal_bpm;
+                    break;
+                case PatientCriticalState.SPEEDING_UP:
+                    referenceHeartRate = (normal_bpm + critical_bpm) / 2.0f;
+                    break;
+                case PatientCriticalState.ATTACKING:
+                    referenceHeartRate = critical_bpm;
+                    break;
+                case PatientCriticalState.FINISHING:
+                    referenceHeartRate = (normal_bpm + critical_bpm) / 2.0f;
+                    break;
+            }
+            // randomly increment or decrement heart rate within window (add a modulation to the heart rate
+            if(critical_state != PatientCriticalState.DEAD) {
+                float randomValue = Random.value;
+                if (0.333333f > randomValue) {
+                    if (bpm > (referenceHeartRate - hear_rate_modulation_range)) {
+                        bpm--;
+                        LevelUserInterface.UI.UpdateBpm(bpm);
+                    }
+                } else if (0.666666f < randomValue) {
+                    if (bpm < (referenceHeartRate + hear_rate_modulation_range)) {
+                        ++bpm;
+                        LevelUserInterface.UI.UpdateBpm(bpm);
+                    }
+                }
+            }
+        }
+    }
 
 
 	private float bpmToSecondsInterval(float bpm) {
@@ -213,7 +265,7 @@ public class Patient : Interactable {
 
 	public void receiveOperation(Tool tool, int doctorNumber = -1) {
 
-		if (requiredTool == Tool.ToolType.SUTURE && tool.GetToolType() == Tool.ToolType.SUTURE)
+		if (tool.GetToolType() == Tool.ToolType.SUTURE)
 		{
 			//Get Doctor that initiated operation
 			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
@@ -229,7 +281,7 @@ public class Patient : Interactable {
 
 			Debug.Log("recieving suture operation");
 		}
-		else if (requiredTool == Tool.ToolType.SCALPEL && tool.GetToolType() == Tool.ToolType.SCALPEL)
+		else if (tool.GetToolType() == Tool.ToolType.SCALPEL)
 		{
 			//Get Doctor that initiated operation
 			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
@@ -243,7 +295,23 @@ public class Patient : Interactable {
 			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
 			scalpel.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
 
-			Debug.Log("recieving suture operation");
+			Debug.Log("recieving scalpel operation");
+		}
+		else if (tool.GetToolType() == Tool.ToolType.GAUZE)
+		{
+			//Get Doctor that initiated operation
+			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
+			if (doc == null)
+			{
+				Debug.Log("couldn't find doctor!");
+			}
+			//Disable their input component
+			doc.GetComponent<DoctorInputController>().enabled = false;
+			//Create tool and give control to Doctor
+			GameObject gauze = (GameObject)Instantiate(gauzeToolPrefab, toolSpawnPositions[0].transform);
+			gauze.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+
+			Debug.Log("recieving gauze operation");
 		}
 		else
 		{

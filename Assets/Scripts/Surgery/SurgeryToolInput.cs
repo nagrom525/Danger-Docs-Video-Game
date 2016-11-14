@@ -30,6 +30,19 @@ public class SurgeryToolInput : MonoBehaviour {
 		}
 	}
 
+	void ReturnControlToDoctor()
+	{
+		//Get Doctor that initiated operation
+		GameObject doc = GameObject.Find("Doctor_" + (playerNum + 1).ToString());
+		if (doc == null)
+		{
+			Debug.Log("couldn't find doctor!");
+		}
+		//Disable their input component
+		doc.GetComponent<DoctorInputController>().enabled = true;
+		Destroy(this.gameObject);
+	}
+
 	void UpdateWithInputDevice(InputDevice inputDevice)
 	{
 		// Set material color based on which action is pressed.
@@ -50,6 +63,7 @@ public class SurgeryToolInput : MonoBehaviour {
 		if (inputDevice.Action2)
 		{
 			//B
+			ReturnControlToDoctor();
 		}
 		else
 		if (inputDevice.Action3.WasPressed)
