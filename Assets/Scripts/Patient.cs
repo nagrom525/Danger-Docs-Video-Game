@@ -9,6 +9,9 @@ public class Patient : Interactable {
     public float 			anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
 	public Transform  		hotspotSpawnPos;
+	public GameObject 		scalpelToolPrefab;
+	public GameObject 		sutureToolPrefab;
+	public GameObject 		gauzeToolPrefab;
 	public GameObject 		scalpelTrackPrefab;
 	public GameObject 		sutureHotspotsPrefab;
 	public GameObject 		gauzeHotspotsPrefab;
@@ -216,9 +219,10 @@ public class Patient : Interactable {
 			GameObject doc = GameObject.Find("Doctor_" + doctorNumber.ToString());
 
 			//Disable their input component
-
+			doc.GetComponent<DoctorInputController>().enabled = false;
 			//Create tool and give control to Doctor
-	
+			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
+			suture.GetComponent<SurgeryToolInput>().playerNum = doctorNumber-1;
 
 			Debug.Log("recieving suture operation");
 		}
