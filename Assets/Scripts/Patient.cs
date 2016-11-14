@@ -74,16 +74,14 @@ public class Patient : Interactable {
 
 	public void OnCutPatientOpen(float duration)
 	{
-		Debug.Log("on cut patient open");
 		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
 	public void OnSoakBlood(float duration)
 	{
-		Debug.Log("on cut patient open");
-		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
-		requiredTool = Tool.ToolType.SCALPEL;
+		Instantiate(gauzeHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.GAUZE;
 	}
 
 
@@ -267,7 +265,7 @@ public class Patient : Interactable {
 
 	public void receiveOperation(Tool tool, int doctorNumber = -1) {
 
-		if (requiredTool == Tool.ToolType.SUTURE && tool.GetToolType() == Tool.ToolType.SUTURE)
+		if (tool.GetToolType() == Tool.ToolType.SUTURE)
 		{
 			//Get Doctor that initiated operation
 			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
@@ -283,7 +281,7 @@ public class Patient : Interactable {
 
 			Debug.Log("recieving suture operation");
 		}
-		else if (requiredTool == Tool.ToolType.SCALPEL && tool.GetToolType() == Tool.ToolType.SCALPEL)
+		else if (tool.GetToolType() == Tool.ToolType.SCALPEL)
 		{
 			//Get Doctor that initiated operation
 			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
@@ -299,7 +297,7 @@ public class Patient : Interactable {
 
 			Debug.Log("recieving scalpel operation");
 		}
-		else if (requiredTool == Tool.ToolType.GAUZE && tool.GetToolType() == Tool.ToolType.GAUZE)
+		else if (tool.GetToolType() == Tool.ToolType.GAUZE)
 		{
 			//Get Doctor that initiated operation
 			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
