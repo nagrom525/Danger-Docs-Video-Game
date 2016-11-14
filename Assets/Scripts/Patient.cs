@@ -131,7 +131,7 @@ public class Patient : Interactable {
 
     //  ---- Handle patient critical state -- //
     private void CriticalStateNormalUpdate() {
-        // THis should be empty?
+        // This should be empty?
     }
 
     private void CriticalStateSpeedingUpUpdate() {
