@@ -15,8 +15,13 @@ public class Doctor : MonoBehaviour {
 	public Image washingMeter;
 	private int washingMeterFramesRemaining;
 
+	public Material highlightedMaterial;
+	private GameObject last_interactive_obj;
+	private GameObject current_interactive_obj;
+	private Material original_go_material;
+
 	// Radius of sphere for checking for interactiables.
-	private float nearbyInteractableRange = 8f;
+	private float interactionRange = 8f;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +46,66 @@ public class Doctor : MonoBehaviour {
 		} else {
 			hideWashingMeter ();
 		}
+
+
+		highlightNearestInteractiveObject ();
+	}
+
+	// Please forgive me. I tried to make this intelligable.
+	private void highlightNearestInteractiveObject() {
+		// Get nearest GO
+		current_interactive_obj = getNearestInteractive (interactionRange);
+
+		// If nearest object hasn't changed, there is nothing to be done
+		if (current_interactive_obj == last_interactive_obj)
+			return;
+
+		// If the current object is not null ...
+		if (current_interactive_obj != null) {
+			// ... and the last object is not null ...
+			if (last_interactive_obj != null) {
+				// Then we conclude the current object is new, and switch the old object
+				// back to it's original material.
+				last_interactive_obj.GetComponent<Renderer> ().material = original_go_material;
+			}
+
+			// ... we highlight the current object and save its material
+			Renderer rend = current_interactive_obj.GetComponent<Renderer> ();
+			original_go_material = rend.material;
+			rend.material = highlightedMaterial;
+
+			// We then save current object as last object.
+			last_interactive_obj = current_interactive_obj;
+		}
+	}
+
+	private GameObject getNearestInteractive(float range) {
+		// Get the interactables. Eventually, this should take a third agrument
+		// (layer mask) which ignores everything that isn't an interactable.
+		Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
+
+		// Setup linear search for nearest interactable.
+		GameObject nearestObj = null;
+		float runningNearestObj = Mathf.Infinity;
+
+		for (int i = 0; i < objectsInRange.Length; i++) {
+			if (objectsInRange [i].gameObject.CompareTag ("Tool")
+				|| objectsInRange [i].gameObject.CompareTag ("Interactable")) {
+				// Get Vector3 between pos of doctor and interactable
+				Vector3 objPos = objectsInRange[i].transform.position;
+				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
+				float sqrDist = (objPos - pos).sqrMagnitude;
+
+				// If this interactable is closer than the current closest, update
+				// to this one.
+				if (runningNearestObj > sqrDist) { 
+					runningNearestObj = sqrDist;
+					nearestObj = objectsInRange[i].gameObject;
+				}
+			}
+		}
+
+		return nearestObj;
 	}
 
 	// Logic for receiving joystick movement.
@@ -65,7 +130,7 @@ public class Doctor : MonoBehaviour {
 		} else {
 			// If there is a tool in range, get that tool.
 			// Otherwise, nearestTool == null
-			Tool nearestTool = getNearestToolInRange(nearbyInteractableRange);
+			Tool nearestTool = getNearestToolInRange(interactionRange);
 
 			// If there is a nearby tool, equip it.
 			if (nearestTool != null) {
@@ -100,7 +165,7 @@ public class Doctor : MonoBehaviour {
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
-		if (distToPatient <= nearbyInteractableRange) {
+		if (distToPatient <= interactionRange) {
 			// Use current tool on patient.
 			Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 		}
@@ -147,7 +212,7 @@ public class Doctor : MonoBehaviour {
 		// we'll want the nearest interactable.
 
 		// May return null.
-		Interactable nearbyInteractable = getNearestInteractableInRange(nearbyInteractableRange);
+		Interactable nearbyInteractable = getNearestInteractableInRange(interactionRange);
 		print ("nearbyInteractable ::" + nearbyInteractable);
 
 		// If there is a nearby interactable, then begin interacting!
