@@ -12,8 +12,8 @@ public class DoctorEvents : MonoBehaviour {
     public static MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
     private GeneralGameState gameState = GeneralGameState.NORMAL;
 
-    private int currentIndexInReciepe = 0;
-    private bool inRecipePostState = false;
+    private int currentIndexInReciepe = -1; // must start @ -1
+    private bool inRecipePostState = true;
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
