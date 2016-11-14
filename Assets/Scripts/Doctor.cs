@@ -93,7 +93,7 @@ public class Doctor : MonoBehaviour {
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 		if (distToPatient <= nearbyInteractableRange) {
 			// Use current tool on patient.
-			Patient.Instance.receiveOperation (currentTool);
+			Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 		}
 	}
 
