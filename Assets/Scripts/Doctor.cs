@@ -68,8 +68,12 @@ public class Doctor : MonoBehaviour {
 			if (current_interactive_obj != null) {
 				// Highlight the current object and save its material
 				Renderer rend = current_interactive_obj.GetComponent<Renderer> ();
-				original_go_material = rend.material;
-				rend.material = highlightedMaterial;
+				if (rend != null)
+				{
+					original_go_material = rend.material;
+					rend.material = highlightedMaterial;
+				}
+
 			}
 			// We then save current object as last object.
 			last_interactive_obj = current_interactive_obj;
