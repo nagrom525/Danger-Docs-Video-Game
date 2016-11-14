@@ -174,7 +174,7 @@ public class DoctorEvents : MonoBehaviour {
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
     // gives the player one more chance by sending the patient into critical
-    public void OnPatientCritical() {
+    public void InducePatientCritical() {
         if(gameState != GeneralGameState.PATIENT_CRITICAL) {
             gameState = GeneralGameState.PATIENT_CRITICAL;
             if (onPatientCriticalEventStart != null) {
@@ -193,7 +193,7 @@ public class DoctorEvents : MonoBehaviour {
 
     // actually ends the game 
     // if the player critical state isn't adverted
-    public void OnPatientDeath() {
+    public void InducePatientDeath() {
         Time.timeScale = 0.0f;
         if (GameOver != null) {
             GameOver(0.0f);
