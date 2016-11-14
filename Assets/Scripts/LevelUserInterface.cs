@@ -41,6 +41,7 @@ public class LevelUserInterface : MonoBehaviour {
         DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEvent;
  
         DoctorEvents.Instance.GameOver += OnGameOver;
+		DoctorEvents.Instance.GameWon += OnGameWon;
         DoctorEvents.Instance.patientNeedsCutOpen += OnCutPatientOpenEvent;
         DoctorEvents.Instance.patientDoneCutOpen += OnCutPatientOpenEnded;
         DoctorEvents.Instance.patientNeedsPullOutStick += OnPullOutStickEvent;
@@ -61,7 +62,7 @@ public class LevelUserInterface : MonoBehaviour {
 
 	public void UpdateBpm(float bpm) {
 		heartrate.text = Mathf.RoundToInt(bpm).ToString () + " BPM";
-		print (heartrate.text);
+		//print (heartrate.text);
 	}
 
     void StatusIndicatorActiveUpdate() {

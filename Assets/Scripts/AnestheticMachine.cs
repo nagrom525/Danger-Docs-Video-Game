@@ -26,6 +26,7 @@ public class AnestheticMachine : Interactable {
 	}
 
 	void Update() {
+		displayAnestheticMeter();
 		if (anestheticMeterFramesRemaining > 0) {
 			updateAnestheticMeter ();
 		} else {
@@ -41,9 +42,10 @@ public class AnestheticMachine : Interactable {
 				dangerously_low_anesthetic = true;
 				InvokeRepeating ("flashMeter", 0f, 0.1f);
 			}
-		} else if (anesthetic_levels == 0f) {
+		} else if (anesthetic_levels < 0.01f) {
 			if (!patient_critical) {
 				patient_critical = true;
+				Debug.Log("anesthetic lvl == 0");
 				DoctorEvents.Instance.InducePatientCritical ();
 			}
 		}
