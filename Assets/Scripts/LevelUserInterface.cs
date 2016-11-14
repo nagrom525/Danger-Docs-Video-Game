@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Serialization;
 
 public class LevelUserInterface : MonoBehaviour {
-    enum StatusIndicatorState { INACTIVE, BLUE_HEART_ATTACK, GREEN_HEART_ATTACK, RED_HEART_ATTACK, ORANGE_HEART_ATTACK }
+    enum StatusIndicatorState { INACTIVE, GREEN_HEART_ATTACK }
 
 	public Text heartrate;
 	public Image statusIndicator;
@@ -28,10 +28,8 @@ public class LevelUserInterface : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
-        DoctorEvents.Instance.heartAttackGreenEvent += OnGreenHeartAttack;
-        DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
-        DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
-        DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
+        DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEvent;
+ 
         DoctorEvents.Instance.GameOver += OnGameOver;
 	}
 	
@@ -66,28 +64,10 @@ public class LevelUserInterface : MonoBehaviour {
     }
 
     // -- Listen for events -- //
-    void OnBlueHeartAttack(float duration) {
-        statusIndicator.color = Color.blue;
-        statusIndicatorStart = Time.time;
-        status_state = StatusIndicatorState.BLUE_HEART_ATTACK;
-    }
-
-    void OnGreenHeartAttack(float duration) {
+    void OnPatientCriticalEvent(float duration) {
         statusIndicator.color = Color.green;
         statusIndicatorStart = Time.time;
         status_state = StatusIndicatorState.GREEN_HEART_ATTACK;
-    }
-
-    void OnRedHeartAttack(float duration) {
-        statusIndicator.color = Color.red;
-        statusIndicatorStart = Time.time;
-        status_state = StatusIndicatorState.RED_HEART_ATTACK;
-    }
-
-    void OnOrangeHeartAttack(float duration) {
-        statusIndicator.color = UtilityFunctions.orange;
-        statusIndicatorStart = Time.time;
-        status_state = StatusIndicatorState.ORANGE_HEART_ATTACK;
     }
 
     void OnGameOver(float duration) {
