@@ -29,7 +29,7 @@ public class LevelUserInterface : MonoBehaviour {
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
         DoctorEvents.Instance.heartAttackGreenEvent += OnGreenHeartAttack;
-        DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
+        DoctorEvents.Instance.onPatientCriticalEventStart += OnBlueHeartAttack;
         DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
         DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
         DoctorEvents.Instance.GameOver += OnGameOver;

@@ -8,12 +8,13 @@ using System.Collections;
 public class DoctorEvents : MonoBehaviour {
     // States handlers ///
     public enum MainReciepeState { CUT_OPEN, POST_CUT_OPEN, PULL_OUT_STICK, POST_PULL_OUT, SOAK_BLOOD, POST_SOAK_BLOOD, STICH_BODY, POST_STITCH_BODY }
+    public enum GeneralGameState { NORMAL, PATIENT_CRITICAL, POST_PATIENT_CRITICAL, GAME_OVER}
     public static MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
+    public GeneralGameState gameState = GeneralGameState.NORMAL;
     private int currentIndexInReciepe = 0;
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
-    public DoctorEvent patientCriticalEvent;
 
     // Cut open patient event
     public DoctorEvent patientNeedsCutOpen;
@@ -31,23 +32,9 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent patientNeedsStitches;
     public DoctorEvent patientDoneStitches;
 
-
-
-    // -- Heart Attack Blue Delegates -- //
-    public DoctorEvent heartAttackBlueEvent;
-    public DoctorEvent heartAttackBlueEnded;
-
-    // -- Heart Attack Green Delegates -- //
-    public DoctorEvent heartAttackGreenEvent;
-    public DoctorEvent heartAttackGreenEnded;
-
-    // -- Heart Attack Red Delegates -- //
-    public DoctorEvent heartAttackRedEvent;
-    public DoctorEvent heartAttackRedEnded;
-
-    // -- Heart Attack Orange Delegates -- //
-    public DoctorEvent heartAttackOrangeEvent;
-    public DoctorEvent heartAttackOrangeEnded;
+    // -- Patient Critical Events -- //
+    public DoctorEvent onPatientCriticalEventStart;
+    public DoctorEvent onPatientCriticalEventEnded;
 
     // -- Game over event -- //
     public DoctorEvent GameOver;
@@ -65,13 +52,12 @@ public class DoctorEvents : MonoBehaviour {
     // ONE THING WE CAN DO: is start the heart attack duration at a base time, and add some kind of randomness to the rest of the time.
     //                      That way we have a base time that the heart rate would last, but the duration of the heart attack might still seem a bit random
 
-    //public float probabiltyHeartAttack = 0.1f; // probability of heart attack per second 
-    //public float postHeartAttackDuration = 5.0f; // time to wait after heartattack is done before checking for another heart attack
-    //public float heartAttackDuration = 10.0f; // lengh of time that a heart attack occurs
-    //private  float heartEventStartTime = 0.0f; // variable to store start time of a heart attack state
-    ////private RecipeState heartState = RecipeState.NORMAL;
-    //private float lastTimeHeartAttackChecked = 0.0f;
-    //private Tool.ToolType activeTool = Tool.ToolType.NONE;
+    public float probabiltyPatientCritical = 0.05f; // probability of heart attack per second 
+    public float postPatientCriticalDuration = 5.0f; // time to wait after heartattack is done before checking for another heart attack
+    public float patientCriticalDuration = 10.0f; // lengh of time that a heart attack occurs
+    private  float patientCriticalStartTime = 0.0f; // variable to store start time of a heart attack state
+    private float lastTimePatientCriticalChecked = 0.0f;
+    private Tool.ToolType activeTool = Tool.ToolType.NONE;
 
 
     private static DoctorEvents _instance;
@@ -92,119 +78,84 @@ public class DoctorEvents : MonoBehaviour {
 	void Start () {
       
 	}
+
+    void Update() {
+        switch (gameState) {
+            case GeneralGameState.NORMAL:
+                GameNormalUpdate();
+                break;
+            case GeneralGameState.PATIENT_CRITICAL:
+                GamePatientCriticalUpdate();
+                break;
+        }
+    }
 	
-	//// Update is called once per frame
-	//void Update () {
- //       switch (heartState) {
- //           case RecipeState.NORMAL:
- //               HeartNormalUpdate();
- //               break;
- //           case RecipeState.HEART_ATTACK:
- //               HeartAttackUpdate();
- //               break;
- //           case RecipeState.POST_HEART_ATTACK:
- //               HeartPostAttackUpdate();
- //               break;
- //       }
-	//}
+    private void GameNormalUpdate() {
+        if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
+            lastTimePatientCriticalChecked = Time.time;
 
-    ////////////////////// ----------- HEART ATTACK FUNCTIONS -----------//////////////////////
-    //private void HeartNormalUpdate() {
-    //    if((Time.time - lastTimeHeartAttackChecked) >= 1.0f) {
-    //        lastTimeHeartAttackChecked = Time.time;
+            if (Random.value < probabiltyPatientCritical) {
+                gameState = GeneralGameState.PATIENT_CRITICAL;
+                patientCriticalStartTime = Time.time;
+                if (onPatientCriticalEventStart != null) {
+                    onPatientCriticalEventStart(patientCriticalDuration);
+                }
+            }
+        }
+    }
 
-    //        if(Random.value < probabiltyHeartAttack) {
-    //            heartState = RecipeState.HEART_ATTACK;
-    //            // figure out with tool is required to send out the appropiate event
-    //            int randomTool = Random.Range(0, 3);
-    //            switch (randomTool) {
-    //                case 0:
-    //                    activeTool = Tool.ToolType.TYPE_1;
-    //                    if(heartAttackBlueEvent != null) {
-    //                        heartAttackBlueEvent(heartAttackDuration);
-    //                    }
-    //                    break;
-    //                case 1:
-    //                    activeTool = Tool.ToolType.TYPE_2;
-    //                    if (heartAttackGreenEvent != null) {
-    //                        heartAttackGreenEvent(heartAttackDuration);
-    //                    }
-    //                    break;
-    //                case 2:
-    //                    activeTool = Tool.ToolType.TYPE_3;
-    //                    if (heartAttackRedEvent != null) {
-    //                        heartAttackRedEvent(heartAttackDuration);
-    //                    }
-    //                    break;
-    //                case 3:
-    //                    activeTool = Tool.ToolType.TYPE_4;
-    //                    if (heartAttackOrangeEvent != null) {
-    //                        heartAttackOrangeEvent(heartAttackDuration);
-    //                    }
-    //                    break;
-    //            }
-    //            heartEventStartTime = Time.time;
-    //        }
-    //    }
+    private void GamePatientCriticalUpdate() {
+        if ((Time.time - patientCriticalStartTime) > patientCriticalDuration) {
+            EndPatientCritical();
+            OnPatientDeath();
+        }
+    }
 
-    //}
 
-    //private void HeartAttackUpdate() {
-    //    if((Time.time - heartEventStartTime) > heartAttackDuration) {
-    //        EndHeartAttack();
-    //        OnPatientDeath();
-    //    }
-    //} 
+    private void HeartPostAttackUpdate() {
+        if ((Time.time - patientCriticalStartTime) > patientCriticalDuration) {
+            gameState = gameState = GeneralGameState.NORMAL;
+            lastTimePatientCriticalChecked = Time.time;
+            patientCriticalStartTime = Time.time;
+        }
 
-    //private void HeartPostAttackUpdate() {
-    //    if((Time.time - heartEventStartTime) > postHeartAttackDuration) {
-    //        heartState = RecipeState.NORMAL;
-    //        lastTimeHeartAttackChecked = Time.time;
-    //        heartEventStartTime = Time.time;
-    //    }
+    }
 
-    //}
 
-    //private void EndHeartAttack() {
-    //    heartState = RecipeState.POST_HEART_ATTACK;
-    //    heartEventStartTime = Time.time;
-    //    switch (activeTool) {
-    //        case Tool.ToolType.TYPE_1:
-    //            if (heartAttackBlueEnded != null) {
-    //                heartAttackBlueEnded(postHeartAttackDuration);
-    //            }
-    //            break;
-    //        case Tool.ToolType.TYPE_2:
-    //            if (heartAttackGreenEnded != null) {
-    //                heartAttackGreenEnded(postHeartAttackDuration);
-    //            }
-    //            break;
-    //        case Tool.ToolType.TYPE_3:
-    //            if (heartAttackRedEnded != null) {
-    //                heartAttackRedEnded(postHeartAttackDuration);
-    //            }
-    //            break;
-    //        case Tool.ToolType.TYPE_4:
-    //            if (heartAttackOrangeEnded != null) {
-    //                heartAttackOrangeEnded(postHeartAttackDuration);
-    //            }
-    //            break;
-    //    }
-    //}
+    private void EndPatientCritical() {
+        gameState = GeneralGameState.POST_PATIENT_CRITICAL;
+        patientCriticalStartTime = Time.time;
+        if(onPatientCriticalEventEnded != null) {
+            onPatientCriticalEventEnded(postPatientCriticalDuration){
+            }
+        }
 
-    //// called by external function when the heart attack has been adverted
-    //public void HeartAttackAdverted() {
-    //    if(heartState == RecipeState.HEART_ATTACK) {
-    //        EndHeartAttack();
-    //    }else {
-    //        Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
-    //    }
-    //}
+    }
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
+    // gives the player one more chance by sending the patient into critical
+    public void OnPatientCritical() {
+        if(gameState != GeneralGameState.PATIENT_CRITICAL) {
+            gameState = GeneralGameState.PATIENT_CRITICAL;
+            if (onPatientCriticalEventStart != null) {
+                onPatientCriticalEventStart(patientCriticalDuration);
+            }
+        }
+    }
+
+    public void PatientCriticalAdverted() {
+        if (gameState == GeneralGameState.PATIENT_CRITICAL) {
+            EndPatientCritical();
+        } else {
+            Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
+        }
+    }
+
+    // actually ends the game 
+    // if the player critical state isn't adverted
     public void OnPatientDeath() {
         Time.timeScale = 0.0f;
-        if(GameOver != null) {
+        if (GameOver != null) {
             GameOver(0.0f);
         }
     }
