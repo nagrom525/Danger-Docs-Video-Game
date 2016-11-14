@@ -116,6 +116,14 @@ public class Patient : Interactable {
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
+	public void OnSoakBlood(float duration)
+	{
+		Debug.Log("on cut patient open");
+		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SCALPEL;
+	}
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -127,6 +135,8 @@ public class Patient : Interactable {
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnEnd;
 
 		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
+		DoctorEvents.Instance.patientNeedsCutOpen += OnCutPatientOpen;
+		DoctorEvents.Instance.patientNeedsBloodSoak += OnSoakBlood;
 
 		tempColor = mat.GetColor ("_EmissionColor");
 		print ("first temp color " + tempColor);
@@ -243,7 +253,23 @@ public class Patient : Interactable {
 			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
 			scalpel.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
 
-			Debug.Log("recieving suture operation");
+			Debug.Log("recieving scalpel operation");
+		}
+		else if (requiredTool == Tool.ToolType.GAUZE && tool.GetToolType() == Tool.ToolType.GAUZE)
+		{
+			//Get Doctor that initiated operation
+			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
+			if (doc == null)
+			{
+				Debug.Log("couldn't find doctor!");
+			}
+			//Disable their input component
+			doc.GetComponent<DoctorInputController>().enabled = false;
+			//Create tool and give control to Doctor
+			GameObject gauze = (GameObject)Instantiate(gauzeToolPrefab, toolSpawnPositions[0].transform);
+			gauze.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+
+			Debug.Log("recieving gauze operation");
 		}
 		else
 		{

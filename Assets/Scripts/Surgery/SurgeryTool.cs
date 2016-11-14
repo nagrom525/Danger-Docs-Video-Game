@@ -28,6 +28,7 @@ public class SurgeryTool : MonoBehaviour {
 		//send message
 	}
 
+
 	public void OnJoystickMovement(Vector3 direction)
 	{
 		pos += direction * .2f * Time.deltaTime;
