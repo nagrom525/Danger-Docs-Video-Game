@@ -148,10 +148,9 @@ public class DoctorEvents : MonoBehaviour {
         
         if((Time.time - timeStartReciepeState) > postDelayTime) {
             currentIndexInReciepe++;
-            inRecipePostState = false;
-            CallRecipeEventFunction(scene1ReciepeElements[currentIndexInReciepe]);
-        }
-            
+			CallRecipeEventFunction(scene1ReciepeElements[currentIndexInReciepe]);
+			inRecipePostState = false;
+        }         
     }
 
     private void GamePatientCriticalUpdate() {
