@@ -14,7 +14,7 @@ public class Canister : Tool {
 	}
 
 	// A quarter tank of anesthetic
-	public float anesthetic_amount = 0.25f;
+	public float anesthetic_amount = 0.35f;
 
 	// Update is called once per frame
 	void Update () {

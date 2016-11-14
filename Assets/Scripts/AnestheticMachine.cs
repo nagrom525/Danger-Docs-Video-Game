@@ -39,7 +39,7 @@ public class AnestheticMachine : Interactable {
 		if (anesthetic_levels < 0.1f) {
 			if (!dangerously_low_anesthetic) {
 				dangerously_low_anesthetic = true;
-				InvokeRepeating ("flashMeter", 0f, 0.2f);
+				InvokeRepeating ("flashMeter", 0f, 0.1f);
 			}
 		} else if (anesthetic_levels == 0f) {
 			if (!patient_critical) {
