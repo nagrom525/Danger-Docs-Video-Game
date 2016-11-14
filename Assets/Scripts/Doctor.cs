@@ -57,23 +57,20 @@ public class Doctor : MonoBehaviour {
 		current_interactive_obj = getNearestInteractive (interactionRange);
 
 		// If nearest object hasn't changed, there is nothing to be done
-		if (current_interactive_obj == last_interactive_obj)
+		if (current_interactive_obj == last_interactive_obj) {
 			return;
-
-		// If the current object is not null ...
-		if (current_interactive_obj != null) {
-			// ... and the last object is not null ...
+		} else {
+			// current_interactive_obj is new or null
+			// Change old object back to original material.
 			if (last_interactive_obj != null) {
-				// Then we conclude the current object is new, and switch the old object
-				// back to it's original material.
 				last_interactive_obj.GetComponent<Renderer> ().material = original_go_material;
 			}
-
-			// ... we highlight the current object and save its material
-			Renderer rend = current_interactive_obj.GetComponent<Renderer> ();
-			original_go_material = rend.material;
-			rend.material = highlightedMaterial;
-
+			if (current_interactive_obj != null) {
+				// Highlight the current object and save its material
+				Renderer rend = current_interactive_obj.GetComponent<Renderer> ();
+				original_go_material = rend.material;
+				rend.material = highlightedMaterial;
+			}
 			// We then save current object as last object.
 			last_interactive_obj = current_interactive_obj;
 		}
