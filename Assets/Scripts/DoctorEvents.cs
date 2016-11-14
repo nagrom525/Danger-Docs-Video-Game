@@ -148,7 +148,7 @@ public class DoctorEvents : MonoBehaviour {
     private void GamePatientCriticalUpdate() {
         if ((Time.time - patientCriticalStartTime) > patientCriticalDuration) {
             EndPatientCritical();
-            OnPatientDeath();
+            InducePatientDeath();
         }
     }
 
