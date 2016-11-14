@@ -35,3 +35,6 @@ VSCode/*
 
 .vscode
 VSCode.meta
+
+# MacOS specific
+.DS_store

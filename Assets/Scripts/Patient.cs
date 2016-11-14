@@ -98,15 +98,9 @@ public class Patient : MonoBehaviour {
 		bpm = 80f;
 		LevelUserInterface.UI.UpdateBpm (bpm);
 		last_beat_time = Time.time;
-		DoctorEvents.Instance.heartAttackBlueEvent += OnBlueHeartAttack;
-		DoctorEvents.Instance.heartAttackGreenEvent += OnGreenHeartAttack;
-		DoctorEvents.Instance.heartAttackRedEvent += OnRedHeartAttack;
-		DoctorEvents.Instance.heartAttackOrangeEvent += OnOrangeHeartAttack;
-
-		DoctorEvents.Instance.heartAttackGreenEnded += OnEnd;
-		DoctorEvents.Instance.heartAttackBlueEnded += OnEnd;
-		DoctorEvents.Instance.heartAttackRedEnded += OnEnd;
-		DoctorEvents.Instance.heartAttackOrangeEnded += OnEnd;
+		DoctorEvents.Instance.onPatientCriticalEventStart += OnBlueHeartAttack;
+		DoctorEvents.Instance.onPatientCriticalEventEnded += OnEnd;
+	
 		tempColor = mat.GetColor ("_EmissionColor");
 		print ("first temp color " + tempColor);
 	}
@@ -199,7 +193,7 @@ public class Patient : MonoBehaviour {
 		}
 
 		if (defibulationsRemaining == 0) {
-			DoctorEvents.Instance.HeartAttackAdverted ();
+            DoctorEvents.Instance.PatientCriticalAdverted();
 		}
 	}
 }
