@@ -88,7 +88,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void useCurrentToolOnPatient() {
-		print ("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
+		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 		if (distToPatient <= nearbyInteractableRange) {
