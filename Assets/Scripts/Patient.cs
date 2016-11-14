@@ -7,6 +7,11 @@ public class Patient : MonoBehaviour {
 
     public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
+	public Transform  	hotspotSpawnPos;
+	public GameObject 	scalpelTrackPrefab;
+	public GameObject 	sutureHotspotsPrefab;
+	public GameObject 	gauzeHotspotsPrefab;
+
 	private float last_beat_time;
 	private float next_beat_time;
 	private bool inCriticalState;
@@ -60,10 +65,25 @@ public class Patient : MonoBehaviour {
 		LevelUserInterface.UI.UpdateBpm (bpm);	
 		this.criticalStateDuration = duration;
 	}
+
+    public void OnPatientCriticalEventEnded(float duration) {
+        critical_state = PatientCriticalState.FINISHING;
+        defibulationsRemaining = 0;
+    }
+
+	//Stitches
+	public void OnSuture(float duration)
+	{
+		Debug.Log("On suture called");
+		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SUTURE;
+	}
 		
-	public void OnPatientCriticalEventEnded(float duration) {
-		critical_state = PatientCriticalState.FINISHING;
-		defibulationsRemaining = 0;
+
+	public void OnCutPatientOpen(float duration)
+	{
+		Debug.Log("oncutpatientopen");
+		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
 	// Use this for initialization
@@ -75,6 +95,8 @@ public class Patient : MonoBehaviour {
         DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEventStart;
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
 	
+
+		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
 		tempColor = mat.GetColor ("_EmissionColor");
 		print ("first temp color " + tempColor);
 	}
