@@ -20,6 +20,10 @@ public class GauzeController : MonoBehaviour {
 		if (gauzeSpotsCount == 0)
 		{
 			DoctorEvents.Instance.OnPatientBloodSoaked();
+			foreach (GameObject go in gauzeSpots)
+			{
+				go.GetComponent<GauzeHotspot>().Reset();
+			}
 			Destroy(this.gameObject);
 		}
 	}

@@ -7,6 +7,13 @@ public class GauzeHotspot : MonoBehaviour {
 	public void Activate()
 	{
 		gauzeController.Soaked();
-		Destroy(this.gameObject);
+		GetComponent<Renderer>().enabled = false;
+		GetComponent<Collider>().enabled = false;
+	}
+
+	public void Reset()
+	{
+		GetComponent<Renderer>().enabled = true;
+		GetComponent<Collider>().enabled = true;
 	}
 }
