@@ -29,6 +29,7 @@ public class WashingStation : Interactable {
 		if (interactingDoctor.dirtLevel <= 0f) {
 			interactingDoctor.dirtLevel = 0f;
 		}
+		interactingDoctor.displayWashingMeter ();
 		print ("dirtLevel ::" + interactingDoctor.dirtLevel);
 	}
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Doctor : MonoBehaviour {
@@ -10,6 +11,9 @@ public class Doctor : MonoBehaviour {
 	public bool dirtyHands {
 		get { return dirtLevel > 0f; }
 	}
+
+	public Image washingMeter;
+	private int washingMeterFramesRemaining;
 
 	// Radius of sphere for checking for interactiables.
 	private float nearbyInteractableRange = 8f;
@@ -25,17 +29,19 @@ public class Doctor : MonoBehaviour {
 
 		interacting = false;
 
+		washingMeter = transform.GetComponentInChildren<Image> ();
+		washingMeter.enabled = false;
+		washingMeterFramesRemaining = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (washingMeterFramesRemaining > 0) {
+			updateWashingMeter ();
+		} else {
+			hideWashingMeter ();
+		}
 	}
-    // Doctor control code (needs to be added)
-    // for example... 
-    public void OnJumpKeyPressed() {
-
-    }
 
 	// Logic for receiving joystick movement.
 	// Moves the player according to the Vector3
@@ -178,6 +184,20 @@ public class Doctor : MonoBehaviour {
 		}
 
 		return nearestInteractable;
+	}
+
+	public void displayWashingMeter() {
+		washingMeter.enabled = true;
+		washingMeterFramesRemaining = 120;
+	}
+
+	private void updateWashingMeter() {
+		washingMeterFramesRemaining--;
+		washingMeter.fillAmount = 1f - dirtLevel;
+	}
+
+	private void hideWashingMeter() {
+		washingMeter.enabled = false;
 	}
 
 	// For my convenience
