@@ -183,7 +183,8 @@ public class DoctorEvents : MonoBehaviour {
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
     // gives the player one more chance by sending the patient into critical
     public void InducePatientCritical() {
-        if(gameState != GeneralGameState.PATIENT_CRITICAL) {
+		Debug.Log("InducePatientCritical()");
+		if(gameState != GeneralGameState.PATIENT_CRITICAL) {
             gameState = GeneralGameState.PATIENT_CRITICAL;
             if (onPatientCriticalEventStart != null) {
                 onPatientCriticalEventStart(patientCriticalDuration);

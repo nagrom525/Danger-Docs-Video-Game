@@ -100,7 +100,7 @@ public class Patient : Interactable {
 
     // Update is called once per frame
     void Update() {
-        print(critical_bpm);
+        //print(critical_bpm);
         switch (critical_state) {
             case PatientCriticalState.NORMAL:
                 CriticalStateNormalUpdate();

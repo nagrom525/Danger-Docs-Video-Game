@@ -48,7 +48,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 
-		highlightNearestInteractiveObject ();
+		//highlightNearestInteractiveObject ();
 	}
 
 	// Please forgive me. I tried to make this intelligable.
