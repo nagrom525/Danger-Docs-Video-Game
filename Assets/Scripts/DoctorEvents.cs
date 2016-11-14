@@ -9,11 +9,11 @@ public class DoctorEvents : MonoBehaviour {
     // States handlers ///
     public enum MainReciepeState { CUT_OPEN, PULL_OUT_STICK, SOAK_BLOOD, STICH_BODY}
     public enum GeneralGameState { NORMAL, PATIENT_CRITICAL, POST_PATIENT_CRITICAL, GAME_OVER}
-    public static MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
+    public MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
     private GeneralGameState gameState = GeneralGameState.NORMAL;
 
-    private int currentIndexInReciepe = 0;
-    private bool inRecipePostState = false;
+    private int currentIndexInReciepe = -1; // must start @ -1
+    private bool inRecipePostState = true;
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
@@ -124,20 +124,28 @@ public class DoctorEvents : MonoBehaviour {
     private void RecipePostStateUpdate() {
         // this is the current reciepe state we are in
         float postDelayTime = 0.0f;
-        switch (scene1ReciepeElements[currentIndexInReciepe]) {
-            case MainReciepeState.CUT_OPEN:
-                postDelayTime = timeDelayPostCutOpen;
-                break;
-            case MainReciepeState.PULL_OUT_STICK:
-                postDelayTime = timeDelayPostStickPullOut;
-                break;
-            case MainReciepeState.SOAK_BLOOD:
-                postDelayTime = timeDealyPostSoakBlood;
-                break;
-            case MainReciepeState.STICH_BODY:
-                postDelayTime = timeDelayPostStiches;
-                break;
-        }
+		if (currentIndexInReciepe == -1)
+		{
+			postDelayTime = timeDelayGameStart;
+		}
+		else {
+			switch (scene1ReciepeElements[currentIndexInReciepe])
+			{
+				case MainReciepeState.CUT_OPEN:
+					postDelayTime = timeDelayPostCutOpen;
+					break;
+				case MainReciepeState.PULL_OUT_STICK:
+					postDelayTime = timeDelayPostStickPullOut;
+					break;
+				case MainReciepeState.SOAK_BLOOD:
+					postDelayTime = timeDealyPostSoakBlood;
+					break;
+				case MainReciepeState.STICH_BODY:
+					postDelayTime = timeDelayPostStiches;
+					break;
+			}
+		}
+        
         if((Time.time - timeStartReciepeState) > postDelayTime) {
             currentIndexInReciepe++;
             inRecipePostState = false;
@@ -148,7 +156,7 @@ public class DoctorEvents : MonoBehaviour {
     private void GamePatientCriticalUpdate() {
         if ((Time.time - patientCriticalStartTime) > patientCriticalDuration) {
             EndPatientCritical();
-            OnPatientDeath();
+            InducePatientDeath();
         }
     }
 

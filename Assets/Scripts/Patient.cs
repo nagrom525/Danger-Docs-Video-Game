@@ -8,6 +8,11 @@ public class Patient : MonoBehaviour {
 	public float bpm;
     public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
+	public Transform  	hotspotSpawnPos;
+	public GameObject 	scalpelTrackPrefab;
+	public GameObject 	sutureHotspotsPrefab;
+	public GameObject 	gauzeHotspotsPrefab;
+
 	private float last_beat_time;
 	private float next_beat_time;
 	private bool heart_attack;
@@ -67,12 +72,22 @@ public class Patient : MonoBehaviour {
 		print (defibulationsRemaining);
 	}
 
-	public void OnBlueHeartAttack(float duration) {
+
+	public void OnBlueHeartAttack(float duration)
+	{
 		flash_color = FlashColor.BLUE;
-		OnHeartAttack (duration);
+		OnHeartAttack(duration);
 		requiredTool = Tool.ToolType.TYPE_1;
 		defibulationsRemaining = Random.Range(3, 6);
-		print (defibulationsRemaining);
+		print(defibulationsRemaining);
+	}
+
+	//Stitches
+	public void OnSuture(float duration)
+	{
+		Debug.Log("On suture called");
+		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SUTURE;
 	}
 		
 	public void OnRedHeartAttack(float duration) {
@@ -91,6 +106,12 @@ public class Patient : MonoBehaviour {
 		print (defibulationsRemaining);
 	}
 
+	public void OnCutPatientOpen(float duration)
+	{
+		Debug.Log("oncutpatientopen");
+		requiredTool = Tool.ToolType.SCALPEL;
+	}
+
 	// Use this for initialization
 	void Start () {
 
@@ -98,9 +119,11 @@ public class Patient : MonoBehaviour {
 		bpm = 80f;
 		LevelUserInterface.UI.UpdateBpm (bpm);
 		last_beat_time = Time.time;
-		DoctorEvents.Instance.onPatientCriticalEventStart += OnBlueHeartAttack;
+		DoctorEvents.Instance.onPatientCriticalEventStart += OnCutPatientOpen;
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnEnd;
-	
+
+		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
+
 		tempColor = mat.GetColor ("_EmissionColor");
 		print ("first temp color " + tempColor);
 	}
