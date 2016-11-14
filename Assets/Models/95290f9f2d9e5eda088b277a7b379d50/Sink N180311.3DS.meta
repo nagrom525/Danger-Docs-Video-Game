@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: a9c1341f3e2db2c4a83df191f6e90ef6
+timeCreated: 1479098875
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ____-NURBS
+    100002: _____
+    100004: _____1
+    100006: _____2
+    100008: _____3
+    100010: _____4
+    100012: _____5
+    100014: ______1
+    100016: __________
+    100018: GROHE_1
+    100020: MOIKA
+    100022: Objec
+    100024: Object02
+    100026: Object02__
+    100028: //RootNode
+    100030: Sphere01
+    100032: Zagl
+    400000: ____-NURBS
+    400002: _____
+    400004: _____1
+    400006: _____2
+    400008: _____3
+    400010: _____4
+    400012: _____5
+    400014: ______1
+    400016: __________
+    400018: GROHE_1
+    400020: MOIKA
+    400022: Objec
+    400024: Object02
+    400026: Object02__
+    400028: //RootNode
+    400030: Sphere01
+    400032: Zagl
+    2300000: ____-NURBS
+    2300002: _____
+    2300004: _____1
+    2300006: _____2
+    2300008: _____3
+    2300010: _____4
+    2300012: _____5
+    2300014: ______1
+    2300016: __________
+    2300018: GROHE_1
+    2300020: MOIKA
+    2300022: Objec
+    2300024: Object02
+    2300026: Object02__
+    2300028: Sphere01
+    2300030: Zagl
+    3300000: ____-NURBS
+    3300002: _____
+    3300004: _____1
+    3300006: _____2
+    3300008: _____3
+    3300010: _____4
+    3300012: _____5
+    3300014: ______1
+    3300016: __________
+    3300018: GROHE_1
+    3300020: MOIKA
+    3300022: Objec
+    3300024: Object02
+    3300026: Object02__
+    3300028: Sphere01
+    3300030: Zagl
+    4300000: MOIKA
+    4300002: GROHE_1
+    4300004: Sphere01
+    4300006: Zagl
+    4300008: _____4
+    4300010: _____1
+    4300012: Object02__
+    4300014: Objec
+    4300016: Object02
+    4300018: _____5
+    4300020: _____
+    4300022: _____3
+    4300024: _____2
+    4300026: __________
+    4300028: ______1
+    4300030: ____-NURBS
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
