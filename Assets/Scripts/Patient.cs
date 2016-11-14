@@ -1,42 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Patient : MonoBehaviour {
-	enum FlashColor {NORMAL, BLUE, GREEN, RED, ORANGE}
-	enum StateOfAttack {NORMAL, ATTACKING, FINISHED}
+public class Patient : Interactable {
+	enum FlashColor 		{NORMAL, BLUE, GREEN, RED, ORANGE}
+	enum StateOfAttack 		{NORMAL, ATTACKING, FINISHED}
 
-	public float bpm;
-    public float anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
+	public float 			bpm;
+    public float 			anesthetic_clock_length = 180.0f; //length of time the anesthetic clock is on in seconds
 
-	public Transform  	hotspotSpawnPos;
-	public GameObject 	scalpelTrackPrefab;
-	public GameObject 	sutureHotspotsPrefab;
-	public GameObject 	gauzeHotspotsPrefab;
+	public Transform  		hotspotSpawnPos;
+	public GameObject 		scalpelTrackPrefab;
+	public GameObject 		sutureHotspotsPrefab;
+	public GameObject 		gauzeHotspotsPrefab;
 
-	private float last_beat_time;
-	private float next_beat_time;
-	private bool heart_attack;
-	private float duration = 0.0f;
-	private float durationOfPost = 0.0f;
-	private Tool.ToolType requiredTool;
+	public GameObject[] 	toolSpawnPositions;
+
+	private float 			last_beat_time;
+	private float 			next_beat_time;
+	private bool 			heart_attack;
+	private float 			duration = 0.0f;
+	private float 			durationOfPost = 0.0f;
+	private Tool.ToolType 	requiredTool;
 
 	// Defibulations needed to stabilize patient
-	private int defibulationsRemaining;
+	private int 			defibulationsRemaining;
 
-	private FlashColor flash_color;
-	private StateOfAttack state_attack;
-	private Material NormalStateMaterial;
-//	private float flash_timer = 0.0f;
-//	private float flash_duration = 0.5f;
-//	private float flash_time = 0.0f;
+	private FlashColor 		flash_color;
+	private StateOfAttack 	state_attack;
+	private Material 		NormalStateMaterial;
+//	private float 			flash_timer = 0.0f;
+//	private float 			flash_duration = 0.5f;
+//	private float 			flash_time = 0.0f;
 
-	Color tempColor;
-	public Material mat;
+	Color 					tempColor;
+	public Material 		mat;
 
 	private static Patient _instance;
 	public static Patient Instance {
 		get { return _instance; }
-
 	}
 
 	void Awake() {
@@ -108,7 +109,7 @@ public class Patient : MonoBehaviour {
 
 	public void OnCutPatientOpen(float duration)
 	{
-		Debug.Log("oncutpatientopen");
+		Debug.Log("on cut patient open");
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
@@ -207,16 +208,51 @@ public class Patient : MonoBehaviour {
 	}
 
 
-	public void receiveOperation(Tool tool) {
-		print ("defibulationsRemaining: " + defibulationsRemaining);
-		if (defibulationsRemaining > 0) {
-			if (tool.GetToolType() == requiredTool) {
-				defibulationsRemaining--;
+	public void receiveOperation(Tool tool, int doctorNumber = -1) {
+
+		if (requiredTool == Tool.ToolType.SUTURE)
+		{
+			//Get Doctor that initiated operation
+			GameObject doc = GameObject.Find("Doctor_" + doctorNumber.ToString());
+
+			//Disable their input component
+
+			//Create tool and give control to Doctor
+	
+
+			Debug.Log("recieving suture operation");
+		}
+		else
+		{
+			print("defibulationsRemaining: " + defibulationsRemaining);
+			if (defibulationsRemaining > 0)
+			{
+				if (tool.GetToolType() == requiredTool)
+				{
+					defibulationsRemaining--;
+				}
 			}
+
+			if (defibulationsRemaining == 0)
+			{
+				DoctorEvents.Instance.PatientCriticalAdverted();
+			}		
 		}
 
-		if (defibulationsRemaining == 0) {
-            DoctorEvents.Instance.PatientCriticalAdverted();
-		}
+	}
+
+	public override bool DocterIniatesInteracting(Doctor interactingDoctor)
+	{
+		interactingDoctor.currentTool.OnDoctorInitatedInteracting();
+
+		Debug.Log(interactingDoctor.name + " initiated patient interaction.");
+
+		return true;
+	}
+
+
+	protected override Tool.ToolType RequiredToolType()
+	{
+		return requiredTool;
 	}
 }
