@@ -9,6 +9,7 @@ public class LevelUserInterface : MonoBehaviour {
 	public Text heartrate;
     public Text recipeMessage;
     public GameObject recipeMessagePanel;
+    public GameObject gameWonPanel;
 	public Image statusIndicator;
     public float statusIndicatorDuration = 5.0f;
     public float statusIndicatorBlinkDuration = 1.0f;
@@ -23,7 +24,6 @@ public class LevelUserInterface : MonoBehaviour {
     public string forecepsMessage = "Use the foreceps to hold the cut open.\nSomeone else should extract the stick!";
     public string sutuersMessage = "It Looks like the patient is going to need stitches!";
     public string gauzeMessage = "It looks like the patient might need some gauze!";
-    public string scuessMessage = "The suergy was a sucess good job!";
 
 
     public static LevelUserInterface UI;
@@ -90,6 +90,10 @@ public class LevelUserInterface : MonoBehaviour {
 
     void OnGameOver(float duration) {
         gameLostPanel.SetActive(true);
+    }
+
+    void OnGameWon(float duration) {
+        gameWonPanel.SetActive(true);
     }
 
     // Game recipes
