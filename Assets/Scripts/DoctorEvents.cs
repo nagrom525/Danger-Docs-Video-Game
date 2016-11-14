@@ -7,11 +7,13 @@ using System.Collections;
 // main level event code
 public class DoctorEvents : MonoBehaviour {
     // States handlers ///
-    public enum MainReciepeState { CUT_OPEN, POST_CUT_OPEN, PULL_OUT_STICK, POST_PULL_OUT, SOAK_BLOOD, POST_SOAK_BLOOD, STICH_BODY, POST_STITCH_BODY }
+    public enum MainReciepeState { CUT_OPEN, PULL_OUT_STICK, SOAK_BLOOD, STICH_BODY}
     public enum GeneralGameState { NORMAL, PATIENT_CRITICAL, POST_PATIENT_CRITICAL, GAME_OVER}
     public static MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
-    public GeneralGameState gameState = GeneralGameState.NORMAL;
+    private GeneralGameState gameState = GeneralGameState.NORMAL;
+
     private int currentIndexInReciepe = 0;
+    private bool inRecipePostState = false;
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
@@ -38,13 +40,19 @@ public class DoctorEvents : MonoBehaviour {
 
     // -- Game over event -- //
     public DoctorEvent GameOver;
+    // -- Game won -- //
+    public DoctorEvent GameWon;
 
 
     // --- Main Reciepe Values --//
+    public float timeDelayGameStart = 2.0f;
     public float timeDelayPostCutOpen = 2.0f;
     public float timeDelayPostStickPullOut = 2.0f;
     public float timeDealyPostSoakBlood = 2.0f;
     public float timeDelayPostStiches = 2.0f;
+
+    private float timeStartReciepeState = 0.0f;
+
 
 
 
@@ -76,7 +84,7 @@ public class DoctorEvents : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-      
+ 
 	}
 
     void Update() {
@@ -86,6 +94,14 @@ public class DoctorEvents : MonoBehaviour {
                 break;
             case GeneralGameState.PATIENT_CRITICAL:
                 GamePatientCriticalUpdate();
+                break;
+        }
+
+        switch (inRecipePostState) {
+            case true:
+                RecipePostStateUpdate();
+                break;
+            case false:
                 break;
         }
     }
@@ -102,6 +118,30 @@ public class DoctorEvents : MonoBehaviour {
                 }
             }
         }
+    }
+
+    private void RecipePostStateUpdate() {
+        // this is the current reciepe state we are in
+        float postDelayTime = 0.0f;
+        switch (scene1ReciepeElements[currentIndexInReciepe]) {
+            case MainReciepeState.CUT_OPEN:
+                postDelayTime = timeDelayPostCutOpen;
+                break;
+            case MainReciepeState.PULL_OUT_STICK:
+                postDelayTime = timeDelayPostStickPullOut;
+                break;
+            case MainReciepeState.SOAK_BLOOD:
+                postDelayTime = timeDealyPostSoakBlood;
+                break;
+            case MainReciepeState.STICH_BODY:
+                postDelayTime = timeDelayPostStiches;
+                break;
+        }
+        if((Time.time - timeStartReciepeState) > postDelayTime) {
+            currentIndexInReciepe++;
+            inRecipePostState = false;
+        }
+        CallRecipeEventFunction(scene1ReciepeElements[currentIndexInReciepe]);        
     }
 
     private void GamePatientCriticalUpdate() {
@@ -126,8 +166,7 @@ public class DoctorEvents : MonoBehaviour {
         gameState = GeneralGameState.POST_PATIENT_CRITICAL;
         patientCriticalStartTime = Time.time;
         if(onPatientCriticalEventEnded != null) {
-            onPatientCriticalEventEnded(postPatientCriticalDuration){
-            }
+            onPatientCriticalEventEnded(postPatientCriticalDuration);
         }
 
     }
@@ -162,26 +201,60 @@ public class DoctorEvents : MonoBehaviour {
 
     //////         ----------- Main Event Public Interface -----------              ///////////////
     public void OnPatientCutOpen() {
-        if(patientDoneCutOpen != null) {
+        SetRecipePostState();
+        if (patientDoneCutOpen != null) {
             patientDoneCutOpen(0);
         }
     }
 
     public void OnPatientStickPulledOut() {
+        SetRecipePostState();
         if (patientDonePullOutStick != null) {
             patientDonePullOutStick(0);
         }
     }
 
     public void OnPatientBloodSoaked() {
+        SetRecipePostState();
         if (patientDoneBloodSoak != null) {
             patientDoneBloodSoak(0);
         }
     }
 
     public void OnPatientStitched() {
-        if(patientDoneStitches != null) {
+        SetRecipePostState();
+        if (patientDoneStitches != null) {
             patientDoneStitches(0);
+        }
+    }
+
+    public void SetRecipePostState() {
+        inRecipePostState = true;
+        timeStartReciepeState = Time.time;
+    }
+
+    private void CallRecipeEventFunction(MainReciepeState reciepeState) {
+        switch (reciepeState) {
+            case MainReciepeState.CUT_OPEN:
+                if(patientNeedsCutOpen != null) {
+                    patientNeedsCutOpen(0);
+                }
+                break;
+            case MainReciepeState.PULL_OUT_STICK:
+                if (patientNeedsPullOutStick != null) {
+                    patientNeedsPullOutStick(0);
+                }
+                break;
+            case MainReciepeState.SOAK_BLOOD:
+                if (patientNeedsBloodSoak != null) {
+                    patientNeedsBloodSoak(0);
+                }
+                break;
+            case MainReciepeState.STICH_BODY:
+                if (patientNeedsStitches != null) {
+                    patientNeedsStitches(0);
+                }
+                break;
         }
     }
 }
