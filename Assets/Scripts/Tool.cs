@@ -8,6 +8,6 @@ public abstract class Tool : MonoBehaviour {
 
     public abstract ToolType GetToolType();
 
-    public abstract void OnDoctorInitatedInteracting();
-    public abstract void OnDoctorTerminatedInteracting();
+	public abstract void OnDoctorInitatedInteracting();
+	public abstract void OnDoctorTerminatedInteracting();
 }
