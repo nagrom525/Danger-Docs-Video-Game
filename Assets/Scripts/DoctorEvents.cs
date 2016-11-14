@@ -150,8 +150,7 @@ public class DoctorEvents : MonoBehaviour {
             currentIndexInReciepe++;
 			CallRecipeEventFunction(scene1ReciepeElements[currentIndexInReciepe]);
 			inRecipePostState = false;
-        }
-               
+        }         
     }
 
     private void GamePatientCriticalUpdate() {
