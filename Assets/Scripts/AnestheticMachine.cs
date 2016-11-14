@@ -6,10 +6,12 @@ public class AnestheticMachine : Interactable {
 
 	private float depletion_rate;
 	public float anesthetic_levels = 1f;
+	private bool dangerously_low_anesthetic;
+	private bool patient_critical;
+	
 
 	private Image anestheticMeter;
 	private int anestheticMeterFramesRemaining;
-
 
 	void Start() {
 		// 5% depletion per second
@@ -17,6 +19,10 @@ public class AnestheticMachine : Interactable {
 
 		anestheticMeter = transform.GetComponentInChildren<Image> ();
 		anestheticMeterFramesRemaining = 0;
+		dangerously_low_anesthetic = false;
+		patient_critical = false;
+
+		DoctorEvents.Instance.onPatientCriticalEventEnded += onPatientCriticalEventAverted;
 	}
 
 	void Update() {
@@ -28,6 +34,33 @@ public class AnestheticMachine : Interactable {
 
 		// Drain anesthetic over time.
 		drainAnesthetic();
+
+
+		if (anesthetic_levels < 0.1f) {
+			if (!dangerously_low_anesthetic) {
+				dangerously_low_anesthetic = true;
+				InvokeRepeating ("flashMeter", 0f, 0.1f);
+			}
+		} else if (anesthetic_levels == 0f) {
+			if (!patient_critical) {
+				patient_critical = true;
+				DoctorEvents.Instance.InducePatientCritical ();
+			}
+		}
+
+		if (anesthetic_levels >= 0.1f) {
+			dangerously_low_anesthetic = false;
+			CancelInvoke ("flashMeter");
+		}
+
+	}
+
+	private void onPatientCriticalEventAverted(float duration) {
+		patient_critical = false;
+	}
+
+	private void flashMeter() {
+		anestheticMeter.enabled = !anestheticMeter.enabled;
 	}
 
 	private void drainAnesthetic() {
