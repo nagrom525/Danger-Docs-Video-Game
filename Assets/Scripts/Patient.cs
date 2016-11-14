@@ -89,7 +89,6 @@ public class Patient : Interactable {
 	//Stitches
 	public void OnSuture(float duration)
 	{
-		Debug.Log("On suture called");
 		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SUTURE;
 	}
@@ -113,6 +112,7 @@ public class Patient : Interactable {
 	public void OnCutPatientOpen(float duration)
 	{
 		Debug.Log("on cut patient open");
+		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
@@ -213,16 +213,35 @@ public class Patient : Interactable {
 
 	public void receiveOperation(Tool tool, int doctorNumber = -1) {
 
-		if (requiredTool == Tool.ToolType.SUTURE)
+		if (requiredTool == Tool.ToolType.SUTURE && tool.GetToolType() == Tool.ToolType.SUTURE)
 		{
 			//Get Doctor that initiated operation
-			GameObject doc = GameObject.Find("Doctor_" + doctorNumber.ToString());
-
+			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
+			if (doc == null)
+			{
+				Debug.Log("couldn't find doctor!");
+			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
 			//Create tool and give control to Doctor
 			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
-			suture.GetComponent<SurgeryToolInput>().playerNum = doctorNumber-1;
+			suture.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+
+			Debug.Log("recieving suture operation");
+		}
+		else if (requiredTool == Tool.ToolType.SCALPEL && tool.GetToolType() == Tool.ToolType.SCALPEL)
+		{
+			//Get Doctor that initiated operation
+			GameObject doc = GameObject.Find("Doctor_" + (doctorNumber + 1).ToString());
+			if (doc == null)
+			{
+				Debug.Log("couldn't find doctor!");
+			}
+			//Disable their input component
+			doc.GetComponent<DoctorInputController>().enabled = false;
+			//Create tool and give control to Doctor
+			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
+			scalpel.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
 
 			Debug.Log("recieving suture operation");
 		}

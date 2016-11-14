@@ -61,11 +61,7 @@ public class Doctor : MonoBehaviour {
 	public void OnPickupButtonPressed() {
 		// If we currently have a tool, drop the tool.
 		if (currentTool != null) {
-			print ("entered if statement");
-			// Add the tool back to the scene by removing parent.
-			currentTool.transform.parent = null;
-			// Set current tool to null.
-			currentTool = null;
+			dropCurrentTool ();
 		} else {
 			// If there is a tool in range, get that tool.
 			// Otherwise, nearestTool == null
@@ -84,7 +80,20 @@ public class Doctor : MonoBehaviour {
 		currentTool = tool;
 		tool.transform.parent = this.transform;
 		// Transform tool position to doctor.
-		tool.transform.localPosition = new Vector3 (1, 3, 0);
+		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.5f;
+		Rigidbody rb = tool.transform.GetComponent<Rigidbody> ();
+		if (rb != null) {
+			rb.useGravity = false;
+		}
+	}
+
+	private void dropCurrentTool() {
+		Rigidbody rb = currentTool.transform.GetComponent<Rigidbody> ();
+		if (rb != null) {
+			rb.useGravity = true;
+		}
+		currentTool.transform.parent = null;
+		currentTool = null;
 	}
 
 	public void useCurrentToolOnPatient() {
@@ -93,7 +102,7 @@ public class Doctor : MonoBehaviour {
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 		if (distToPatient <= nearbyInteractableRange) {
 			// Use current tool on patient.
-			Patient.Instance.receiveOperation (currentTool);
+			Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 		}
 	}
 

@@ -31,7 +31,8 @@ public class AnestheticMachine : Interactable {
 	}
 
 	private void drainAnesthetic() {
-		anesthetic_levels -= depletion_rate * Time.deltaTime;
+		float pending_anesthetic = anesthetic_levels - depletion_rate * Time.deltaTime;
+		anesthetic_levels = (pending_anesthetic < 0f) ? 0f : pending_anesthetic;
 	}
 
 	// The Anesthetic Machine does not require a tool to interact ... yet!
@@ -44,7 +45,7 @@ public class AnestheticMachine : Interactable {
 	// Therefore, we return false.
 	public override bool DocterIniatesInteracting(Doctor interactingDoctor) {
 		// If doc does not have a canister, do not do anything.
-		if (interactingDoctor.currentTool.GetToolType() != RequiredToolType()) {
+		if (interactingDoctor.currentTool == null || interactingDoctor.currentTool.GetToolType() != RequiredToolType()) {
 			displayAnestheticMeter ();
 			return false;
 		}
@@ -57,6 +58,8 @@ public class AnestheticMachine : Interactable {
 		float pending_anesthetic = anesthetic_levels + can.anesthetic_amount;
 		anesthetic_levels = (pending_anesthetic > 1f) ? 1f : pending_anesthetic;
 		Destroy (can.gameObject);
+		print ("anesthetic_levels :: " + anesthetic_levels);
+		displayAnestheticMeter ();
 	}
 
 
