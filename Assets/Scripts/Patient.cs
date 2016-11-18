@@ -183,6 +183,7 @@ public class Patient : Interactable {
             critical_state = PatientCriticalState.DEAD;
             timeStartCritialState = Time.time;
             LevelUserInterface.UI.UpdateBpm(bpm);
+            AudioControl.Instance.PlayHeartMonitorLong();
         }
     }
 
@@ -225,6 +226,13 @@ public class Patient : Interactable {
             last_beat_time = Time.time;
             next_beat_time = last_beat_time + bpmToSecondsInterval(bpm);
             float referenceHeartRate = normal_bpm;
+
+            // if in critical state sound heart monitor on each heart beat //
+            if (ShouldSoundMonitorBeep(critical_state)) {
+                AudioControl.Instance.PlayHeartMonitorBeep();
+            }
+
+            // Modulate Heart rate  ///
             switch (critical_state) {
                 case PatientCriticalState.NORMAL:
                     referenceHeartRate = normal_bpm;
@@ -346,4 +354,21 @@ public class Patient : Interactable {
 	{
 		return requiredTool;
 	}
+
+    private bool ShouldSoundMonitorBeep( PatientCriticalState state) {
+        switch (state) {
+            case PatientCriticalState.ABOUT_TO_DIE:
+                return true;
+            case PatientCriticalState.ATTACKING:
+                return true;
+            case PatientCriticalState.FINISHING:
+                return true;
+            case PatientCriticalState.SPEEDING_UP:
+                return true;
+            case PatientCriticalState.SPEEDING_UP_TO_DIE:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
