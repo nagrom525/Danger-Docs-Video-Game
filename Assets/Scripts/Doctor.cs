@@ -149,9 +149,11 @@ public class Doctor : MonoBehaviour {
 		currentTool = tool;
 		tool.transform.parent = this.transform;
 		// Transform tool position to doctor.
-		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.5f;
+		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.3f;
 		Rigidbody rb = tool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
+			// Add constraints
+			rb.constraints = RigidbodyConstraints.FreezeAll;
 			rb.useGravity = false;
 		}
 	}
@@ -159,6 +161,8 @@ public class Doctor : MonoBehaviour {
 	private void dropCurrentTool() {
 		Rigidbody rb = currentTool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
+			// Remove Constraints
+			rb.constraints = RigidbodyConstraints.None;
 			rb.useGravity = true;
 		}
 		currentTool.transform.parent = null;
