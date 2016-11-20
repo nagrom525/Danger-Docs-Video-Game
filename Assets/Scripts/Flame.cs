@@ -3,17 +3,19 @@ using System.Collections;
 
 public class Flame : MonoBehaviour {
     private enum Direction { NORTH, EAST, SOUTH, WEST};
-    private enum CanSpawnState { OPEN, PERMINATLY_CLOSED, CHECK};
+    private enum CanSpawnState { OPEN, CLOSED, CHECK};
 
     public float fireGridScale = 1.0f;
     public float timeFireSpawnDelay = 2.0f;
     public GameObject flamePrefab;
+    private static GameObject flameAnchor = null;
 
     // flame graph connections
     private delegate void ChildEvent(Direction d);
     private ChildEvent onDestroyEvent;
     private CanSpawnState[] canSpawn = new CanSpawnState[4] { CanSpawnState.CHECK, CanSpawnState.CHECK, CanSpawnState.CHECK, CanSpawnState.CHECK}; // represents if we can spawn fire in any of the 4 directions
     //private bool hasParent = false;
+    private Direction directionSpawned;
 
     private float lastFireTime;
     private Direction nextFireSpawnDirection;
@@ -27,8 +29,12 @@ public class Flame : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        lastFireTime = Time.time;
-	}
+        lastFireTime = Time.time + Random.value;
+        if (flameAnchor == null) {
+            // then we need to create a new flame anchor
+            flameAnchor = new GameObject("Flame Anchor");
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -36,20 +42,23 @@ public class Flame : MonoBehaviour {
             if (CanSpawnInRegion(nextFireSpawnDirection)) {
                 SpawnFire(nextFireSpawnDirection);
             }
+            // reset time intervial and advance direction
+            lastFireTime = Time.time;
+            nextFireSpawnDirection = GetNextDirection(nextFireSpawnDirection);
         }
-        // reset time intervial and advance direction
-        lastFireTime = Time.time;
-        nextFireSpawnDirection = GetNextDirection(nextFireSpawnDirection);
 	}
 
     // called when a spawned child is destroyed
-    private void OnChildDestroyed(Direction d) {
 
+    private void OnChildDestroyed(Direction d) {
+        
     }
 
     // unity engine event.. called when the object is destroyed
     void OnDestroy() {
-        
+        if(onDestroyEvent != null) {
+            onDestroyEvent(directionSpawned);
+        }
     }
 
     //// direction spawned is the direction the child is in relative to the parent
@@ -57,17 +66,30 @@ public class Flame : MonoBehaviour {
     //    //hasParent = true;
     //    dire
     //}
+    private void SetDirectionSpawned(Direction directionSpawned) {
+
+    }
 
     // returns true if the space is open to spawning fire
     // no water or other object already there
     // no other fire already there.
     private bool CanSpawnInRegion(Direction d) {
-        // need to fill in this code with tag checking
+        switch (canSpawn[(int)d]) {
+            case CanSpawnState.OPEN:
+                return true;
+            case CanSpawnState.CLOSED:
+                return false;
+            case CanSpawnState.CHECK:
+                // need to fill in this code with tag checking
+                print("We need to check for spawning more fire");
+                return true;
+        }
         return true;
     }
 
     private void SpawnFire(Direction d) {
-        Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity);
+        Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity, flameAnchor.transform);
+        canSpawn[(int)d] = CanSpawnState.CLOSED;
     }
 
     private Direction getRandomDirection() {
