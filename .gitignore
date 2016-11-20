@@ -38,3 +38,5 @@ VSCode.meta
 
 # MacOS specific
 .DS_store
+
+*.exe
