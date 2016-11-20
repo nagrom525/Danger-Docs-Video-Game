@@ -150,14 +150,14 @@ public class Doctor : MonoBehaviour {
 		tool.transform.parent = this.transform;
 		// Transform tool position to doctor.
 		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.5f;
-		Rigidbody rb = tool.transform.GetComponent<Rigidbody> ();
+		Rigidbody rb = tool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
 			rb.useGravity = false;
 		}
 	}
 
 	private void dropCurrentTool() {
-		Rigidbody rb = currentTool.transform.GetComponent<Rigidbody> ();
+		Rigidbody rb = currentTool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
 			rb.useGravity = true;
 		}
