@@ -31,7 +31,7 @@ public class FireAnimationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating("CreateFire", .2f, .2f);
+		InvokeRepeating("CreateFire", .1f, .5f);
 	}
 	
 	// Update is called once per frame

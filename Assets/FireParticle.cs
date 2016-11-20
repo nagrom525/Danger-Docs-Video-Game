@@ -6,6 +6,7 @@ public class FireParticle : MonoBehaviour {
 	public float 		speedMax = .2f;
 	public float 		shrinkRate = .7f;
 	private float 		spd;
+	public FireAnimationController fac;
 
 	// Use this for initialization
 	void Start () {
@@ -13,6 +14,7 @@ public class FireParticle : MonoBehaviour {
 		transform.localScale = new Vector3(rand, rand, rand);
 
 		spd = Random.Range(.1f,speedMax);
+		fac = transform.parent.GetComponent<FireAnimationController>();
 	}
 
 	void LateUpdate () {
@@ -22,8 +24,9 @@ public class FireParticle : MonoBehaviour {
 		Vector3 newScale = transform.localScale *= shrinkRate;
 		transform.localScale = newScale;
 
-		if (transform.localScale.x < .1f)
+		if (transform.localScale.x < .4f)
 		{
+			fac.fireParticles.Remove(this.gameObject);
 			Destroy(gameObject);
 		}
 	}
