@@ -48,7 +48,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 
-		//highlightNearestInteractiveObject ();
+		highlightNearestInteractiveObject ();
 	}
 
 	// Please forgive me. I tried to make this intelligable.
@@ -63,17 +63,20 @@ public class Doctor : MonoBehaviour {
 			// current_interactive_obj is new or null
 			// Change old object back to original material.
 			if (last_interactive_obj != null) {
-				last_interactive_obj.GetComponent<Renderer> ().material = original_go_material;
+				// remove Highlighting
+				last_interactive_obj.GetComponentInChildren<Renderer> ().material = original_go_material;
+
 			}
 			if (current_interactive_obj != null) {
-				// Highlight the current object and save its material
-				Renderer rend = current_interactive_obj.GetComponent<Renderer> ();
+				print (current_interactive_obj);
+				// Highlight the current object ...
+				// ... and save its material
+				Renderer rend = current_interactive_obj.GetComponentInChildren<Renderer> ();
 				if (rend != null)
 				{
 					original_go_material = rend.material;
 					rend.material = highlightedMaterial;
 				}
-
 			}
 			// We then save current object as last object.
 			last_interactive_obj = current_interactive_obj;
@@ -146,16 +149,20 @@ public class Doctor : MonoBehaviour {
 		currentTool = tool;
 		tool.transform.parent = this.transform;
 		// Transform tool position to doctor.
-		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.5f;
-		Rigidbody rb = tool.transform.GetComponent<Rigidbody> ();
+		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.3f;
+		Rigidbody rb = tool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
+			// Add constraints
+			rb.constraints = RigidbodyConstraints.FreezeAll;
 			rb.useGravity = false;
 		}
 	}
 
 	private void dropCurrentTool() {
-		Rigidbody rb = currentTool.transform.GetComponent<Rigidbody> ();
+		Rigidbody rb = currentTool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
+			// Remove Constraints
+			rb.constraints = RigidbodyConstraints.None;
 			rb.useGravity = true;
 		}
 		currentTool.transform.parent = null;
