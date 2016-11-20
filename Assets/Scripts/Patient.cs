@@ -21,9 +21,7 @@ public class Patient : Interactable {
 
 	private float 			last_beat_time;
 	private float 			next_beat_time;
-	private bool 			heart_attack;
-	private float 			duration = 0.0f;
-	private float 			durationOfPost = 0.0f;
+
 	private Tool.ToolType 	requiredTool;
 
     private float criticalCycleDuration = 0.0f;

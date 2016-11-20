@@ -43,7 +43,7 @@ public class Flame : MonoBehaviour {
                 SpawnFire(nextFireSpawnDirection);
             }
             // reset time intervial and advance direction
-            lastFireTime = Time.time;
+            lastFireTime = Time.time + Random.value;
             nextFireSpawnDirection = GetNextDirection(nextFireSpawnDirection);
         }
 	}
@@ -51,7 +51,7 @@ public class Flame : MonoBehaviour {
     // called when a spawned child is destroyed
 
     private void OnChildDestroyed(Direction d) {
-        
+        canSpawn[(int)d] = CanSpawnState.CHECK;
     }
 
     // unity engine event.. called when the object is destroyed
@@ -67,7 +67,7 @@ public class Flame : MonoBehaviour {
     //    dire
     //}
     private void SetDirectionSpawned(Direction directionSpawned) {
-
+        this.directionSpawned = directionSpawned;
     }
 
     // returns true if the space is open to spawning fire
@@ -80,16 +80,21 @@ public class Flame : MonoBehaviour {
             case CanSpawnState.CLOSED:
                 return false;
             case CanSpawnState.CHECK:
-                // need to fill in this code with tag checking
-                print("We need to check for spawning more fire");
+                Collider[] colliders = Physics.OverlapSphere(GetSpawnLocation(d), 0.4f * fireGridScale);
+                foreach(var collider in colliders) {
+                    if(collider.gameObject.tag == "NotFlamable") {
+                        return false;
+                    }
+                }
                 return true;
         }
         return true;
     }
 
     private void SpawnFire(Direction d) {
-        Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity, flameAnchor.transform);
+        Flame childFlame = (Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity, flameAnchor.transform) as GameObject).GetComponent<Flame>();
         canSpawn[(int)d] = CanSpawnState.CLOSED;
+        childFlame.SetDirectionSpawned(d);
     }
 
     private Direction getRandomDirection() {
