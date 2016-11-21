@@ -47,8 +47,10 @@ public class Doctor : MonoBehaviour {
 			hideWashingMeter ();
 		}
 
-
-		highlightNearestInteractiveObject ();
+		// If we aren't currently holding a tool ...
+		if (currentTool == null) {
+			highlightNearestInteractiveObject ();
+		}
 	}
 
 	// Please forgive me. I tried to make this intelligable.
@@ -95,7 +97,6 @@ public class Doctor : MonoBehaviour {
 		for (int i = 0; i < objectsInRange.Length; i++) {
 			if (objectsInRange [i].gameObject.CompareTag ("Tool")
 				|| objectsInRange [i].gameObject.CompareTag ("Interactable")) {
-				// Get Vector3 between pos of doctor and interactable
 				Vector3 objPos = objectsInRange[i].transform.position;
 				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
 				float sqrDist = (objPos - pos).sqrMagnitude;
