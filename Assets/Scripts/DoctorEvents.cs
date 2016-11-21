@@ -44,6 +44,14 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent GameWon;
 
 
+    // -- Spawning events -- //
+    public DoctorEvent onBearAttack; // duration is time to wait before bear attack
+    public DoctorEvent onRaccoonAttack; // duration is time to wait before raccoon attack
+    public DoctorEvent onFire; // duration is time to wait before fire
+    public DoctorEvent onFirePutOut; // called when the last flame has been extinguished
+    public DoctorEvent onBearLeft; // called when the bear has left the doctors alone
+
+
     // --- Main Reciepe Values --//
     public float timeDelayGameStart = 2.0f;
     public float timeDelayPostCutOpen = 2.0f;
@@ -246,6 +254,36 @@ public class DoctorEvents : MonoBehaviour {
             if (GameWon != null) {
                 GameWon(0);
             }
+        }
+    }
+
+    public void InformBearAttack(float duration) {
+        if(onBearAttack != null) {
+            onBearAttack(duration);
+        }
+    }
+
+    public void InformFire(float duration) {
+        if(onFire != null) {
+            onFire(duration);
+        }
+    }
+
+    public void InformRacconAttack(float duration) {
+        if(onRaccoonAttack != null) {
+            onRaccoonAttack(duration);
+        }
+    }
+
+    public void InformFirePutOut() {
+        if(onFirePutOut != null) {
+            onFirePutOut(0);
+        }
+    }
+
+    public void InformBearLeft() {
+        if(onBearLeft != null) {
+            onBearLeft(0);
         }
     }
 

@@ -5,6 +5,8 @@ public class Flame : MonoBehaviour {
     private enum Direction { NORTH, EAST, SOUTH, WEST};
     private enum CanSpawnState { OPEN, CLOSED, CHECK};
 
+    private static int flameCount = 0;
+
     public float fireGridScale = 1.0f;
     public float timeFireSpawnDelay = 2.0f;
     public GameObject flamePrefab;
@@ -34,6 +36,7 @@ public class Flame : MonoBehaviour {
             // then we need to create a new flame anchor
             flameAnchor = new GameObject("Flame Anchor");
         }
+        flameCount++;
     }
 	
 	// Update is called once per frame
@@ -58,6 +61,10 @@ public class Flame : MonoBehaviour {
     void OnDestroy() {
         if(onDestroyEvent != null) {
             onDestroyEvent(directionSpawned);
+        }
+        flameCount--;
+        if(flameCount == 0) {
+            DoctorEvents.Instance.InformFirePutOut();
         }
     }
 
@@ -93,8 +100,24 @@ public class Flame : MonoBehaviour {
 
     private void SpawnFire(Direction d) {
         Flame childFlame = (Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity, flameAnchor.transform) as GameObject).GetComponent<Flame>();
+        childFlame.gameObject.name = this.gameObject.name + DirectionToLetter(d);
         canSpawn[(int)d] = CanSpawnState.CLOSED;
         childFlame.SetDirectionSpawned(d);
+    }
+
+    private char DirectionToLetter(Direction d) {
+        switch (d) {
+            case Direction.NORTH:
+                return 'N';
+            case Direction.EAST:
+                return 'E';
+            case Direction.SOUTH:
+                return 'S';
+            case Direction.WEST:
+                return 'W';
+            default:
+                return '~';
+        }
     }
 
     private Direction getRandomDirection() {
