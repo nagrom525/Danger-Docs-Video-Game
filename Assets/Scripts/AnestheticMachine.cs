@@ -15,7 +15,7 @@ public class AnestheticMachine : Interactable {
 
 	void Start() {
 		// 5% depletion per second
-		depletion_rate = 0.05f;
+		depletion_rate = 0.025f;
 
 		anestheticMeter = transform.GetComponentInChildren<Image> ();
 		anestheticMeterFramesRemaining = 0;

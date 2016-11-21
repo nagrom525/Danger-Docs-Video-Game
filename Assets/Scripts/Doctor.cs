@@ -171,6 +171,11 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void useCurrentToolOnPatient() {
+		if (dirtyHands) {
+			print ("Can't perform on the patient /w dirty hands.\nWash them!");
+			// Signal this somehow.
+			return;
+		}
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
