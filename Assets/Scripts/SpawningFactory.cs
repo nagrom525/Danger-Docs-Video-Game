@@ -55,7 +55,8 @@ public class SpawningFactory : MonoBehaviour {
             ((Time.time - lastFire) > minimumDelayBetweenFires) && ShouldSpawn(probOfFire)) {
             DoctorEvents.Instance.InformFire(0);
             fire = true;
-            // fire spawning code
+            // need to have some way of deciding where to instiantiate the fire!
+            Instantiate(firePrefab);
         }
     }
 
