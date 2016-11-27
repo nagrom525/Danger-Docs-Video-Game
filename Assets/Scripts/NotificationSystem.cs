@@ -15,6 +15,8 @@ public class NotificationSystem : MonoBehaviour {
 
     enum NotificationSystemState { SHIFTING_RIGHT, SHIFTING_LEFT, ADDING, REMOVING, STATIC}
 
+    private NotificationSystemState current_state = NotificationSystemState.STATIC;
+
     private LinkedList<Notification> activeNotifications;
     private LinkedList<Notification> toRemoveBuffer;
     private LinkedList<Notification> toAddBuffer;
@@ -45,7 +47,7 @@ public class NotificationSystem : MonoBehaviour {
 
     // -- MAIN SURGERY RECIEPE -- //
     private void OnPatientScaple(float duration) {
-        addNotification(true, Notification.Type.SCAPLE);
+        addNotification(Notification.Type.SCAPLE);
 
     }
 
@@ -54,25 +56,25 @@ public class NotificationSystem : MonoBehaviour {
     }
 
     private void OnPatientSuture(float duration) {
-
+        addNotification(Notification.Type.SUTURE);
     }
 
     private void OnPatientSutureDone(float duration) {
-
+        removeNotification(Notification.Type.SUTURE);
     }
 
     private void OnPatientGauze(float duration) {
-
+        addNotification(Notification.Type.GAUZE);
     }
 
     private void OnPatientGauzeDone(float duration) {
-
+        removeNotification(Notification.Type.GAUZE);
     }
 
 
     // -- ENVIRONMENT EVENTS -- //
     private void OnFire(float duration) {
-        addNotification(false, Notification.Type.BUCKET);
+        addNotification(Notification.Type.BUCKET);
     }
 
     private void OnFirePutOut(float duration) {
@@ -100,10 +102,30 @@ public class NotificationSystem : MonoBehaviour {
         }
     }
 
+    private bool isMainRecipeType(Notification.Type notificationType) {
+        // should only return true if it is of type main recipe
+        switch (notificationType) {
+            case Notification.Type.SUTURE:
+                return true;
+            case Notification.Type.GAUZE:
+                return true;
+            case Notification.Type.SCAPLE:
+                return true;
+            case Notification.Type.STICK_PULL_OUT:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     // -- Actual logic -- //
 
-    private void addNotification(bool isMainRecipe, Notification.Type typeToAdd) {
+    private void addNotification(Notification.Type typeToAdd) {
         GameObject prefabToAdd = retriveNotificatioinPrefab(typeToAdd);
+        bool mainRecipeType = isMainRecipeType(typeToAdd);
+        if (mainRecipeType) {
+
+        }
     }
 
     private void removeNotification(Notification.Type typeToRemove) {
