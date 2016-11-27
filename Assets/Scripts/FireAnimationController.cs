@@ -10,6 +10,8 @@ public class FireAnimationController : MonoBehaviour {
 
 	public List<GameObject> fireParticles = new List<GameObject>();
 
+	public Material[] flameColors;
+
 	void CreateFire()
 	{
 		GameObject f = (GameObject)Instantiate(fireParticlePrefab);
@@ -20,6 +22,23 @@ public class FireAnimationController : MonoBehaviour {
 
 
 	}
+
+
+	public Material GetHotColor()
+	{
+		return flameColors[0];
+	}
+
+	public Material GetHotterColor()
+	{
+		return flameColors[1];
+	}
+
+	public Material GetHottestColor()
+	{
+		return flameColors[2];
+	}
+
 
 	void OffsetParticle(Transform t)
 	{
