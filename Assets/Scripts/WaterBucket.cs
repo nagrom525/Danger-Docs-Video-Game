@@ -7,7 +7,6 @@ public class WaterBucket : Tool {
 	}
 
 	private float waterLevel;
-	private float waterGainRate;	
 	
 	public override ToolType GetToolType() {
 		return Tool.ToolType.BUCKET;
@@ -15,13 +14,12 @@ public class WaterBucket : Tool {
 
 	void Start() {
 		waterLevel = 0f;
-		waterGainRate = 0.25f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 	}
 
-	public void gainWater() {
+	public void gainWater(float waterGainRate) {
 		print("We've gained water!");
-		waterLevel += waterGainRate * Time.deltaTime;
+		waterLevel += waterGainRate;
 		if (waterLevel > 1.0f) {
 			waterLevel = 1.0f;
 		}
