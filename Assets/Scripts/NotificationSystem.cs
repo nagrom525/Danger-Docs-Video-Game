@@ -103,11 +103,11 @@ public class NotificationSystem : MonoBehaviour {
     // -- Actual logic -- //
 
     private void addNotification(bool isMainRecipe, Notification.Type typeToAdd) {
-
+        GameObject prefabToAdd = retriveNotificatioinPrefab(typeToAdd);
     }
 
     private void removeNotification(Notification.Type typeToRemove) {
-
+        
     }
 
 
