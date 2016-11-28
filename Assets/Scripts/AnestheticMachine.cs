@@ -12,6 +12,7 @@ public class AnestheticMachine : Interactable {
 
 	private Image anestheticMeter;
 	private int anestheticMeterFramesRemaining;
+    bool lowAnestheticInformed = false;
 
 	void Start() {
 		// 5% depletion per second
@@ -36,25 +37,35 @@ public class AnestheticMachine : Interactable {
 		// Drain anesthetic over time.
 		drainAnesthetic();
 
+        if (anesthetic_levels < 0.01f) {
+            if (!patient_critical) {
+                patient_critical = true;
+                Debug.Log("anesthetic lvl == 0");
+                DoctorEvents.Instance.InducePatientCritical();
+            }
+        } else if (anesthetic_levels < 0.1f) {
+            if (!dangerously_low_anesthetic) {
+                dangerously_low_anesthetic = true;
+                InvokeRepeating("flashMeter", 0f, 0.1f);
+            }
+        } else if (anesthetic_levels >= 0.1f) {
+            dangerously_low_anesthetic = false;
+            CancelInvoke("flashMeter");
+        }
 
-		if (anesthetic_levels < 0.1f) {
-			if (!dangerously_low_anesthetic) {
-				dangerously_low_anesthetic = true;
-				InvokeRepeating ("flashMeter", 0f, 0.1f);
-			}
-		} else if (anesthetic_levels < 0.01f) {
-			if (!patient_critical) {
-				patient_critical = true;
-				Debug.Log("anesthetic lvl == 0");
-				DoctorEvents.Instance.InducePatientCritical ();
-			}
-		}
 
-		if (anesthetic_levels >= 0.1f) {
-			dangerously_low_anesthetic = false;
-			CancelInvoke ("flashMeter");
-		}
-
+        // inform anesthic machine is getting low
+        if(anesthetic_levels < 0.2f) {
+            if (!lowAnestheticInformed) {
+                DoctorEvents.Instance.InformAnestheticMachineLow(anesthetic_levels);
+            }
+            lowAnestheticInformed = true;
+        } else if(anesthetic_levels >= 0.2f) {
+            if(lowAnestheticInformed) {
+                DoctorEvents.Instance.InformAnestheticMachineReturnedHigh(anesthetic_levels);
+            }
+            lowAnestheticInformed = false;
+        }
 	}
 
 	private void onPatientCriticalEventAverted(float duration) {

@@ -57,6 +57,7 @@ public class DoctorEvents : MonoBehaviour {
 
     // -- Guidence Events -- //
     public DoctorEvent onAnestheticMachineLow;
+    public DoctorEvent onAnestheticMachineReturned;
     public DoctorEvent onDoctorNeedsToWashHands;
     public DoctorEvent onToolPickedUpForSurgery;
 
@@ -305,6 +306,12 @@ public class DoctorEvents : MonoBehaviour {
     public void InformAnestheticMachineLow(float precentLeft) {
         if(onAnestheticMachineLow != null) {
             onAnestheticMachineLow(precentLeft);
+        }
+    }
+
+    public void InformAnestheticMachineReturnedHigh(float precentLeft) {
+        if(onAnestheticMachineReturned != null) {
+            onAnestheticMachineReturned(precentLeft);
         }
     }
 

@@ -148,6 +148,7 @@ public class Doctor : MonoBehaviour {
 				// sufficiently unique.
 				equipTool (nearestTool);
                 nearestTool.OnDoctorInitatedInteracting();
+                DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType());
 			}
 		}
 	}
@@ -180,8 +181,8 @@ public class Doctor : MonoBehaviour {
 
 	public void useCurrentToolOnPatient() {
 		if (dirtyHands) {
-			print ("Can't perform on the patient /w dirty hands.\nWash them!");
-			// Signal this somehow.
+            // Signal this somehow.
+            DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
 			return;
 		}
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
