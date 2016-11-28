@@ -108,9 +108,7 @@ public class NotificationSystem : MonoBehaviour {
             stateStartTime = Time.time;
             activeNotifications.Insert(currentNotificationIndex, currentNotification);
         } else {
-            if (NotificationInstances[currentNotification] != null) {
-                moveNotificationByYOffset(NotificationInstances[currentNotification] as GameObject, -startYOffset, t);
-            }
+            moveNotificationByYOffset(NotificationInstances[currentNotification] as GameObject, -startYOffset, t);
         }
     }
 
