@@ -39,6 +39,8 @@ public class Patient : Interactable {
     public float hear_rate_modulation_range = 20.0f;
     public float time_to_slow_bpm = 5.0f;
 
+    public GameObject actionButtonCanvas;
+
     private FlashColor flash_color;
 	private PatientCriticalState critical_state;
 	private Material NormalStateMaterial;
@@ -93,7 +95,9 @@ public class Patient : Interactable {
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
 		DoctorEvents.Instance.patientNeedsStitches += OnSuture;
 		DoctorEvents.Instance.patientNeedsCutOpen += OnCutPatientOpen;
-		DoctorEvents.Instance.patientNeedsBloodSoak += OnSoakBlood;	
+		DoctorEvents.Instance.patientNeedsBloodSoak += OnSoakBlood;
+        DoctorEvents.Instance.onToolPickedUpForSurgery += OnToolForSurgeryPickedUp;
+        DoctorEvents.Instance.onToolDroppedForSurgery += OnToolForSurgeryDropped;
 	}
 
     // Update is called once per frame
@@ -343,7 +347,7 @@ public class Patient : Interactable {
 		interactingDoctor.currentTool.OnDoctorInitatedInteracting();
 
 		Debug.Log(interactingDoctor.name + " initiated patient interaction.");
-
+        actionButtonCanvas.SetActive(false);
 		return true;
 	}
 
@@ -368,5 +372,14 @@ public class Patient : Interactable {
             default:
                 return false;
         }
+    }
+
+    private void OnToolForSurgeryPickedUp(float duration) {
+        actionButtonCanvas.SetActive(true);
+        actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+    }
+
+    private void OnToolForSurgeryDropped(float duration) {
+        actionButtonCanvas.SetActive(false);
     }
 }

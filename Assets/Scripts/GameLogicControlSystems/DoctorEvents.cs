@@ -63,6 +63,7 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onToolPickedUpGeneral;
     public DoctorEvent onToolPickedUpCanister;
     public DoctorEvent onToolDroppedCanister;
+    public DoctorEvent onToolDroppedForSurgery;
 
 	public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
@@ -385,6 +386,10 @@ public class DoctorEvents : MonoBehaviour {
         if(type == Tool.ToolType.CANISTER) {
             if(onToolDroppedCanister != null) {
                 onToolDroppedCanister(0);
+            }
+        } else if((currentIndexInReciepe != -1) && (type == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe]))){
+            if(onToolDroppedForSurgery != null) {
+                onToolDroppedForSurgery(0);
             }
         }
     }

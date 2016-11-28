@@ -3,9 +3,16 @@ using System.Collections;
 
 public class WashingStation : Interactable {
 
+    public GameObject actionButtonCanvas;
+
 	// Washes hands 10% at a time.
 	private float washRate = 0.1f;
 	private float bucketFillRate = 1f;
+
+
+    void Start() {
+        DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
+    }
 
 	// Washing station requires that you have no tool in hand.
 	protected override Tool.ToolType RequiredToolType() {
@@ -22,6 +29,7 @@ public class WashingStation : Interactable {
 			(interactingDoctor.currentTool as WaterBucket).gainWater(bucketFillRate);
 			return false;
 		}
+        actionButtonCanvas.SetActive(false);
 
 
 		Debug.Log("Cannot use this tool with WashingStation");
@@ -31,4 +39,9 @@ public class WashingStation : Interactable {
 	public override void DoctorTerminatesInteracting(Doctor interactingDoctor) {
 		interactingDoctor.currentTool.OnDoctorTerminatedInteracting();
 	}
+
+    private void OnDoctorNeedsToWashHands(float duration) {
+        actionButtonCanvas.SetActive(true);
+        actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+    }
 }

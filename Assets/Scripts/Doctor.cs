@@ -181,17 +181,17 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void useCurrentToolOnPatient() {
-		if (dirtyHands) {
-            // Signal this somehow.
-            DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
-			return;
-		}
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 		if (distToPatient <= interactionRange) {
-			// Use current tool on patient.
-			Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
+            if (dirtyHands) {
+                // Signal this somehow.
+                DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
+                return;
+            }
+            // Use current tool on patient.
+            Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 		}
 	}
 

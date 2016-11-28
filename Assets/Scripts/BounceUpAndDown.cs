@@ -13,11 +13,6 @@ public class BounceUpAndDown : MonoBehaviour {
     void Awake() {
         startPosition = transform.position;
     }
-
-	// Use this for initialization
-	void Start () {
-        initiateBounce();
-	}
 	
 	// Update is called once per frame
 	void Update () {
