@@ -3,7 +3,14 @@ using System.Collections;
 using System;
 
 public class SutureTool : Tool {
-	public override ToolType GetToolType()
+    public GameObject actionButtonCanvas;
+    private bool sutureNeededCalledOnce = false;
+
+    void Start() {
+        DoctorEvents.Instance.patientNeedsStitches += OnSutureNeeded;
+    }
+
+    public override ToolType GetToolType()
 	{
 		return ToolType.SUTURE;
 	}
@@ -11,11 +18,19 @@ public class SutureTool : Tool {
 	// 
 	public override void OnDoctorInitatedInteracting()
 	{
-		print("OnDoctorInitatedInteracting was called");
+		actionButtonCanvas.SetActive(false);
 	}
 
 	public override void OnDoctorTerminatedInteracting()
 	{
 		throw new NotImplementedException();
 	}
+
+    private void OnSutureNeeded(float duration) {
+        if (!sutureNeededCalledOnce) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+            sutureNeededCalledOnce = true;
+        }
+    }
 }
