@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 // delegates to send events to doctors / UI
 // calls delegates based on timing in levels, critical events
@@ -52,6 +53,9 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onFire; // duration is time to wait before fire
     public DoctorEvent onFirePutOut; // called when the last flame has been extinguished
     public DoctorEvent onBearLeft; // called when the bear has left the doctors alone
+
+	public GameObject 	parachutePrefab;
+	public Transform[] 	toolSpawnPoints;
 
 
     // --- Main Reciepe Values --//
@@ -121,7 +125,7 @@ public class DoctorEvents : MonoBehaviour {
         if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
             lastTimePatientCriticalChecked = Time.time;
 
-            if (Random.value < probabiltyPatientCritical) {
+            if (UnityEngine.Random.value < probabiltyPatientCritical) {
                 gameState = GeneralGameState.PATIENT_CRITICAL;
                 patientCriticalStartTime = Time.time;
                 if (onPatientCriticalEventStart != null) {
@@ -277,7 +281,36 @@ public class DoctorEvents : MonoBehaviour {
         }
     }
 
-    public void InformFirePutOut() {
+	public void InformToolTaken(Tool tool) {
+		switch (tool.GetToolType()) {
+			case Tool.ToolType.GAUZE:
+				//spawn gauze drop
+				SpawnGauze();
+				break;
+			case Tool.ToolType.BUCKET:
+				//spawn gauze drop
+				SpawnBucket();
+				break;
+			case Tool.ToolType.SUTURE:
+				//spawn gauze drop
+				SpawnSuture();
+				break;
+			case Tool.ToolType.CANISTER:
+				//spawn gauze drop
+				SpawnCanister();
+				break;
+			case Tool.ToolType.SCALPEL:
+				//spawn gauze drop
+				SpawnScalpel();
+				break;
+			case Tool.ToolType.DEFIBULATOR:
+				//spawn gauze drop
+				SpawnDefibulator();
+				break;
+		}
+	}
+
+	public void InformFirePutOut() {
         if(onFirePutOut != null) {
             onFirePutOut(0);
         }
@@ -313,4 +346,54 @@ public class DoctorEvents : MonoBehaviour {
                 break;
         }
     }
+
+	// -- Spawn Stolen Tools -- //
+	void SpawnGauze()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[0]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[0].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.GAUZE;
+	}
+
+	void SpawnSuture()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[1]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[1].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.SUTURE;
+	}
+
+	void SpawnCanister()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[2]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[2].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.CANISTER;
+	}
+
+	void SpawnDefibulator()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[3]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[3].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.DEFIBULATOR;
+	}
+
+
+	void SpawnScalpel()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[4]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[4].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.SCALPEL;
+	}
+
+	void SpawnBucket()
+	{
+		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[5]);
+		go.transform.parent = null;
+		go.transform.position = toolSpawnPoints[5].position;
+		go.GetComponent<ToolDrop>().type = Tool.ToolType.BUCKET;
+	}
 }

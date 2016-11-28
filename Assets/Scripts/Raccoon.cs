@@ -132,16 +132,17 @@ public class Raccoon : MonoBehaviour {
 		//move to it
 		transform.position = Vector3.Lerp(transform.position, leavingTarget, pickupSpeed * Time.deltaTime);
 
-
-		if (currentPickup.transform.parent != this.transform)
-		{
-			//pickup was taken by doctor, leave
-			currentState = RaccoonState.Leaving;
-		}
+		if (currentPickup)
+			if (currentPickup.transform.parent != this.transform)
+			{
+				//pickup was taken by doctor, leave
+				currentState = RaccoonState.Leaving;
+			}
 
 		if (Vector3.Distance(transform.position, leavingTarget) < 3.5f)
 		{
 			//notify event manager that tool was stolen
+			DoctorEvents.Instance.InformToolTaken(currentPickup);
 			//destroy self
 			Destroy(this.gameObject);
 		}
