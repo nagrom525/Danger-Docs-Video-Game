@@ -15,8 +15,7 @@ public class WashingStation : Interactable {
 	public override bool DocterIniatesInteracting(Doctor interactingDoctor) {
 		if (interactingDoctor.currentTool == null) {
 			// If no tool in hand, wash hands.
-			washHands(interactingDoctor);
-			print ("Washing Station Activated");
+			interactingDoctor.washHands(washRate);
 			// The washing station does not require sustained interaction.
 			return false;
 		} else if (interactingDoctor.currentTool.GetToolType() == Tool.ToolType.BUCKET) {
@@ -27,15 +26,6 @@ public class WashingStation : Interactable {
 
 		Debug.Log("Cannot use this tool with WashingStation");
 		return false;
-	}
-
-	private void washHands(Doctor interactingDoctor) {
-		interactingDoctor.dirtLevel -= washRate;
-		if (interactingDoctor.dirtLevel <= 0f) {
-			interactingDoctor.dirtLevel = 0f;
-		}
-		interactingDoctor.displayWashingMeter ();
-		print ("dirtLevel ::" + interactingDoctor.dirtLevel);
 	}
 
 	public override void DoctorTerminatesInteracting(Doctor interactingDoctor) {

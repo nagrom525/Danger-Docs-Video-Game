@@ -228,13 +228,10 @@ public class Doctor : MonoBehaviour {
 
 		// TODO: Move this
 		if (currentTool.GetToolType() == Tool.ToolType.BUCKET) {
-			print("Putting out a fire");
-			putOutFire();
-			return;
-//			if (wb.hasWater) {
-//				print("Putting out a fire");
-//				putOutFire();
-//			}
+			WaterBucket wb = currentTool as WaterBucket;
+			if (wb.hasWater) {
+				putOutFire (wb);
+			}
 		}
 
 		// If near patient, use tool on patient.
@@ -291,21 +288,27 @@ public class Doctor : MonoBehaviour {
 		return nearestInteractable;
 	}
 	
-	public void putOutFire() {
-		WaterBucket wb = (currentTool as WaterBucket);
-		if (wb.hasWater) {
-			// Check for fires in target area.
-			Vector3 sphereOrigin = pos + checkOffset;
-			Collider[] cols = Physics.OverlapSphere(sphereOrigin, wb.splashRadius);
-			Debug.DrawRay (pos, checkOffset, Color.red, 0.2f);
+	public void putOutFire(WaterBucket wb) {
+		// Check for fires in target area.
+		Vector3 sphereOrigin = pos + checkOffset;
+		Collider[] cols = Physics.OverlapSphere(sphereOrigin, wb.splashRadius);
+		Debug.DrawRay (pos, checkOffset, Color.red, 0.2f);
 
-			// Destroy fires.
-			for (int i = 0; i < cols.Length; i++) {
-				if (cols[i].GetComponentInChildren<Flame>()) {
-					Destroy(cols[i].gameObject);
-				}
+		// Destroy fires.
+		for (int i = 0; i < cols.Length; i++) {
+			if (cols[i].GetComponentInChildren<Flame>()) {
+				Destroy(cols[i].gameObject);
 			}
 		}
+	}
+
+	public void washHands(float washRate) {
+		dirtLevel -= washRate;
+		if (dirtLevel <= 0f) {
+			dirtLevel = 0f;
+		}
+		displayWashingMeter ();
+		print ("dirtLevel ::" + dirtLevel);
 	}
 
 	public void displayWashingMeter() {
