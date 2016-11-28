@@ -191,6 +191,7 @@ public class Doctor : MonoBehaviour {
                 return;
             }
             // Use current tool on patient.
+            DoctorEvents.Instance.InformSurgeryOperation();
             Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 		}
 	}

@@ -29,7 +29,7 @@ public class WeightedCamera : MonoBehaviour {
 		heightRange.y = Mathf.Min(trackedObjs[0].transform.position.z, trackedObjs[1].transform.position.z, trackedObjs[2].transform.position.z, trackedObjs[3].transform.position.z);
 
 		widthDistance = Mathf.Abs(widthRange.y - widthRange.x);
-		cam.fieldOfView = Mathf.Lerp( 10, 50, widthDistance/maxWidthDistance );
+		cam.fieldOfView = Mathf.Lerp( 20, 50, widthDistance/maxWidthDistance );
 
 		float widthAvg = (widthRange.x + widthRange.y) / 2;
 		float heightAvg = (heightRange.x + heightRange.y) / 2;

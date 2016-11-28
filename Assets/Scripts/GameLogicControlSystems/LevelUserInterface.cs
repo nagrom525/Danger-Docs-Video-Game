@@ -14,6 +14,7 @@ public class LevelUserInterface : MonoBehaviour {
     public float statusIndicatorDuration = 5.0f;
     public float statusIndicatorBlinkDuration = 1.0f;
     public GameObject gameLostPanel;
+    public GameObject backButton;
 
     private StatusIndicatorState status_state = StatusIndicatorState.INACTIVE;
     private float statusIndicatorStart = 0.0f;
@@ -37,6 +38,8 @@ public class LevelUserInterface : MonoBehaviour {
  
         DoctorEvents.Instance.GameOver += OnGameOver;
 		DoctorEvents.Instance.GameWon += OnGameWon;
+        DoctorEvents.Instance.onSurgeryOperationLeftLast += OnLastDoctorLeavesSurgery;
+        DoctorEvents.Instance.onSurgeryOperationFirst += OnFirstDoctorEntersSurgery;
 	}
 	
 	// Update is called once per frame
@@ -82,6 +85,14 @@ public class LevelUserInterface : MonoBehaviour {
 
     void OnGameWon(float duration) {
         gameWonPanel.SetActive(true);
+    }
+
+    private void OnFirstDoctorEntersSurgery(float duration) {
+        backButton.SetActive(true);
+    }
+
+    private void OnLastDoctorLeavesSurgery(float duration) {
+        backButton.SetActive(false);
     }
 
 

@@ -64,8 +64,10 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onToolPickedUpCanister;
     public DoctorEvent onToolDroppedCanister;
     public DoctorEvent onToolDroppedForSurgery;
+    public DoctorEvent onSurgeryOperationFirst;
+    public DoctorEvent onSurgeryOperationLeftLast;
 
-	public GameObject 	parachutePrefab;
+    public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
 
 
@@ -91,6 +93,7 @@ public class DoctorEvents : MonoBehaviour {
     private  float patientCriticalStartTime = 0.0f; // variable to store start time of a heart attack state
     private float lastTimePatientCriticalChecked = 0.0f;
     private Tool.ToolType activeTool = Tool.ToolType.NONE;
+    private int numDoctorsOperating = 0;
 
 
     private static DoctorEvents _instance;
@@ -391,6 +394,21 @@ public class DoctorEvents : MonoBehaviour {
             if(onToolDroppedForSurgery != null) {
                 onToolDroppedForSurgery(0);
             }
+        }
+    }
+
+
+    public void InformSurgeryOperation() {
+        if((numDoctorsOperating == 0) && (onSurgeryOperationFirst != null)) {
+            onSurgeryOperationFirst(0);
+        }
+        ++numDoctorsOperating;
+    }
+
+    public void InformDoctorLeftSurgeryOperaton() {
+        --numDoctorsOperating;
+        if ((numDoctorsOperating == 0) && (onSurgeryOperationLeftLast != null)) {
+            onSurgeryOperationLeftLast(0);
         }
     }
 
