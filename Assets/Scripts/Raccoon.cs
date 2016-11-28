@@ -30,7 +30,7 @@ public class Raccoon : MonoBehaviour {
 		currentState = RaccoonState.Searching;
 
 		leavingTarget = transform.position;
-		InvokeRepeating("GetNearestTool", .1f, .5f);
+		InvokeRepeating("GetNearestTool", .1f, .2f);
 	}
 
 	public void GetNearestTool()
@@ -96,6 +96,8 @@ public class Raccoon : MonoBehaviour {
 			if (currentPickup.GetComponent<Rigidbody>())
 				currentPickup.GetComponent<Rigidbody>().isKinematic = false;
 			currentPickup = null;
+
+
 		}
 	}
 
@@ -129,10 +131,11 @@ public class Raccoon : MonoBehaviour {
 		transform.LookAt(leavingTarget);
 		//move to it
 		transform.position = Vector3.Lerp(transform.position, leavingTarget, leavingSpeed * Time.deltaTime);
-		if (Vector3.Distance(transform.position, leavingTarget) < 1f)
+		if (Vector3.Distance(transform.position, leavingTarget) < 3.5f)
 		{
 			//notify event manager that tool was stolen
 			//destroy self
+			Destroy(this.gameObject);
 		}
 
 	}
@@ -142,6 +145,13 @@ public class Raccoon : MonoBehaviour {
 		transform.LookAt(leavingTarget);
 		//move to it
 		transform.position = Vector3.Lerp(transform.position, leavingTarget, leavingSpeed * Time.deltaTime);
+
+		if (Vector3.Distance(transform.position, leavingTarget) < 3.5f)
+		{
+			//notify event manager that tool was stolen
+			//destroy self
+			Destroy(this.gameObject);
+		}
 	}
 }
 
