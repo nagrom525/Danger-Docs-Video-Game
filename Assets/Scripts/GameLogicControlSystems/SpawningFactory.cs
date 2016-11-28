@@ -29,6 +29,8 @@ public class SpawningFactory : MonoBehaviour {
     private float lastSecond = 0.0f;
 
 
+	public GameObject bearObj;
+
 	// Use this for initialization
 	void Start () {
         DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
@@ -63,7 +65,7 @@ public class SpawningFactory : MonoBehaviour {
             ((Time.time - lastBear) > minimumDelayBetweenBears) && ShouldSpawn(probOfBear)) {
             DoctorEvents.Instance.InformBearAttack(0);
             bear = true;
-            // bear spawning code
+			bearObj.SetActive(true);
         }
     }
 

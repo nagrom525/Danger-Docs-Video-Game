@@ -57,7 +57,7 @@ public class Raccoon : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player")
+		if (other.tag == "Doctor")
 		{
 			Debug.Log("Raccoon collided with doctor!");
 			DropTool();
