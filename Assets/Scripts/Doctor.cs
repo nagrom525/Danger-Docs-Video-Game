@@ -231,7 +231,7 @@ public class Doctor : MonoBehaviour {
 	public void OnInteractionButtonPressed() {
 
 		// TODO: Move this
-		if (currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+		if (currentTool && currentTool.GetToolType() == Tool.ToolType.BUCKET) {
 			WaterBucket wb = currentTool as WaterBucket;
 			if (wb.hasWater) {
 				putOutFire (wb);
@@ -304,6 +304,9 @@ public class Doctor : MonoBehaviour {
 				Destroy(cols[i].gameObject);
 			}
 		}
+
+		// Deplete water level
+		wb.pourWater();
 	}
 
 	public void washHands(float washRate) {

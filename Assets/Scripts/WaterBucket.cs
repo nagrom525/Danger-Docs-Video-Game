@@ -27,6 +27,10 @@ public class WaterBucket : Tool {
 		}
 	}
 
+	public void pourWater() {
+		waterLevel = 0f;
+	}
+
 
 	public override void OnDoctorInitatedInteracting() {
 		return;
