@@ -175,7 +175,8 @@ public class Doctor : MonoBehaviour {
 			rb.useGravity = true;
 			rb.isKinematic = false;
 		}
-		currentTool.transform.parent = null;
+        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType());
+        currentTool.transform.parent = null;
 		currentTool = null;
 	}
 

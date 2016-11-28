@@ -4,10 +4,15 @@ using System.Collections;
 
 public class AnestheticMachine : Interactable {
 
-	private float depletion_rate;
+
 	public float anesthetic_levels = 1f;
-	private bool dangerously_low_anesthetic;
+    public GameObject actionButtonCanvas;
+
+    private float depletion_rate;
+
+    private bool dangerously_low_anesthetic;
 	private bool patient_critical;
+    private bool canisterUsedOnce = false;
 	
 
 	private Image anestheticMeter;
@@ -24,6 +29,8 @@ public class AnestheticMachine : Interactable {
 		patient_critical = false;
 
 		DoctorEvents.Instance.onPatientCriticalEventEnded += onPatientCriticalEventAverted;
+        DoctorEvents.Instance.onToolPickedUpCanister += OnCanisterPickedUp;
+        DoctorEvents.Instance.onToolDroppedCanister += OnCanisterDropped;
 	}
 
 	void Update() {
@@ -106,6 +113,8 @@ public class AnestheticMachine : Interactable {
 		Destroy (can.gameObject);
 		print ("anesthetic_levels :: " + anesthetic_levels);
 		displayAnestheticMeter ();
+        canisterUsedOnce = true;
+        actionButtonCanvas.SetActive(false);
 	}
 
 
@@ -122,5 +131,16 @@ public class AnestheticMachine : Interactable {
 	private void hideAnestheticMeter() {
 		anestheticMeter.enabled = false;
 	}
+
+    private void OnCanisterPickedUp(float duration) {
+        if(!canisterUsedOnce) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    private void OnCanisterDropped(float duration) {
+        actionButtonCanvas.SetActive(false);
+    }
 
 }

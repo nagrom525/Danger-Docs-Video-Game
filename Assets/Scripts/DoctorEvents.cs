@@ -60,6 +60,9 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onAnestheticMachineReturned;
     public DoctorEvent onDoctorNeedsToWashHands;
     public DoctorEvent onToolPickedUpForSurgery;
+    public DoctorEvent onToolPickedUpGeneral;
+    public DoctorEvent onToolPickedUpCanister;
+    public DoctorEvent onToolDroppedCanister;
 
 	public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
@@ -322,9 +325,17 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     public void InformToolPickedUp(Tool.ToolType toolType) {
-        if(toolType == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe])){
-            if(onToolPickedUpForSurgery != null) {
+        if ((currentIndexInReciepe != -1) && (toolType == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe]))) {
+            if (onToolPickedUpForSurgery != null) {
                 onToolPickedUpForSurgery(0);
+            }
+        } else if(toolType == Tool.ToolType.CANISTER) {
+            if(onToolPickedUpCanister != null) {
+                onToolPickedUpCanister(0);
+            }
+        } else {
+            if(onToolPickedUpGeneral != null) {
+                onToolPickedUpGeneral(0);
             }
         }
     }
@@ -367,6 +378,14 @@ public class DoctorEvents : MonoBehaviour {
     public void InformBearLeft() {
         if(onBearLeft != null) {
             onBearLeft(0);
+        }
+    }
+
+    public void InformToolDropped(Tool.ToolType type) {
+        if(type == Tool.ToolType.CANISTER) {
+            if(onToolDroppedCanister != null) {
+                onToolDroppedCanister(0);
+            }
         }
     }
 
