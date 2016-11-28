@@ -274,7 +274,10 @@ public class Patient : Interactable {
 
 
 	public void receiveOperation(Tool tool, int doctorNumber = -1) {
-
+		if (tool == null)
+		{
+			return;
+		}
 		if (tool.GetToolType() == Tool.ToolType.SUTURE)
 		{
 			//Get Doctor that initiated operation

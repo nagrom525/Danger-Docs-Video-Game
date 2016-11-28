@@ -42,7 +42,8 @@ public class AudioControl : MonoBehaviour {
 	}
 
     public void PlayHeartMonitorBeep() {
-        // set clip and play audio
+		// set clip and play audio
+		Debug.Log("Beep");
         heartRateAudioSrc.clip = heartMonitorBeep;
         heartRateAudioSrc.Play();
     }

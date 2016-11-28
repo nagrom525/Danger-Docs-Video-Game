@@ -34,6 +34,9 @@ public class ToolDrop : MonoBehaviour {
 			case Tool.ToolType.BUCKET:
 				models[4].SetActive(true);
 				break;
+			case Tool.ToolType.DEFIBULATOR:
+				models[5].SetActive(true);
+				break;
 		}	
 	}
 
@@ -69,6 +72,10 @@ public class ToolDrop : MonoBehaviour {
 					break;
 				case Tool.ToolType.BUCKET:
 					go = Instantiate(toolPrefabs[4]);
+					go.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+					break;
+				case Tool.ToolType.DEFIBULATOR:
+					go = Instantiate(toolPrefabs[5]);
 					go.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 					break;
 			}
