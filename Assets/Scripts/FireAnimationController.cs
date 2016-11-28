@@ -8,6 +8,8 @@ public class FireAnimationController : MonoBehaviour {
 
 	public float offsetRange;
 
+	public float spawnDelay = 1.3f;
+
 	public List<GameObject> fireParticles = new List<GameObject>();
 
 	public Material[] flameColors;
@@ -50,7 +52,7 @@ public class FireAnimationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating("CreateFire", .1f, .5f);
+		InvokeRepeating("CreateFire", .1f, spawnDelay);
 	}
 	
 	// Update is called once per frame
