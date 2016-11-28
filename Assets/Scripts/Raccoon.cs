@@ -10,8 +10,8 @@ public class Raccoon : MonoBehaviour {
 		Leaving
 	};
 
+	public float 	searchingSpeed;
 	public float 	pickupSpeed;
-	public float 	idleSpeed;
 	public float 	leavingSpeed;
 
 	public Vector3 leavingTarget;
@@ -108,7 +108,7 @@ public class Raccoon : MonoBehaviour {
 			//look at it
 			transform.LookAt(closestPickup.transform);
 			//move to it
-			transform.position = Vector3.Lerp(transform.position, closestPickup.transform.position, pickupSpeed * Time.deltaTime);
+			transform.position = Vector3.Lerp(transform.position, closestPickup.transform.position, searchingSpeed * Time.deltaTime);
 
 			//when in range, switch state to holding pickup
 			if (Vector3.Distance(transform.position, closestPickup.transform.position) < 2f)
@@ -130,7 +130,15 @@ public class Raccoon : MonoBehaviour {
 		//look at it
 		transform.LookAt(leavingTarget);
 		//move to it
-		transform.position = Vector3.Lerp(transform.position, leavingTarget, leavingSpeed * Time.deltaTime);
+		transform.position = Vector3.Lerp(transform.position, leavingTarget, pickupSpeed * Time.deltaTime);
+
+
+		if (currentPickup.transform.parent != this.transform)
+		{
+			//pickup was taken by doctor, leave
+			currentState = RaccoonState.Leaving;
+		}
+
 		if (Vector3.Distance(transform.position, leavingTarget) < 3.5f)
 		{
 			//notify event manager that tool was stolen
