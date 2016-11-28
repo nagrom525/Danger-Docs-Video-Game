@@ -28,7 +28,7 @@ public class WaterBucket : Tool {
 	}
 
 	public void gainWater(float waterGainRate) {
-		waterLevel += waterGainRate;
+		waterLevel = (waterLevel + waterGainRate >= 1f) ? (waterLevel + waterGainRate) : 1f;
 	}
 
 	public void pourWater() {
