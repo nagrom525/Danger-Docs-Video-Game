@@ -54,6 +54,12 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onFirePutOut; // called when the last flame has been extinguished
     public DoctorEvent onBearLeft; // called when the bear has left the doctors alone
 
+
+    // -- Guidence Events -- //
+    public DoctorEvent onAnestheticMachineLow;
+    public DoctorEvent onDoctorNeedsToWashHands;
+    public DoctorEvent onToolPickedUpForSurgery;
+
 	public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
 
@@ -223,6 +229,21 @@ public class DoctorEvents : MonoBehaviour {
         }
     }
 
+    private Tool.ToolType RequiredToolForReciepeState(MainReciepeState recipeState) {
+        switch (recipeState) {
+            case MainReciepeState.CUT_OPEN:
+                return Tool.ToolType.SCALPEL;
+            case MainReciepeState.PULL_OUT_STICK:
+                return Tool.ToolType.FORCEPS;
+            case MainReciepeState.SOAK_BLOOD:
+                return Tool.ToolType.GAUZE;
+            case MainReciepeState.STICH_BODY:
+                return Tool.ToolType.SUTURE;
+            default:
+                return Tool.ToolType.NONE;
+        }
+    }
+
     //////         ----------- Main Event Public Interface -----------              ///////////////
     public void OnPatientCutOpen() {
         SetRecipePostState();
@@ -278,6 +299,26 @@ public class DoctorEvents : MonoBehaviour {
     public void InformRacconAttack(float duration) {
         if(onRaccoonAttack != null) {
             onRaccoonAttack(duration);
+        }
+    }
+
+    public void InformAnestheticMachineLow(float precentLeft) {
+        if(onAnestheticMachineLow != null) {
+            onAnestheticMachineLow(precentLeft);
+        }
+    }
+
+    public void InformDoctorNeedsToWashHands(float duration) {
+        if(onDoctorNeedsToWashHands != null) {
+            onDoctorNeedsToWashHands(duration);
+        }
+    }
+
+    public void InformToolPickedUp(Tool.ToolType toolType) {
+        if(toolType == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe])){
+            if(onToolPickedUpForSurgery != null) {
+                onToolPickedUpForSurgery(0);
+            }
         }
     }
 
