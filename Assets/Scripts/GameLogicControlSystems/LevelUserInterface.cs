@@ -74,9 +74,11 @@ public class LevelUserInterface : MonoBehaviour {
 
     // -- Listen for events -- //
     void OnPatientCriticalEvent(float duration) {
-        statusIndicator.color = Color.green;
+        /*
+		statusIndicator.color = Color.green;
         statusIndicatorStart = Time.time;
         status_state = StatusIndicatorState.GREEN_HEART_ATTACK;
+        */
     }
 
     void OnGameOver(float duration) {
