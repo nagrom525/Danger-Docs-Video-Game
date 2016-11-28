@@ -29,7 +29,7 @@ public class Tutorial : MonoBehaviour {
 
 		if (slideIndex >= slides.Length) {
 			// Assumes tutorial scene is == 0, and that the main scene is == 1
-			SceneManager.LoadScene("Debug_Alex_4");
+			SceneManager.LoadScene("Debug_Ben_2");
 			return;
 		}
 

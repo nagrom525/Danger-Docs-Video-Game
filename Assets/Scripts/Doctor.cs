@@ -185,9 +185,10 @@ public class Doctor : MonoBehaviour {
 		// if in range of patient ...
 		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
 		if (distToPatient <= interactionRange) {
-            if (dirtyHands) {
+			if (dirtyHands && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
                 // Signal this somehow.
                 DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
+	
                 return;
             }
             // Use current tool on patient.
