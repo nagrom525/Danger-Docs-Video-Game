@@ -20,11 +20,6 @@ public class LevelUserInterface : MonoBehaviour {
     private float statusIndicatorLastBlinkTime = 0.0f;
 
 
-    public string scalpelMessage = "Use the Scaple\n\t*Don't forget to wash you hands first!";
-    public string forecepsMessage = "Use the foreceps to hold the cut open.\nSomeone else should extract the stick!";
-    public string sutuersMessage = "It Looks like the patient is going to need stitches!";
-    public string gauzeMessage = "It looks like the patient might need some gauze!";
-
 
     public static LevelUserInterface UI;
 
@@ -42,14 +37,6 @@ public class LevelUserInterface : MonoBehaviour {
  
         DoctorEvents.Instance.GameOver += OnGameOver;
 		DoctorEvents.Instance.GameWon += OnGameWon;
-        DoctorEvents.Instance.patientNeedsCutOpen += OnCutPatientOpenEvent;
-        DoctorEvents.Instance.patientDoneCutOpen += OnCutPatientOpenEnded;
-        DoctorEvents.Instance.patientNeedsPullOutStick += OnPullOutStickEvent;
-        DoctorEvents.Instance.patientDonePullOutStick += OnPullOutStickEnded;
-        DoctorEvents.Instance.patientNeedsStitches += OnStitchesEvent;
-        DoctorEvents.Instance.patientDoneStitches += OnStitchesEnded;
-        DoctorEvents.Instance.patientNeedsBloodSoak += OnBloodSoakEvent;
-        DoctorEvents.Instance.patientDoneBloodSoak += OnBloodSoakEnded;
 	}
 	
 	// Update is called once per frame
@@ -97,43 +84,6 @@ public class LevelUserInterface : MonoBehaviour {
         gameWonPanel.SetActive(true);
     }
 
-    // Game recipes
-
-    void OnCutPatientOpenEvent(float duration) {
-        recipeMessagePanel.SetActive(true);
-        recipeMessage.text = scalpelMessage;
-    }
-
-    void OnCutPatientOpenEnded(float duration) {
-        recipeMessagePanel.SetActive(false);
-    }
-
-    void OnPullOutStickEvent(float duration) {
-        recipeMessagePanel.SetActive(true);
-        recipeMessage.text = forecepsMessage;
-    }
-
-    void OnPullOutStickEnded(float duration) {
-        recipeMessagePanel.SetActive(false);
-    }
-    
-    void OnStitchesEvent(float duration) {
-        recipeMessagePanel.SetActive(true);
-        recipeMessage.text = sutuersMessage;
-    }
-
-    void OnStitchesEnded(float duration) {
-        recipeMessagePanel.SetActive(false);
-    }
-
-    void OnBloodSoakEvent(float duration) {
-        recipeMessagePanel.SetActive(true);
-        recipeMessage.text = gauzeMessage;
-    }
-
-    void OnBloodSoakEnded(float duration) {
-        recipeMessagePanel.SetActive(false);
-    }
 
  
 

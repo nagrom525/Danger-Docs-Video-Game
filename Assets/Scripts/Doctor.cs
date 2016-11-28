@@ -19,6 +19,7 @@ public class Doctor : MonoBehaviour {
 	private GameObject last_interactive_obj;
 	private GameObject current_interactive_obj;
 	private Material original_go_material;
+	private Vector3 checkOffset;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -51,6 +52,9 @@ public class Doctor : MonoBehaviour {
 		if (currentTool == null) {
 			highlightNearestInteractiveObject ();
 		}
+
+		// Update checkOffset
+		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f) + (Vector3.down * 4f);
 	}
 
 	// Please forgive me. I tried to make this intelligable.
@@ -70,7 +74,6 @@ public class Doctor : MonoBehaviour {
 
 			}
 			if (current_interactive_obj != null) {
-				print (current_interactive_obj);
 				// Highlight the current object ...
 				// ... and save its material
 				Renderer rend = current_interactive_obj.GetComponentInChildren<Renderer> ();
@@ -139,6 +142,8 @@ public class Doctor : MonoBehaviour {
 
 			// If there is a nearby tool, equip it.
 			if (nearestTool != null) {
+
+
 				// Possible Bug: Must be passed by reference? Or are game objects
 				// sufficiently unique.
 				equipTool (nearestTool);
@@ -156,6 +161,7 @@ public class Doctor : MonoBehaviour {
 			// Add constraints
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 			rb.useGravity = false;
+			rb.isKinematic = true;
 		}
 	}
 
@@ -165,6 +171,7 @@ public class Doctor : MonoBehaviour {
 			// Remove Constraints
 			rb.constraints = RigidbodyConstraints.None;
 			rb.useGravity = true;
+			rb.isKinematic = false;
 		}
 		currentTool.transform.parent = null;
 		currentTool = null;
@@ -222,6 +229,17 @@ public class Doctor : MonoBehaviour {
 	// interactiable accepts the interaction message and acts on it only if
 	// it is valid.
 	public void OnInteractionButtonPressed() {
+
+		// TODO: Move this
+		if (currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+			WaterBucket wb = currentTool as WaterBucket;
+			if (wb.hasWater) {
+				putOutFire (wb);
+			}
+		}
+
+		// If near patient, use tool on patient.
+		
 		// Whether you are currently interacting or not,
 		// we'll want the nearest interactable.
 
@@ -272,6 +290,29 @@ public class Doctor : MonoBehaviour {
 		}
 
 		return nearestInteractable;
+	}
+	
+	public void putOutFire(WaterBucket wb) {
+		// Check for fires in target area.
+		Vector3 sphereOrigin = pos + checkOffset;
+		Collider[] cols = Physics.OverlapSphere(sphereOrigin, wb.splashRadius);
+		Debug.DrawRay (pos, checkOffset, Color.red, 0.2f);
+
+		// Destroy fires.
+		for (int i = 0; i < cols.Length; i++) {
+			if (cols[i].GetComponentInChildren<Flame>()) {
+				Destroy(cols[i].gameObject);
+			}
+		}
+	}
+
+	public void washHands(float washRate) {
+		dirtLevel -= washRate;
+		if (dirtLevel <= 0f) {
+			dirtLevel = 0f;
+		}
+		displayWashingMeter ();
+		print ("dirtLevel ::" + dirtLevel);
 	}
 
 	public void displayWashingMeter() {

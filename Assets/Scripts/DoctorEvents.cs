@@ -38,6 +38,8 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onPatientCriticalEventStart;
     public DoctorEvent onPatientCriticalEventEnded;
 
+    // -- Patient Dead Events -- // 
+
     // -- Game over event -- //
     public DoctorEvent GameOver;
     // -- Game won -- //

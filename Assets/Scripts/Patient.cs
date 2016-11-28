@@ -227,7 +227,7 @@ public class Patient : Interactable {
 
             // if in critical state sound heart monitor on each heart beat //
             if (ShouldSoundMonitorBeep(critical_state)) {
-                AudioControl.Instance.PlayHeartMonitorBeep();
+                //AudioControl.Instance.PlayHeartMonitorBeep();
             }
 
             // Modulate Heart rate  ///

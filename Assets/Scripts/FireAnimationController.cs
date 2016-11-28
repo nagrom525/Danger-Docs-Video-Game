@@ -8,7 +8,11 @@ public class FireAnimationController : MonoBehaviour {
 
 	public float offsetRange;
 
+	public float spawnDelay = 1.3f;
+
 	public List<GameObject> fireParticles = new List<GameObject>();
+
+	public Material[] flameColors;
 
 	void CreateFire()
 	{
@@ -21,6 +25,23 @@ public class FireAnimationController : MonoBehaviour {
 
 	}
 
+
+	public Material GetHotColor()
+	{
+		return flameColors[0];
+	}
+
+	public Material GetHotterColor()
+	{
+		return flameColors[1];
+	}
+
+	public Material GetHottestColor()
+	{
+		return flameColors[2];
+	}
+
+
 	void OffsetParticle(Transform t)
 	{
 		Vector3 origin = t.localPosition;
@@ -31,7 +52,7 @@ public class FireAnimationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating("CreateFire", .1f, .5f);
+		InvokeRepeating("CreateFire", .1f, spawnDelay);
 	}
 	
 	// Update is called once per frame
