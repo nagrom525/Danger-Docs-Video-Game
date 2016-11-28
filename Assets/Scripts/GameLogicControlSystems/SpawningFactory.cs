@@ -25,8 +25,6 @@ public class SpawningFactory : MonoBehaviour {
     public float minimumDelayBetweenRaccoons = 4.0f;
     private float lastRaccoon = 0.0f;
 
-
-
     // -- general values --//
     private float lastSecond = 0.0f;
 
@@ -73,9 +71,23 @@ public class SpawningFactory : MonoBehaviour {
         if (timeToCheck && ((Time.time - lastRaccoon) > minimumDelayBetweenRaccoons) && ShouldSpawn(probOfRaccoon)) {
             DoctorEvents.Instance.InformRacconAttack(0);
             lastRaccoon = Time.time;
-            // raccon spawning code
+			// raccon spawning code
+			SpawnRaccoon();
+			SpawnRaccoon();
+			SpawnRaccoon();
+
         }
     }
+
+	void SpawnRaccoon() {
+		float ang = Random.value * 360;
+		Vector3 pos = new Vector3(0f,0f,0f);
+		float radius = 45f;
+		pos.x = radius * Mathf.Sin(ang * Mathf.Deg2Rad);
+		pos.z = radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+		GameObject coon = (GameObject)Instantiate(raccoonPrefab);
+		coon.transform.position = pos;
+	}
 
     private void OnFirePutOut(float duration) {
         fire = false;
