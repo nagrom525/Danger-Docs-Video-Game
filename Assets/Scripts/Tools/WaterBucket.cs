@@ -7,6 +7,7 @@ public class WaterBucket : Tool {
 	}
 
 	private float waterLevel;
+	public GameObject water;
 	public float splashRadius;
 	
 	public override ToolType GetToolType() {
@@ -17,6 +18,9 @@ public class WaterBucket : Tool {
 		waterLevel = 0f;
 		splashRadius = 4f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
+
+		//water = transform.GetChild(2).gameObject;
+		water.SetActive(false);
 	}
 
 	public void gainWater(float waterGainRate) {
@@ -24,11 +28,13 @@ public class WaterBucket : Tool {
 		waterLevel += waterGainRate;
 		if (waterLevel > 1.0f) {
 			waterLevel = 1.0f;
+			water.SetActive(true);
 		}
 	}
 
 	public void pourWater() {
 		waterLevel = 0f;
+		water.SetActive(false);
 	}
 
 
