@@ -64,12 +64,16 @@ public class DoctorInputController : MonoBehaviour
             //playerRenderer.material.color = Color.white;
         }
 
-        // Rotate target object with both sticks and d-pad.
-
-        var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
-        //transform.Translate(direction);
-        doctor.OnJoystickMovement(direction);
-
-        transform.LookAt(transform.position + direction);
+		// If no input detected on the joysticks, set velocity to 0.
+		if (inputDevice.Direction.X == 0f && inputDevice.Direction.Y == 0f) {
+			Rigidbody rb = doctor.GetComponentInChildren<Rigidbody> ();
+			rb.velocity = Vector3.zero;
+		} else {
+			// Rotate target object with both sticks and d-pad.
+			var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
+			//transform.Translate(direction);
+			doctor.OnJoystickMovement(direction);
+			transform.LookAt(transform.position + direction);
+		}
     }
 }
