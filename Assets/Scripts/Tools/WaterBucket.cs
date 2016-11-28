@@ -21,28 +21,30 @@ public class WaterBucket : Tool {
 		splashRadius = 5f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 		ps = transform.GetComponentInChildren<ParticleSystem> ();
-		ps.Stop ();
+	}
 
-		//water = transform.GetChild(2).gameObject;
-		water.SetActive(false);
+	void Update() {
+		updateGraphics ();
 	}
 
 	public void gainWater(float waterGainRate) {
-		print("We've gained water!");
 		waterLevel += waterGainRate;
-		if (waterLevel > 1.0f) {
-			waterLevel = 1.0f;
-			ps.Play ();
-			water.SetActive(true);
-		}
 	}
 
 	public void pourWater() {
 		waterLevel = 0f;
-		ps.Stop ();
-		water.SetActive(false);
 	}
 
+
+	public void updateGraphics () {
+		if (hasWater) {
+			ps.Play ();
+			water.SetActive (true);
+		} else {
+			ps.Stop ();
+			water.SetActive(false);
+		}
+	}
 
 	public override void OnDoctorInitatedInteracting() {
 		return;
