@@ -147,6 +147,7 @@ public class Doctor : MonoBehaviour {
 				// Possible Bug: Must be passed by reference? Or are game objects
 				// sufficiently unique.
 				equipTool (nearestTool);
+                nearestTool.OnDoctorInitatedInteracting();
 			}
 		}
 	}
