@@ -352,7 +352,7 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[0]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[0].position;
+		go.transform.position = toolSpawnPoints[0].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.GAUZE;
 	}
 
@@ -360,7 +360,7 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[1]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[1].position;
+		go.transform.position = toolSpawnPoints[1].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.SUTURE;
 	}
 
@@ -368,7 +368,7 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[2]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[2].position;
+		go.transform.position = toolSpawnPoints[2].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.CANISTER;
 	}
 
@@ -376,7 +376,7 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[3]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[3].position;
+		go.transform.position = toolSpawnPoints[3].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.DEFIBULATOR;
 	}
 
@@ -385,7 +385,7 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[4]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[4].position;
+		go.transform.position = toolSpawnPoints[4].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.SCALPEL;
 	}
 
@@ -393,7 +393,12 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		var go = (GameObject)Instantiate(parachutePrefab, toolSpawnPoints[5]);
 		go.transform.parent = null;
-		go.transform.position = toolSpawnPoints[5].position;
+		go.transform.position = toolSpawnPoints[5].position + RandomSpawnOffset();
 		go.GetComponent<ToolDrop>().type = Tool.ToolType.BUCKET;
+	}
+
+	Vector3 RandomSpawnOffset()
+	{
+		return new Vector3(UnityEngine.Random.Range(-3f, 3f), 0f, UnityEngine.Random.Range(-3f, 3f));
 	}
 }

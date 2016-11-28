@@ -28,7 +28,7 @@ public class Raccoon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentState = RaccoonState.Searching;
-
+		GetNearestTool();
 		leavingTarget = transform.position;
 		InvokeRepeating("GetNearestTool", .1f, .2f);
 	}
@@ -117,6 +117,10 @@ public class Raccoon : MonoBehaviour {
 				PickupTool(closestPickup.GetComponent<Tool>());
 				currentState = RaccoonState.HoldingPickup;
 			}
+		}
+		else
+		{
+			currentState = RaccoonState.Leaving;
 		}
 	}
 
