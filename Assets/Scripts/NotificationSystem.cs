@@ -233,7 +233,7 @@ public class NotificationSystem : MonoBehaviour {
             instanceRectTransform.anchorMin = new Vector2(0.0f, 1.0f);
             instanceRectTransform.anchorMax = new Vector2(0.0f, 1.0f);
             instanceRectTransform.pivot = new Vector2(0.5f, 0.5f);
-            instanceRectTransform.anchoredPosition = firstNotificationLoc;
+            instanceRectTransform.anchoredPosition = new Vector2(getStartXFromIndex(currentNotificationIndex), firstNotificationLoc.y);
 
             NotificationInstances[typeToAdd] = instanceToAdd;
 
@@ -268,25 +268,25 @@ public class NotificationSystem : MonoBehaviour {
     // moves all the notification instances to the right (inclusive) of index
     // in the active notification list by xToMove offset
     private void moveAllToRightOfIndex(int index, float xToMoveTotal, float t) {
-        //for(int i = index; i < activeNotifications.Count; ++i) {
-        //    GameObject instance = NotificationInstances[activeNotifications[i]] as GameObject;
-        //    Vector3 currPos = instance.GetComponent<RectTransform>().position;
-        //    float startXPos = getStartXFromIndex(i);
-        //    instance.GetComponent<RectTransform>().position = new Vector3(Mathfx.Hermite(startXPos, startXPos + xToMoveTotal, t), currPos.y, currPos.z);
-        //}
+        for (int i = index; i < activeNotifications.Count; ++i) {
+            GameObject instance = NotificationInstances[activeNotifications[i]] as GameObject;
+            Vector3 currPos = instance.GetComponent<RectTransform>().anchoredPosition;
+            float startXPos = getStartXFromIndex(i);
+            instance.GetComponent<RectTransform>().anchoredPosition = new Vector3(Mathfx.Hermite(startXPos, startXPos + xToMoveTotal, t), currPos.y, currPos.z);
+        }
     }
 
     private void moveNotificationByYOffset(GameObject notification, float yToMoveTotal, float t) {
-        //Vector3 currPos = notification.GetComponent<RectTransform>().position;
-        //float startPositionY = GetComponent<RectTransform>().position.y + startYOffset;
-        //notification.GetComponent<RectTransform>().position = new Vector3(currPos.x, Mathfx.Berp(startPositionY, startPositionY + yToMoveTotal, t), currPos.z);
+        Vector3 currPos = notification.GetComponent<RectTransform>().anchoredPosition;
+        float startPositionY = GetComponent<RectTransform>().anchoredPosition.y + startYOffset;
+        notification.GetComponent<RectTransform>().anchoredPosition = new Vector3(currPos.x, Mathfx.Berp(startPositionY, startPositionY + yToMoveTotal, t), currPos.z);
     }
 
     // gets the original start position based on the index
     private float getStartXFromIndex(int i) {
-        float paddingComponent = notificationPadding * (i + 1);
-        float notificationComponent = (notificationRadius * 2) * (i + 1);
-        return paddingComponent + notificationComponent;
+        float paddingComponent = notificationPadding * i;
+        float notificationComponent = (notificationRadius * 2) * i;
+        return firstNotificationLoc.x + paddingComponent + notificationComponent;
     }
 
     private float tForState() {
