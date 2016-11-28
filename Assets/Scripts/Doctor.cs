@@ -142,6 +142,8 @@ public class Doctor : MonoBehaviour {
 
 			// If there is a nearby tool, equip it.
 			if (nearestTool != null) {
+
+
 				// Possible Bug: Must be passed by reference? Or are game objects
 				// sufficiently unique.
 				equipTool (nearestTool);
@@ -159,6 +161,7 @@ public class Doctor : MonoBehaviour {
 			// Add constraints
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 			rb.useGravity = false;
+			rb.isKinematic = true;
 		}
 	}
 
@@ -168,6 +171,7 @@ public class Doctor : MonoBehaviour {
 			// Remove Constraints
 			rb.constraints = RigidbodyConstraints.None;
 			rb.useGravity = true;
+			rb.isKinematic = false;
 		}
 		currentTool.transform.parent = null;
 		currentTool = null;
