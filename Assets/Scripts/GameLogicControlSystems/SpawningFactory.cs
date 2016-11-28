@@ -76,7 +76,7 @@ public class SpawningFactory : MonoBehaviour {
 			// raccon spawning code
 			SpawnRaccoon();
 			SpawnRaccoon();
-			SpawnRaccoon();
+			//SpawnRaccoon();
 
         }
     }
