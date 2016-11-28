@@ -45,6 +45,8 @@ public class NotificationSystem : MonoBehaviour {
         // Register environement events -- //
         DoctorEvents.Instance.onFire += OnFire;
         DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
+        DoctorEvents.Instance.onAnestheticMachineLow += OnAnestheticMachineLow;
+        DoctorEvents.Instance.onAnestheticMachineReturned += OnAnestheticMachineReturned;
 
 	}
 	
@@ -163,6 +165,14 @@ public class NotificationSystem : MonoBehaviour {
 
     private void OnFirePutOut(float duration) {
         removeNotification(NotificationType.BUCKET);
+    }
+
+    private void OnAnestheticMachineLow(float precentLeft) {
+        addNotification(NotificationType.ANESTHETIC);
+    }
+
+    private void OnAnestheticMachineReturned(float precentLeft) {
+        removeNotification(NotificationType.ANESTHETIC);
     }
 
     private GameObject retriveNotificatioinPrefab(NotificationType notificationType) {
