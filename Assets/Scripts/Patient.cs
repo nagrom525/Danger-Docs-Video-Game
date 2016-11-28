@@ -345,7 +345,6 @@ public class Patient : Interactable {
 	public override bool DocterIniatesInteracting(Doctor interactingDoctor)
 	{
 		interactingDoctor.currentTool.OnDoctorInitatedInteracting();
-
 		Debug.Log(interactingDoctor.name + " initiated patient interaction.");
         actionButtonCanvas.SetActive(false);
 		return true;
