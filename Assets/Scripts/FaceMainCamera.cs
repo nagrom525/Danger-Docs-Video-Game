@@ -12,5 +12,6 @@ public class FaceMainCamera : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.LookAt(targetCamera.transform.position);
+		transform.RotateAround (transform.position, transform.up, 180f);
 	}
 }
