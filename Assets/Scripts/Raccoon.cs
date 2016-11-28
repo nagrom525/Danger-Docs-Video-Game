@@ -14,6 +14,8 @@ public class Raccoon : MonoBehaviour {
 	public float 	idleSpeed;
 	public float 	leavingSpeed;
 
+	public Vector3 leavingTarget;
+
 	public Transform 		pickupAnchor;
 	public Transform 		dropAnchor;
 	public GameObject 		closestPickup;
@@ -27,8 +29,8 @@ public class Raccoon : MonoBehaviour {
 	void Start () {
 		currentState = RaccoonState.Searching;
 
-
-		GetNearestTool();
+		leavingTarget = transform.position;
+		InvokeRepeating("GetNearestTool", .1f, .5f);
 	}
 
 	public void GetNearestTool()
@@ -42,7 +44,7 @@ public class Raccoon : MonoBehaviour {
 		foreach (GameObject t in tools)
 		{
 			float dist = Vector3.Distance(t.transform.position, currentPos);
-			if (dist < minDist)
+			if (dist < minDist && t.transform.parent == null)
 			{
 				tMin = t.transform;
 				minDist = dist;
@@ -71,10 +73,17 @@ public class Raccoon : MonoBehaviour {
 
 	void PickupTool(Tool tool)
 	{
-		tool.enabled = false;
-		tool.transform.position = pickupAnchor.position;
-		tool.gameObject.transform.parent = this.gameObject.transform;
-		currentPickup = tool;
+
+		if (tool.transform.parent == null)
+		{
+			tool.enabled = false;
+			tool.transform.position = pickupAnchor.position;
+			tool.gameObject.transform.parent = this.gameObject.transform;
+			if (tool.GetComponent<Rigidbody>())
+				tool.GetComponent<Rigidbody>().isKinematic = true;
+			currentPickup = tool;
+		}
+
 	}
 
 	void DropTool()
@@ -84,35 +93,55 @@ public class Raccoon : MonoBehaviour {
 			currentPickup.transform.parent = null;
 			currentPickup.transform.position = dropAnchor.position;
 			currentPickup.enabled = true;
+			if (currentPickup.GetComponent<Rigidbody>())
+				currentPickup.GetComponent<Rigidbody>().isKinematic = false;
 			currentPickup = null;
 		}
 	}
 
 	void Searching()
 	{
-		//get nearest pickup
-
-		//look at it
-		transform.LookAt(closestPickup.transform);
-		//move to it
-		transform.position = Vector3.Lerp(transform.position, closestPickup.transform.position,pickupSpeed*Time.deltaTime);
-
-		//when in range, switch state to holding pickup
-		if (Vector3.Distance(transform.position, closestPickup.transform.position) < 2f)
+		if (closestPickup)
 		{
-			currentState = RaccoonState.HoldingPickup;
-		}
+			//look at it
+			transform.LookAt(closestPickup.transform);
+			//move to it
+			transform.position = Vector3.Lerp(transform.position, closestPickup.transform.position, pickupSpeed * Time.deltaTime);
 
+			//when in range, switch state to holding pickup
+			if (Vector3.Distance(transform.position, closestPickup.transform.position) < 2f)
+			{
+				Debug.Log("Raccoon is picking up tool!");
+				PickupTool(closestPickup.GetComponent<Tool>());
+				currentState = RaccoonState.HoldingPickup;
+			}
+		}
 	}
+
 	void HoldingPickup()
 	{
 		//run to a point away from Doctors
-		//
+		if (currentPickup == null)
+		{
+			currentState = RaccoonState.Searching;
+		}
+		//look at it
+		transform.LookAt(leavingTarget);
+		//move to it
+		transform.position = Vector3.Lerp(transform.position, leavingTarget, leavingSpeed * Time.deltaTime);
+		if (Vector3.Distance(transform.position, leavingTarget) < 1f)
+		{
+			//notify event manager that tool was stolen
+			//destroy self
+		}
 
 	}
 	void Leaving()
 	{
-		//
+		//look at it
+		transform.LookAt(leavingTarget);
+		//move to it
+		transform.position = Vector3.Lerp(transform.position, leavingTarget, leavingSpeed * Time.deltaTime);
 	}
 }
 
