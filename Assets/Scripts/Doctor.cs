@@ -310,6 +310,13 @@ public class Doctor : MonoBehaviour {
 
 		// Deplete water level
 		wb.pourWater();
+		// Make hands dirty! Hard coding full dirt levels
+		makeDirty(1f);
+	}
+
+	public void makeDirty (float addedDirt) {
+		dirtLevel += addedDirt;
+		displayWashingMeter ();
 	}
 
 	public void washHands(float washRate) {

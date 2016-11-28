@@ -62,6 +62,8 @@ public class Raccoon : MonoBehaviour {
 			Debug.Log("Raccoon collided with doctor!");
 			DropTool();
 			currentState = RaccoonState.Leaving;
+			(other.gameObject as Doctor).makeDirty(1f);
+			(other.gameObject as Doctor).displayWashingMeter();
 		}
 	}
 
