@@ -54,7 +54,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 		// Update checkOffset
-		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f);
+		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f) + (Vector3.down * 4f);
 	}
 
 	// Please forgive me. I tried to make this intelligable.
