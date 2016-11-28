@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class FaceMainCamera : MonoBehaviour {
-	public Camera targetCamera;
+	private Camera targetCamera;
 
 	// Use this for initialization
 	void Start () {
