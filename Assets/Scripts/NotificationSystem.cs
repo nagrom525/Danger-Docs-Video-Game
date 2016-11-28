@@ -25,13 +25,13 @@ public class NotificationSystem : MonoBehaviour {
     private List<NotificationType> activeNotifications = new List<NotificationType>(8);
     private Queue<NotificationType> toRemoveBuffer = new Queue<NotificationType>();
     private Queue<NotificationType> toAddBuffer = new Queue<NotificationType>();
-    private Hashtable NotificationInstances;
-    private Hashtable NotificationStartPositions;
+    private Hashtable NotificationInstances = new Hashtable();
+    private Hashtable NotificationStartPositions = new Hashtable();
 
     private NotificationType currentNotification = NotificationType.NULL;
     private int currentNotificationIndex = -1;
     private float stateStartTime = 0.0f;
-    private float timeToMoveNotification = 1.0f;
+    public float timeToMoveNotification = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -268,17 +268,20 @@ public class NotificationSystem : MonoBehaviour {
     // moves all the notification instances to the right (inclusive) of index
     // in the active notification list by xToMove offset
     private void moveAllToRightOfIndex(int index, float xToMoveTotal, float t) {
-        for (int i = index; i < activeNotifications.Count; ++i) {
-            GameObject instance = NotificationInstances[activeNotifications[i]] as GameObject;
-            Vector3 currPos = instance.GetComponent<RectTransform>().anchoredPosition;
-            float startXPos = getStartXFromIndex(i);
-            instance.GetComponent<RectTransform>().anchoredPosition = new Vector3(Mathfx.Hermite(startXPos, startXPos + xToMoveTotal, t), currPos.y, currPos.z);
+        if(NotificationInstances.Count != 0) {
+            for (int i = index; i < activeNotifications.Count; ++i) {
+                GameObject instance = NotificationInstances[activeNotifications[i]] as GameObject;
+                Vector3 currPos = instance.GetComponent<RectTransform>().anchoredPosition;
+                float startXPos = getStartXFromIndex(i);
+                instance.GetComponent<RectTransform>().anchoredPosition = new Vector3(Mathfx.Hermite(startXPos, startXPos + xToMoveTotal, t), currPos.y, currPos.z);
+            }
         }
     }
 
     private void moveNotificationByYOffset(GameObject notification, float yToMoveTotal, float t) {
         Vector3 currPos = notification.GetComponent<RectTransform>().anchoredPosition;
-        float startPositionY = GetComponent<RectTransform>().anchoredPosition.y + startYOffset;
+        print(current_state);
+        float startPositionY = firstNotificationLoc.y + startYOffset;
         notification.GetComponent<RectTransform>().anchoredPosition = new Vector3(currPos.x, Mathfx.Berp(startPositionY, startPositionY + yToMoveTotal, t), currPos.z);
     }
 
