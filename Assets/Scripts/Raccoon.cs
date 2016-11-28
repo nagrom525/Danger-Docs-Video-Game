@@ -55,6 +55,16 @@ public class Raccoon : MonoBehaviour {
 	}
 
 
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			Debug.Log("Raccoon collided with doctor!");
+			DropTool();
+			currentState = RaccoonState.Leaving;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		switch (currentState)
@@ -73,15 +83,21 @@ public class Raccoon : MonoBehaviour {
 
 	void PickupTool(Tool tool)
 	{
-
-		if (tool.transform.parent == null)
+		if (tool != null)
 		{
-			tool.enabled = false;
-			tool.transform.position = pickupAnchor.position;
-			tool.gameObject.transform.parent = this.gameObject.transform;
-			if (tool.GetComponent<Rigidbody>())
-				tool.GetComponent<Rigidbody>().isKinematic = true;
-			currentPickup = tool;
+			if (tool.transform.parent == null)
+			{
+				tool.enabled = false;
+				tool.transform.position = pickupAnchor.position;
+				tool.gameObject.transform.parent = this.gameObject.transform;
+				if (tool.GetComponent<Rigidbody>())
+					tool.GetComponent<Rigidbody>().isKinematic = true;
+				currentPickup = tool;
+			}
+		}
+		else
+		{
+			currentState = RaccoonState.Leaving;
 		}
 
 	}
@@ -129,7 +145,7 @@ public class Raccoon : MonoBehaviour {
 		//run to a point away from Doctors
 		if (currentPickup == null)
 		{
-			currentState = RaccoonState.Searching;
+			currentState = RaccoonState.Leaving;
 		}
 		//look at it
 		transform.LookAt(leavingTarget);
