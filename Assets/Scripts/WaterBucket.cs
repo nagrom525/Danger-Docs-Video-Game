@@ -7,6 +7,7 @@ public class WaterBucket : Tool {
 	}
 
 	private float waterLevel;
+	public float splashRadius;
 	
 	public override ToolType GetToolType() {
 		return Tool.ToolType.BUCKET;
@@ -14,6 +15,7 @@ public class WaterBucket : Tool {
 
 	void Start() {
 		waterLevel = 0f;
+		splashRadius = 4f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 	}
 

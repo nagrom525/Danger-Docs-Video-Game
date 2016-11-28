@@ -5,7 +5,7 @@ public class WashingStation : Interactable {
 
 	// Washes hands 10% at a time.
 	private float washRate = 0.1f;
-	private float bucketFillRate = 0.5f;
+	private float bucketFillRate = 1f;
 
 	// Washing station requires that you have no tool in hand.
 	protected override Tool.ToolType RequiredToolType() {
@@ -21,6 +21,7 @@ public class WashingStation : Interactable {
 			return false;
 		} else if (interactingDoctor.currentTool.GetToolType() == Tool.ToolType.BUCKET) {
 			(interactingDoctor.currentTool as WaterBucket).gainWater(bucketFillRate);
+			return false;
 		}
 
 

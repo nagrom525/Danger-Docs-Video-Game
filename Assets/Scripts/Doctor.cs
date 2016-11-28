@@ -19,6 +19,7 @@ public class Doctor : MonoBehaviour {
 	private GameObject last_interactive_obj;
 	private GameObject current_interactive_obj;
 	private Material original_go_material;
+	private Vector3 checkOffset;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -51,6 +52,9 @@ public class Doctor : MonoBehaviour {
 		if (currentTool == null) {
 			highlightNearestInteractiveObject ();
 		}
+
+		// Update checkOffset
+		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f);
 	}
 
 	// Please forgive me. I tried to make this intelligable.
@@ -221,6 +225,18 @@ public class Doctor : MonoBehaviour {
 	// interactiable accepts the interaction message and acts on it only if
 	// it is valid.
 	public void OnInteractionButtonPressed() {
+
+		// TODO: Move this
+		if (currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+			print("Putting out a fire");
+			putOutFire();
+			return;
+//			if (wb.hasWater) {
+//				print("Putting out a fire");
+//				putOutFire();
+//			}
+		}
+
 		// If near patient, use tool on patient.
 		
 		// Whether you are currently interacting or not,
@@ -242,13 +258,6 @@ public class Doctor : MonoBehaviour {
 			// IF THE ACTION REQUIRES SUSTAINED INTERACTION OVER A TIME PERIOD.
 			// Otherwise, false.
 			interacting = nearbyInteractable.DocterIniatesInteracting (this);
-		}
-
-		if (currentTool.GetToolType() == Tool.ToolType.BUCKET) {
-			if ((currentTool as WaterBucket).hasWater) {
-				print("Putting out a fire");
-				putOutFire();
-			}
 		}
 	}
 
@@ -283,13 +292,18 @@ public class Doctor : MonoBehaviour {
 	}
 	
 	public void putOutFire() {
-		// Check for fires in target area.
-		Collider[] cols = Physics.OverlapBox(pos, transform.localPosition + Vector3.fwd * interactionRange / 2f);
-		print("cols :: " + cols);
-		// Destroy fires.
-		for (int i = 0; i < cols.Length; i++) {
-			if (cols[i].gameObject is Flame) {
-				Destroy(cols[i]);
+		WaterBucket wb = (currentTool as WaterBucket);
+		if (wb.hasWater) {
+			// Check for fires in target area.
+			Vector3 sphereOrigin = pos + checkOffset;
+			Collider[] cols = Physics.OverlapSphere(sphereOrigin, wb.splashRadius);
+			Debug.DrawRay (pos, checkOffset, Color.red, 0.2f);
+
+			// Destroy fires.
+			for (int i = 0; i < cols.Length; i++) {
+				if (cols[i].GetComponentInChildren<Flame>()) {
+					Destroy(cols[i].gameObject);
+				}
 			}
 		}
 	}
