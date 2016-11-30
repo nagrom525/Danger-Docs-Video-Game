@@ -50,15 +50,11 @@ public class SurgeryToolInput : MonoBehaviour {
 		if (inputDevice.Action1.WasPressed)
 		{
 			//A
-
-			//Pickup
-			surgeryTool.Activate();
 		}
 		else
 		if (inputDevice.Action1.WasReleased)
 		{
 			//A
-			surgeryTool.Deactivate();
 		}
 		else
 		if (inputDevice.Action2)
@@ -72,6 +68,13 @@ public class SurgeryToolInput : MonoBehaviour {
 			//X
 
 			//Interact
+			surgeryTool.Activate();
+		}
+        else
+		if (inputDevice.Action3.WasReleased)
+		{
+			//X
+			surgeryTool.Deactivate();
 		}
 		else
 		if (inputDevice.Action4)
