@@ -37,7 +37,7 @@ public class Patient : Interactable {
     public float critical_bpm = 170.0f;
     public float about_to_die_bpm = 210.0f;
     public float hear_rate_modulation_range = 20.0f;
-    public float time_to_slow_bpm = 5.0f;
+    public float time_to_slow_bpm = 1.0f;
 
     public GameObject actionButtonCanvas;
 
@@ -98,6 +98,7 @@ public class Patient : Interactable {
 		DoctorEvents.Instance.patientNeedsBloodSoak += OnSoakBlood;
         DoctorEvents.Instance.onToolPickedUpForSurgery += OnToolForSurgeryPickedUp;
         DoctorEvents.Instance.onToolDroppedForSurgery += OnToolForSurgeryDropped;
+        DoctorEvents.Instance.GameOver += OnPatientDead;
 	}
 
     // Update is called once per frame
@@ -189,22 +190,6 @@ public class Patient : Interactable {
         }
     }
 
-    public void OnPatientCriticalEventStart(float duration) {
-        critical_state = PatientCriticalState.SPEEDING_UP;
-        this.criticalCycleDuration = duration;
-        timeStartCritialState = Time.time;
-        timeToEndCurrentCriticalState = timeStartCritialState + (duration / 3.0f);
-        //flash_timer = duration;
-        LevelUserInterface.UI.UpdateBpm(bpm);
-    }
-
-    public void OnPatientCriticalEventEnded(float duration) {
-        critical_state = PatientCriticalState.FINISHING;
-        timeStartCritialState = Time.time;
-        timeToEndCurrentCriticalState = timeStartCritialState + time_to_slow_bpm;
-        defibulationsRemaining = 0;
-    }
-
 
     private void CriticalStateFinishingUpdate() {
         float t = (Time.time - timeStartCritialState) / (timeToEndCurrentCriticalState - timeStartCritialState);
@@ -250,7 +235,7 @@ public class Patient : Interactable {
                     break;
             }
             // randomly increment or decrement heart rate within window (add a modulation to the heart rate
-            if(critical_state != PatientCriticalState.DEAD) {
+            if (critical_state != PatientCriticalState.DEAD) {
                 float randomValue = Random.value;
                 if (0.333333f > randomValue) {
                     if (bpm > (referenceHeartRate - hear_rate_modulation_range)) {
@@ -265,6 +250,30 @@ public class Patient : Interactable {
                 }
             }
         }
+    }
+
+    public void OnPatientCriticalEventStart(float duration) {
+        critical_state = PatientCriticalState.SPEEDING_UP;
+        this.criticalCycleDuration = duration;
+        timeStartCriticalCycle = Time.time;
+        timeStartCritialState = timeStartCriticalCycle;
+        timeToEndCurrentCriticalState = timeStartCritialState + (duration / 3.0f);
+        //flash_timer = duration;
+        LevelUserInterface.UI.UpdateBpm(bpm);
+    }
+
+    public void OnPatientCriticalEventEnded(float duration) {
+        critical_state = PatientCriticalState.FINISHING;
+        timeStartCritialState = Time.time;
+        timeToEndCurrentCriticalState = timeStartCritialState + time_to_slow_bpm;
+        adverted_bpm = bpm;
+        defibulationsRemaining = 0;
+    }
+
+    public void OnPatientDead(float druation) {
+        critical_state = PatientCriticalState.DEAD;
+        bpm = 0;
+        defibulationsRemaining = 0;
     }
 
 

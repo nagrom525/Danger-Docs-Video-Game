@@ -124,6 +124,9 @@ public class DoctorEvents : MonoBehaviour {
             case GeneralGameState.PATIENT_CRITICAL:
                 GamePatientCriticalUpdate();
                 break;
+            case GeneralGameState.POST_PATIENT_CRITICAL:
+                GamePostPatientCriticalUpdate();
+                break;
         }
 
         switch (inRecipePostState) {
@@ -189,8 +192,8 @@ public class DoctorEvents : MonoBehaviour {
     }
 
 
-    private void HeartPostAttackUpdate() {
-        if ((Time.time - patientCriticalStartTime) > patientCriticalDuration) {
+    private void GamePostPatientCriticalUpdate() {
+        if ((Time.time - patientCriticalStartTime) > postPatientCriticalDuration) {
             gameState = gameState = GeneralGameState.NORMAL;
             lastTimePatientCriticalChecked = Time.time;
             patientCriticalStartTime = Time.time;
@@ -210,10 +213,12 @@ public class DoctorEvents : MonoBehaviour {
 
     // called when the game is supposed to end (either prematurly or due to the players running out of time due to anesthetic)
     // gives the player one more chance by sending the patient into critical
+    // will do nothing if the patient was just critical or is still critical
     public void InducePatientCritical() {
 		Debug.Log("InducePatientCritical()");
-		if(gameState != GeneralGameState.PATIENT_CRITICAL) {
+		if(gameState == GeneralGameState.NORMAL) {
             gameState = GeneralGameState.PATIENT_CRITICAL;
+            patientCriticalStartTime = Time.time;
             if (onPatientCriticalEventStart != null) {
                 onPatientCriticalEventStart(patientCriticalDuration);
             }
@@ -232,6 +237,7 @@ public class DoctorEvents : MonoBehaviour {
     // if the player critical state isn't adverted
     public void InducePatientDeath() {
         Time.timeScale = 0.0f;
+        gameState = GeneralGameState.GAME_OVER;
         if (GameOver != null) {
             GameOver(0.0f);
         }
