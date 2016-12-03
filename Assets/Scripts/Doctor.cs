@@ -15,9 +15,9 @@ public class Doctor : MonoBehaviour {
 	public Image washingMeter;
 	private int washingMeterFramesRemaining;
 
-	public Material highlightedMaterial;
-	private GameObject last_interactive_obj;
-	private GameObject current_interactive_obj;
+	public Material hlMat;
+	private Tool last_hl_tool;
+	private Tool current_hl_tool;
 	private Material original_go_material;
 	private Vector3 checkOffset;
 
@@ -48,43 +48,46 @@ public class Doctor : MonoBehaviour {
 			hideWashingMeter ();
 		}
 
-		// If we aren't currently holding a tool ...
-		if (currentTool == null) {
-			highlightNearestInteractiveObject ();
-		}
+
+		// Update highlighting system
+		updateHighlights();
 
 		// Update checkOffset
 		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f) + (Vector3.down * 4f);
 	}
 
+	// Currently just handles highlighting tools.
+	private void updateHighlights() {
+		// If currently using a tool
+		if (currentTool != null && currentTool.highlighted) {
+			// make sure the tool isn't highlighted.
+			currentTool.disableHighlighting();
+			return;
+		}
+		highlightNearestTool();
+	}
+
 	// Please forgive me. I tried to make this intelligable.
-	private void highlightNearestInteractiveObject() {
+	private void highlightNearestTool() {
 		// Get nearest GO
-		current_interactive_obj = getNearestInteractive (interactionRange);
+		current_hl_tool = getNearestToolInRange (interactionRange);
 
 		// If nearest object hasn't changed, there is nothing to be done
-		if (current_interactive_obj == last_interactive_obj) {
+		if (current_hl_tool == last_hl_tool) {
 			return;
 		} else {
 			// current_interactive_obj is new or null
 			// Change old object back to original material.
-			if (last_interactive_obj != null) {
+			if (last_hl_tool != null) {
 				// remove Highlighting
-				last_interactive_obj.GetComponentInChildren<Renderer> ().material = original_go_material;
-
+				last_hl_tool.disableHighlighting();
 			}
-			if (current_interactive_obj != null) {
-				// Highlight the current object ...
-				// ... and save its material
-				Renderer rend = current_interactive_obj.GetComponentInChildren<Renderer> ();
-				if (rend != null)
-				{
-					original_go_material = rend.material;
-					rend.material = highlightedMaterial;
-				}
+			if (current_hl_tool != null) {
+				// Highlight the current object
+				current_hl_tool.enableHighlighting(hlMat);
 			}
 			// We then save current object as last object.
-			last_interactive_obj = current_interactive_obj;
+			last_hl_tool = current_hl_tool;
 		}
 	}
 
@@ -152,6 +155,8 @@ public class Doctor : MonoBehaviour {
 			}
 		}
 	}
+
+	
 
 	private void equipTool(Tool tool) {
 		currentTool = tool;
