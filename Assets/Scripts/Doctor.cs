@@ -206,10 +206,13 @@ public class Doctor : MonoBehaviour {
 	}
 
 
-	// Basically the same as getNearestInteractableInRange
+	// GameObject with tag "Tool" must have tool component.
 	private Tool getNearestToolInRange (float range) {
-		GameObject toolGO = getNearestGOwithTag(interactionRange, "Tool");
-		return toolGO.gameObject.GetComponentInChildren<Tool>();
+		GameObject toolGO = getNearestGOwithTag(range, "Tool");
+		if (toolGO) {
+			return toolGO.gameObject.GetComponentInChildren<Tool>();
+		}
+		return null;
 	}
 
 	// When the interaction button is pressed, we must check to see if there
