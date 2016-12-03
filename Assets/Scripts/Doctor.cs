@@ -73,25 +73,26 @@ public class Doctor : MonoBehaviour {
 		current_hl_tool = getNearestToolInRange (interactionRange);
 
 		// If nearest object hasn't changed, there is nothing to be done
-		if (current_hl_tool == last_hl_tool) {
+		if (current_hl_tool == last_hl_tool)
+		{
 			return;
-		} else {
-			// current_interactive_obj is new or null
-			// Change old object back to original material.
-			if (last_hl_tool != null) {
-				// remove Highlighting
-				last_hl_tool.disableHighlighting();
-			}
-			if (current_hl_tool != null) {
-				// Highlight the current object
-				current_hl_tool.enableHighlighting(hlMat);
-			}
-			// We then save current object as last object.
-			last_hl_tool = current_hl_tool;
 		}
+	
+		// current_interactive_obj is new or null
+		// Change old object back to original material.
+		if (last_hl_tool != null) {
+			// remove Highlighting
+			last_hl_tool.disableHighlighting();
+		}
+		if (current_hl_tool != null) {
+			// Highlight the current object
+			current_hl_tool.enableHighlighting(hlMat);
+		}
+		// We then save current object as last object.
+		last_hl_tool = current_hl_tool;
 	}
 
-	private GameObject getNearestInteractive(float range) {
+	private GameObject getNearestGOwithTag(float range, string datTag) { 
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
 		Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
@@ -100,16 +101,18 @@ public class Doctor : MonoBehaviour {
 		GameObject nearestObj = null;
 		float runningNearestObj = Mathf.Infinity;
 
-		for (int i = 0; i < objectsInRange.Length; i++) {
-			if (objectsInRange [i].gameObject.CompareTag ("Tool")
-				|| objectsInRange [i].gameObject.CompareTag ("Interactable")) {
+		for (int i = 0; i < objectsInRange.Length; i++)
+		{
+			if (objectsInRange[i].gameObject.CompareTag(datTag))
+			{
 				Vector3 objPos = objectsInRange[i].transform.position;
 				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
 				float sqrDist = (objPos - pos).sqrMagnitude;
 
 				// If this interactable is closer than the current closest, update
 				// to this one.
-				if (runningNearestObj > sqrDist) { 
+				if (runningNearestObj > sqrDist)
+				{
 					runningNearestObj = sqrDist;
 					nearestObj = objectsInRange[i].gameObject;
 				}
@@ -145,10 +148,6 @@ public class Doctor : MonoBehaviour {
 
 			// If there is a nearby tool, equip it.
 			if (nearestTool != null) {
-
-
-				// Possible Bug: Must be passed by reference? Or are game objects
-				// sufficiently unique.
 				equipTool (nearestTool);
                 nearestTool.OnDoctorInitatedInteracting();
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType());
@@ -185,52 +184,32 @@ public class Doctor : MonoBehaviour {
 		currentTool = null;
 	}
 
+	private bool patientInRange() {
+		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
+		if (distToPatient <= interactionRange)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public void useCurrentToolOnPatient() {
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
-		// if in range of patient ...
-		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
-		if (distToPatient <= interactionRange) {
-			if (dirtyHands && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
-                // Signal this somehow.
-                DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
-	
-                return;
-            }
-            // Use current tool on patient.
-            DoctorEvents.Instance.InformSurgeryOperation();
-            Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
-		}
+		if (dirtyHands && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
+            // Signal this somehow.
+            DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
+            return;
+        }
+        // Use current tool on patient.
+        DoctorEvents.Instance.InformSurgeryOperation();
+        Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
 
 
 	// Basically the same as getNearestInteractableInRange
 	private Tool getNearestToolInRange (float range) {
-
-		// Get the interactables. Eventually, this should take a third agrument
-		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] toolsInRange = Physics.OverlapSphere(pos, range);
-
-		// Setup linear search for nearest interactable.
-		Tool nearestTool = null;
-		float runningNearestTool = Mathf.Infinity;
-
-		for (int i = 0; i < toolsInRange.Length; i++) {
-			if (toolsInRange [i].gameObject.CompareTag ("Tool")) {
-				// Get Vector3 between pos of doctor and interactable
-				Vector3 toolPos = toolsInRange[i].transform.position;
-				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
-				float sqrDist = (toolPos - pos).sqrMagnitude;
-
-				// If this interactable is closer than the current closest, update
-				// to this one.
-				if (runningNearestTool > sqrDist) { 
-					runningNearestTool = sqrDist;
-					nearestTool = toolsInRange[i].gameObject.GetComponent<Tool>();
-				}
-			}
-		}
-
-		return nearestTool;
+		GameObject toolGO = getNearestGOwithTag(interactionRange, "Tool");
+		return toolGO.gameObject.GetComponentInChildren<Tool>();
 	}
 
 	// When the interaction button is pressed, we must check to see if there
@@ -241,21 +220,25 @@ public class Doctor : MonoBehaviour {
 	public void OnInteractionButtonPressed() {
 
 		// TODO: Move this
-		if (currentTool && currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+		if (currentTool && currentTool.GetToolType() == Tool.ToolType.BUCKET)
+		{
 			WaterBucket wb = currentTool as WaterBucket;
-			if (wb.hasWater) {
-				putOutFire (wb);
+			if (wb.hasWater)
+			{
+				putOutFire(wb);
 			}
 		}
 
 		// If near patient, use tool on patient.
-		
+		if (patientInRange())
+		{
+			useCurrentToolOnPatient();
+		}
+
 		// Whether you are currently interacting or not,
 		// we'll want the nearest interactable.
 
-		// May return null.
 		Interactable nearbyInteractable = getNearestInteractableInRange(interactionRange);
-		print ("nearbyInteractable ::" + nearbyInteractable);
 
 		// If there is a nearby interactable, then begin interacting!
 		if (nearbyInteractable != null) {
