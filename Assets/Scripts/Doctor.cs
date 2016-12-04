@@ -15,11 +15,12 @@ public class Doctor : MonoBehaviour {
 	public Image washingMeter;
 	private int washingMeterFramesRemaining;
 
-	public Material highlightedMaterial;
-	private GameObject last_interactive_obj;
-	private GameObject current_interactive_obj;
+	public Material hlMat;
+	private Tool last_hl_tool;
+	private Tool current_hl_tool;
 	private Material original_go_material;
 	private Vector3 checkOffset;
+	private Vector3 interactionBoxHalfExtents;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -38,6 +39,7 @@ public class Doctor : MonoBehaviour {
 		washingMeter = transform.GetComponentInChildren<Image> ();
 		washingMeter.enabled = false;
 		washingMeterFramesRemaining = 0;
+		interactionBoxHalfExtents = Vector3.one * 2.2f;
 	}
 	
 	// Update is called once per frame
@@ -48,65 +50,74 @@ public class Doctor : MonoBehaviour {
 			hideWashingMeter ();
 		}
 
-		// If we aren't currently holding a tool ...
-		if (currentTool == null) {
-			highlightNearestInteractiveObject ();
-		}
+
+		// Update highlighting system
+		updateHighlights();
 
 		// Update checkOffset
-		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f) + (Vector3.down * 4f);
+		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 2.5f) + (Vector3.down * 4.5f);
+	}
+
+	// Currently just handles highlighting tools.
+	private void updateHighlights() {
+		// If currently using a tool
+		if (currentTool != null && currentTool.highlighted) {
+			// make sure the tool isn't highlighted.
+			currentTool.disableHighlighting();
+			return;
+		}
+		highlightNearestTool();
 	}
 
 	// Please forgive me. I tried to make this intelligable.
-	private void highlightNearestInteractiveObject() {
+	private void highlightNearestTool() {
 		// Get nearest GO
-		current_interactive_obj = getNearestInteractive (interactionRange);
+		current_hl_tool = getNearestToolInRange (interactionRange);
 
 		// If nearest object hasn't changed, there is nothing to be done
-		if (current_interactive_obj == last_interactive_obj) {
+		if (current_hl_tool == last_hl_tool)
+		{
 			return;
-		} else {
-			// current_interactive_obj is new or null
-			// Change old object back to original material.
-			if (last_interactive_obj != null) {
-				// remove Highlighting
-				last_interactive_obj.GetComponentInChildren<Renderer> ().material = original_go_material;
-
-			}
-			if (current_interactive_obj != null) {
-				// Highlight the current object ...
-				// ... and save its material
-				Renderer rend = current_interactive_obj.GetComponentInChildren<Renderer> ();
-				if (rend != null)
-				{
-					original_go_material = rend.material;
-					rend.material = highlightedMaterial;
-				}
-			}
-			// We then save current object as last object.
-			last_interactive_obj = current_interactive_obj;
 		}
+	
+		// current_interactive_obj is new or null
+		// Change old object back to original material.
+		if (last_hl_tool != null) {
+			// remove Highlighting
+			last_hl_tool.disableHighlighting();
+		}
+		if (current_hl_tool != null) {
+			// Highlight the current object
+			current_hl_tool.enableHighlighting(hlMat);
+		}
+		// We then save current object as last object.
+		last_hl_tool = current_hl_tool;
 	}
 
-	private GameObject getNearestInteractive(float range) {
+	private GameObject getNearestGOwithTag(float range, string datTag) {
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
+		//Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
+		Collider[] objectsInRange = Physics.OverlapBox(pos + checkOffset, interactionBoxHalfExtents);
+		Debug.DrawRay(pos, checkOffset);
+		Debug.DrawRay(pos + checkOffset, Vector3.down);
 
 		// Setup linear search for nearest interactable.
 		GameObject nearestObj = null;
 		float runningNearestObj = Mathf.Infinity;
 
-		for (int i = 0; i < objectsInRange.Length; i++) {
-			if (objectsInRange [i].gameObject.CompareTag ("Tool")
-				|| objectsInRange [i].gameObject.CompareTag ("Interactable")) {
+		for (int i = 0; i < objectsInRange.Length; i++)
+		{
+			if (objectsInRange[i].gameObject.CompareTag(datTag))
+			{
 				Vector3 objPos = objectsInRange[i].transform.position;
 				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
 				float sqrDist = (objPos - pos).sqrMagnitude;
 
 				// If this interactable is closer than the current closest, update
 				// to this one.
-				if (runningNearestObj > sqrDist) { 
+				if (runningNearestObj > sqrDist)
+				{
 					runningNearestObj = sqrDist;
 					nearestObj = objectsInRange[i].gameObject;
 				}
@@ -142,16 +153,14 @@ public class Doctor : MonoBehaviour {
 
 			// If there is a nearby tool, equip it.
 			if (nearestTool != null) {
-
-
-				// Possible Bug: Must be passed by reference? Or are game objects
-				// sufficiently unique.
 				equipTool (nearestTool);
                 nearestTool.OnDoctorInitatedInteracting();
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType());
 			}
 		}
 	}
+
+	
 
 	private void equipTool(Tool tool) {
 		currentTool = tool;
@@ -180,52 +189,35 @@ public class Doctor : MonoBehaviour {
 		currentTool = null;
 	}
 
+	private bool patientInRange() {
+		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
+		if (distToPatient <= interactionRange)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public void useCurrentToolOnPatient() {
 		Debug.Log("useCurrentToolOnPatient triggered\nCurrent Tool: " + currentTool);
-		// if in range of patient ...
-		float distToPatient = (Patient.Instance.transform.position - pos).magnitude;
-		if (distToPatient <= interactionRange) {
-			if (dirtyHands && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
-                // Signal this somehow.
-                DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
-	
-                return;
-            }
-            // Use current tool on patient.
-            DoctorEvents.Instance.InformSurgeryOperation();
-            Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
-		}
+		if (dirtyHands && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
+            // Signal this somehow.
+            DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
+            return;
+        }
+        // Use current tool on patient.
+        DoctorEvents.Instance.InformSurgeryOperation();
+        Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
 
 
-	// Basically the same as getNearestInteractableInRange
+	// GameObject with tag "Tool" must have tool component.
 	private Tool getNearestToolInRange (float range) {
-
-		// Get the interactables. Eventually, this should take a third agrument
-		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] toolsInRange = Physics.OverlapSphere(pos, range);
-
-		// Setup linear search for nearest interactable.
-		Tool nearestTool = null;
-		float runningNearestTool = Mathf.Infinity;
-
-		for (int i = 0; i < toolsInRange.Length; i++) {
-			if (toolsInRange [i].gameObject.CompareTag ("Tool")) {
-				// Get Vector3 between pos of doctor and interactable
-				Vector3 toolPos = toolsInRange[i].transform.position;
-				// Comparing sqrDistances is faster than mag. Avoids sqrt op.
-				float sqrDist = (toolPos - pos).sqrMagnitude;
-
-				// If this interactable is closer than the current closest, update
-				// to this one.
-				if (runningNearestTool > sqrDist) { 
-					runningNearestTool = sqrDist;
-					nearestTool = toolsInRange[i].gameObject.GetComponent<Tool>();
-				}
-			}
+		GameObject toolGO = getNearestGOwithTag(range, "Tool");
+		if (toolGO) {
+			return toolGO.gameObject.GetComponentInChildren<Tool>();
 		}
-
-		return nearestTool;
+		return null;
 	}
 
 	// When the interaction button is pressed, we must check to see if there
@@ -236,21 +228,27 @@ public class Doctor : MonoBehaviour {
 	public void OnInteractionButtonPressed() {
 
 		// TODO: Move this
-		if (currentTool && currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+		if (currentTool && currentTool.GetToolType() == Tool.ToolType.BUCKET)
+		{
 			WaterBucket wb = currentTool as WaterBucket;
-			if (wb.hasWater) {
-				putOutFire (wb);
+			if (wb.hasWater)
+			{
+				putOutFire(wb);
+				// Return so that it doesn't also fill the water bucket up.
+				return;
 			}
 		}
 
 		// If near patient, use tool on patient.
-		
+		if (patientInRange())
+		{
+			useCurrentToolOnPatient();
+		}
+
 		// Whether you are currently interacting or not,
 		// we'll want the nearest interactable.
 
-		// May return null.
 		Interactable nearbyInteractable = getNearestInteractableInRange(interactionRange);
-		print ("nearbyInteractable ::" + nearbyInteractable);
 
 		// If there is a nearby interactable, then begin interacting!
 		if (nearbyInteractable != null) {
@@ -272,7 +270,7 @@ public class Doctor : MonoBehaviour {
 
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] interactablesInRange = Physics.OverlapSphere(pos, range);
+		Collider[] interactablesInRange = Physics.OverlapBox(pos + checkOffset, interactionBoxHalfExtents);
 		
 		// Setup linear search for nearest interactable.
 		Interactable nearestInteractable = null;
