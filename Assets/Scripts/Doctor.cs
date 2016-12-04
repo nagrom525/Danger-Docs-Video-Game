@@ -25,6 +25,9 @@ public class Doctor : MonoBehaviour {
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
 
+	public int onFireFrames;
+	private Vector3 onFireDir;
+
 	// Use this for initialization
 	void Start () {
 		currentTool = null;
@@ -40,6 +43,8 @@ public class Doctor : MonoBehaviour {
 		washingMeter.enabled = false;
 		washingMeterFramesRemaining = 0;
 		interactionBoxHalfExtents = Vector3.one * 2.2f;
+
+		onFireFrames = 0;
 	}
 	
 	// Update is called once per frame
@@ -50,12 +55,25 @@ public class Doctor : MonoBehaviour {
 			hideWashingMeter ();
 		}
 
+		if (onFireFrames > 0) {
+			//Vector3 xzNoise = 
+			print(onFireDir);
+			OnJoystickMovement(onFireDir); // todo: add xz plane noise when running back.
+			//displayFireEffects();
+			onFireFrames--;
+		}
+
 
 		// Update highlighting system
 		updateHighlights();
 
 		// Update checkOffset
 		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 2.5f) + (Vector3.down * 4.5f);
+	}
+
+	public void ignite(Vector3 dir) {
+		onFireFrames = 120;
+		onFireDir = new Vector3(dir.x, 0f, dir.z) * 2f;
 	}
 
 	// Currently just handles highlighting tools.
@@ -131,11 +149,6 @@ public class Doctor : MonoBehaviour {
 	// Moves the player according to the Vector3
 	// recieved from input manager.
 	public void OnJoystickMovement(Vector3 joystickVec) {
-		// If interacting, doctor can't move.
-		if (interacting) {
-			print ("currentlying interacting. Cancel interaction with action button");
-			return;
-		}
 		// We should never be moving in the z direction.
 		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.
