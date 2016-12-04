@@ -28,6 +28,7 @@ public class LevelUserInterface : MonoBehaviour {
 	private Vector2 end;
 	private float timedelta1 = 1.0f;
 	private float timedelta2 = 0.2f;
+    private float bpm;
 
 
 
@@ -86,8 +87,7 @@ public class LevelUserInterface : MonoBehaviour {
 	}
 
 	public void UpdateBpm(float bpm) {
-		heartrate.text = Mathf.RoundToInt(bpm).ToString () + " BPM";
-		//print (heartrate.text);
+        this.bpm = bpm;
 	}
 
     void StatusIndicatorActiveUpdate() {
