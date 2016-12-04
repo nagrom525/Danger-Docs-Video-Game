@@ -38,6 +38,7 @@ public class DoctorEvents : MonoBehaviour {
     // -- Patient Critical Events -- //
     public DoctorEvent onPatientCriticalEventStart;
     public DoctorEvent onPatientCriticalEventEnded;
+    public DoctorEvent onPatientAboutToDie;
 
     // -- Patient Dead Events -- // 
 
@@ -415,6 +416,12 @@ public class DoctorEvents : MonoBehaviour {
         --numDoctorsOperating;
         if ((numDoctorsOperating == 0) && (onSurgeryOperationLeftLast != null)) {
             onSurgeryOperationLeftLast(0);
+        }
+    }
+
+    public void InformPatientAboutToDie(float timeLeftToLive) {
+        if(onPatientAboutToDie != null) {
+            onPatientAboutToDie(timeLeftToLive);
         }
     }
 

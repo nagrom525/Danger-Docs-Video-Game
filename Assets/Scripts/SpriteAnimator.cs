@@ -63,4 +63,9 @@ public class SpriteAnimator : MonoBehaviour {
     private float getAnimationTime() {
         return ((float)frameSprites.Length) / fps;
     }
+
+    public void updateFrames(string framesName) {
+        spriteSheetName = framesName;
+        frameSprites = Resources.LoadAll<Sprite>(spriteSheetName);
+    }
 }

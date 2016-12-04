@@ -158,6 +158,7 @@ public class Patient : Interactable {
         if (t >= 1.0f) {
             critical_state = PatientCriticalState.SPEEDING_UP_TO_DIE;
             timeStartCritialState = Time.time;
+            DoctorEvents.Instance.InformPatientAboutToDie(criticalCycleDuration - (Time.time - timeStartCriticalCycle));
             print("Heart State Speeding up to die Time: " + Time.time);
             timeToEndCurrentCriticalState = timeStartCritialState + (criticalCycleDuration / 3.0f);
         } 
