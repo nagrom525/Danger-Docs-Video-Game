@@ -15,6 +15,7 @@ public class LevelUserInterface : MonoBehaviour {
     public float statusIndicatorBlinkDuration = 1.0f;
     public GameObject gameLostPanel;
     public GameObject backButton;
+    public GameObject heartMonitor;
 
     private StatusIndicatorState status_state = StatusIndicatorState.INACTIVE;
     private float statusIndicatorStart = 0.0f;
@@ -29,6 +30,7 @@ public class LevelUserInterface : MonoBehaviour {
 	private float timedelta1 = 1.0f;
 	private float timedelta2 = 0.2f;
     private float bpm;
+    private SpriteAnimator heartRateAnimator;
 
 
 
@@ -40,6 +42,7 @@ public class LevelUserInterface : MonoBehaviour {
 		} else {
 			Debug.Log("UI only be set once");
 		}
+        heartRateAnimator = heartMonitor.GetComponent<SpriteAnimator>();
 	}
 	// Use this for initialization
 	void Start () {
@@ -83,12 +86,25 @@ public class LevelUserInterface : MonoBehaviour {
 			}
 
 		}
+
+        HeartMonitorUpdate();
 	
 	}
+
+    // -- HEART MONITOR -- //
+    private void HeartMonitorUpdate() {
+        heartRateAnimator.fps = BpmToFps(bpm);
+    }
+
+    private int BpmToFps(float bpm) {
+        return Mathf.RoundToInt((bpm / 60.0f) * heartRateAnimator.numFrames);
+    }
 
 	public void UpdateBpm(float bpm) {
         this.bpm = bpm;
 	}
+
+    // -- // -- //
 
     void StatusIndicatorActiveUpdate() {
         if((Time.time - statusIndicatorStart) > statusIndicatorDuration) {

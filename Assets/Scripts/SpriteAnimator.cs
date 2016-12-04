@@ -9,6 +9,12 @@ public class SpriteAnimator : MonoBehaviour {
     public bool reverseAnimation = false;
     public bool loop = false;
     public bool active = false;
+    public int numFrames {
+        get {
+            return frameSprites.Length;
+        }
+        private set { }
+    }
 
     private Sprite[] frameSprites;
     private Image imageRenderer;
