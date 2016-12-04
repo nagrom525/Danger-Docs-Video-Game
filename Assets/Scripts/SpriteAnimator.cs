@@ -11,7 +11,12 @@ public class SpriteAnimator : MonoBehaviour {
     public bool active = false;
     public int numFrames {
         get {
-            return frameSprites.Length;
+            if(frameSprites != null) {
+                return frameSprites.Length;
+            } else {
+                return 0;
+            }
+            
         }
         private set { }
     }
