@@ -1,0 +1,1252 @@
+fileFormatVersion: 2
+guid: 3a1ce60532b17cd4a8fda8c75b5b5cae
+timeCreated: 1480885225
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: HeartMonitorAnimationFrames_0
+    21300002: HeartMonitorAnimationFrames_1
+    21300004: HeartMonitorAnimationFrames_2
+    21300006: HeartMonitorAnimationFrames_3
+    21300008: HeartMonitorAnimationFrames_4
+    21300010: HeartMonitorAnimationFrames_5
+    21300012: HeartMonitorAnimationFrames_6
+    21300014: HeartMonitorAnimationFrames_7
+    21300016: HeartMonitorAnimationFrames_8
+    21300018: HeartMonitorAnimationFrames_9
+    21300020: HeartMonitorAnimationFrames_10
+    21300022: HeartMonitorAnimationFrames_11
+    21300024: HeartMonitorAnimationFrames_12
+    21300026: HeartMonitorAnimationFrames_13
+    21300028: HeartMonitorAnimationFrames_14
+    21300030: HeartMonitorAnimationFrames_15
+    21300032: HeartMonitorAnimationFrames_16
+    21300034: HeartMonitorAnimationFrames_17
+    21300036: HeartMonitorAnimationFrames_18
+    21300038: HeartMonitorAnimationFrames_19
+    21300040: HeartMonitorAnimationFrames_20
+    21300042: HeartMonitorAnimationFrames_21
+    21300044: HeartMonitorAnimationFrames_22
+    21300046: HeartMonitorAnimationFrames_23
+    21300048: HeartMonitorAnimationFrames_24
+    21300050: HeartMonitorAnimationFrames_25
+    21300052: HeartMonitorAnimationFrames_26
+    21300054: HeartMonitorAnimationFrames_27
+    21300056: HeartMonitorAnimationFrames_28
+    21300058: HeartMonitorAnimationFrames_29
+    21300060: HeartMonitorAnimationFrames_30
+    21300062: HeartMonitorAnimationFrames_31
+    21300064: HeartMonitorAnimationFrames_32
+    21300066: HeartMonitorAnimationFrames_33
+    21300068: HeartMonitorAnimationFrames_34
+    21300070: HeartMonitorAnimationFrames_35
+    21300072: HeartMonitorAnimationFrames_36
+    21300074: HeartMonitorAnimationFrames_37
+    21300076: HeartMonitorAnimationFrames_38
+    21300078: HeartMonitorAnimationFrames_39
+    21300080: HeartMonitorAnimationFrames_40
+    21300082: HeartMonitorAnimationFrames_41
+    21300084: HeartMonitorAnimationFrames_42
+    21300086: HeartMonitorAnimationFrames_43
+    21300088: HeartMonitorAnimationFrames_44
+    21300090: HeartMonitorAnimationFrames_45
+    21300092: HeartMonitorAnimationFrames_46
+    21300094: HeartMonitorAnimationFrames_47
+    21300096: HeartMonitorAnimationFrames_48
+    21300098: HeartMonitorAnimationFrames_49
+    21300100: HeartMonitorAnimationFrames_50
+    21300102: HeartMonitorAnimationFrames_51
+    21300104: HeartMonitorAnimationFrames_52
+    21300106: HeartMonitorAnimationFrames_53
+    21300108: HeartMonitorAnimationFrames_54
+    21300110: HeartMonitorAnimationFrames_55
+    21300112: HeartMonitorAnimationFrames_56
+    21300114: HeartMonitorAnimationFrames_57
+    21300116: HeartMonitorAnimationFrames_58
+    21300118: HeartMonitorAnimationFrames_59
+    21300120: HeartMonitorAnimationFrames_60
+    21300122: HeartMonitorAnimationFrames_61
+    21300124: HeartMonitorAnimationFrames_62
+    21300126: HeartMonitorAnimationFrames_63
+    21300128: HeartMonitorAnimationFrames_64
+    21300130: HeartMonitorAnimationFrames_65
+    21300132: HeartMonitorAnimationFrames_66
+    21300134: HeartMonitorAnimationFrames_67
+    21300136: HeartMonitorAnimationFrames_68
+    21300138: HeartMonitorAnimationFrames_69
+    21300140: HeartMonitorAnimationFrames_70
+    21300142: HeartMonitorAnimationFrames_71
+    21300144: HeartMonitorAnimationFrames_72
+    21300146: HeartMonitorAnimationFrames_73
+    21300148: HeartMonitorAnimationFrames_74
+    21300150: HeartMonitorAnimationFrames_75
+    21300152: HeartMonitorAnimationFrames_76
+    21300154: HeartMonitorAnimationFrames_77
+    21300156: HeartMonitorAnimationFrames_78
+    21300158: HeartMonitorAnimationFrames_79
+    21300160: HeartMonitorAnimationFrames_80
+    21300162: HeartMonitorAnimationFrames_81
+    21300164: HeartMonitorAnimationFrames_82
+    21300166: HeartMonitorAnimationFrames_83
+    21300168: HeartMonitorAnimationFrames_84
+    21300170: HeartMonitorAnimationFrames_85
+    21300172: HeartMonitorAnimationFrames_86
+    21300174: HeartMonitorAnimationFrames_87
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_1
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_2
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_3
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_4
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_5
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_6
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_7
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 9180
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_9
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_10
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_11
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_12
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_13
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_14
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_15
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 8262
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_17
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_18
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_19
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_20
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_21
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_22
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_23
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 7344
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_25
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_26
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_27
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_28
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_29
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_30
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_31
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 6426
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_33
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_34
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_35
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_36
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_37
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_38
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_39
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 5508
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_41
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_42
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_43
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_44
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_45
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_46
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_47
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 4590
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_49
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_50
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_51
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_52
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_53
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_54
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_55
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 3672
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_57
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_58
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_59
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_60
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_61
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_62
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_63
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 2754
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_65
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_66
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_67
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_68
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_69
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_70
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_71
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 1836
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_72
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_73
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_74
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_75
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_76
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_77
+      rect:
+        serializedVersion: 2
+        x: 5940
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_78
+      rect:
+        serializedVersion: 2
+        x: 7128
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_79
+      rect:
+        serializedVersion: 2
+        x: 8316
+        y: 918
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_80
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_81
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 0
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_82
+      rect:
+        serializedVersion: 2
+        x: 2376
+        y: 0
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_83
+      rect:
+        serializedVersion: 2
+        x: 3564
+        y: 0
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HeartMonitorAnimationFrames_84
+      rect:
+        serializedVersion: 2
+        x: 4752
+        y: 0
+        width: 1188
+        height: 918
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
