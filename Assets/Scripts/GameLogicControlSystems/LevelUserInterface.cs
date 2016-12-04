@@ -20,6 +20,15 @@ public class LevelUserInterface : MonoBehaviour {
     private float statusIndicatorStart = 0.0f;
     private float statusIndicatorLastBlinkTime = 0.0f;
 
+	public Image heartrateindicator;
+	public bool heartrateindictatoron = false;
+	private float t = 0f;
+	private bool done;
+	private Vector2 start;
+	private Vector2 end;
+	private float timedelta1 = 1.0f;
+	private float timedelta2 = 0.2f;
+
 
 
     public static LevelUserInterface UI;
@@ -35,6 +44,7 @@ public class LevelUserInterface : MonoBehaviour {
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
         DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEvent;
+		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
  
         DoctorEvents.Instance.GameOver += OnGameOver;
 		DoctorEvents.Instance.GameWon += OnGameWon;
@@ -47,6 +57,31 @@ public class LevelUserInterface : MonoBehaviour {
         if(status_state != StatusIndicatorState.INACTIVE) {
             StatusIndicatorActiveUpdate();
         }
+		if (heartrateindictatoron && !done)
+		{
+			float timeSinceStarted = Time.time - t;
+			float percentageComplete = timeSinceStarted / timedelta2;
+			heartrateindicator.rectTransform.sizeDelta = Vector2.Lerp(start, end, percentageComplete);
+
+			if (percentageComplete >= 1.0f)
+			{
+				t = Time.time;
+				done = true;
+			}
+		}
+		if (heartrateindictatoron && done)
+		{
+			float timeSinceStarted1 = Time.time - t;
+			float percentageComplete1 = timeSinceStarted1 / timedelta1;
+			heartrateindicator.rectTransform.sizeDelta = Vector2.Lerp(end, start, percentageComplete1);
+
+			if (percentageComplete1 >= 1.0f)
+			{
+				done = false;
+				t = Time.time;
+			}
+
+		}
 	
 	}
 
@@ -74,8 +109,19 @@ public class LevelUserInterface : MonoBehaviour {
 
     // -- Listen for events -- //
     void OnPatientCriticalEvent(float duration) {
-       
+		heartrateindicator.gameObject.SetActive(true);
+		heartrateindictatoron = true;
+		done = false;
+		t = Time.time;
+		print(start);
+		print(end);
+		start = heartrateindicator.rectTransform.sizeDelta;
+		end = heartrateindicator.rectTransform.sizeDelta - new Vector2(900.0f, 600f);
     }
+	void OnPatientCriticalEventEnded(float duration)
+	{
+		heartrateindictatoron = false;
+	}
 
     void OnGameOver(float duration) {
         gameLostPanel.SetActive(true);
