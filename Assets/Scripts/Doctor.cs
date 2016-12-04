@@ -21,6 +21,7 @@ public class Doctor : MonoBehaviour {
 	private Material original_go_material;
 	private Vector3 checkOffset;
 	private Vector3 interactionBoxHalfExtents;
+	private float drSpeedCoefficient;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -45,6 +46,8 @@ public class Doctor : MonoBehaviour {
 		interactionBoxHalfExtents = Vector3.one * 2.2f;
 
 		onFireFrames = 0;
+
+		drSpeedCoefficient = 10f;
 	}
 	
 	// Update is called once per frame
@@ -55,15 +58,6 @@ public class Doctor : MonoBehaviour {
 			hideWashingMeter ();
 		}
 
-		if (onFireFrames > 0) {
-			//Vector3 xzNoise = 
-			print(onFireDir);
-			OnJoystickMovement(onFireDir); // todo: add xz plane noise when running back.
-			//displayFireEffects();
-			onFireFrames--;
-		}
-
-
 		// Update highlighting system
 		updateHighlights();
 
@@ -71,9 +65,25 @@ public class Doctor : MonoBehaviour {
 		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 2.5f) + (Vector3.down * 4.5f);
 	}
 
-	public void ignite(Vector3 dir) {
-		onFireFrames = 120;
-		onFireDir = new Vector3(dir.x, 0f, dir.z) * 2f;
+	void FixedUpdate() {
+		if (onFireFrames > 0)
+		{
+			Vector3 xzNoise = new Vector3(
+				Random.Range(0.5f, 0.7f),
+				0f,
+				Random.Range(0.5f, 0.7f)
+			);
+			OnJoystickMovement(onFireDir + xzNoise); // todo: add xz plane noise when running back.
+													 //displayFireEffects();
+			onFireFrames--;
+		}
+	}
+
+	public void ignite() {
+		Vector3 dir = transform.forward * -1f;
+		print("ignited!");
+		onFireFrames = 45;
+		onFireDir = new Vector3(dir.x, 0f, dir.z).normalized;
 	}
 
 	// Currently just handles highlighting tools.
@@ -149,6 +159,8 @@ public class Doctor : MonoBehaviour {
 	// Moves the player according to the Vector3
 	// recieved from input manager.
 	public void OnJoystickMovement(Vector3 joystickVec) {
+		joystickVec *= drSpeedCoefficient;
+		transform.LookAt(transform.position + joystickVec);
 		// We should never be moving in the z direction.
 		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.

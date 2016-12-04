@@ -1,4 +1,10 @@
 Do something with the fire
 
-Keep surgery tools in range over patient.
+We need bear AI + Model
+
+We need at least one cooperative surgery
+
+Sounds effects throughout entire game.
+
+UI canvas scaling / independence.
 

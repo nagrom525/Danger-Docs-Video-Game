@@ -52,7 +52,7 @@ public class DoctorInputController : MonoBehaviour
 
             //Interact
             doctor.OnInteractionButtonPressed();
-			doctor.useCurrentToolOnPatient();
+			//doctor.useCurrentToolOnPatient();
         }
         else
         if (inputDevice.Action4)
@@ -65,14 +65,14 @@ public class DoctorInputController : MonoBehaviour
         }
 
 		// If no input detected on the joysticks, set velocity to 0.
-		if (inputDevice.Direction.X == 0f && inputDevice.Direction.Y == 0f) {
+		if (inputDevice.Direction.X < Mathf.Epsilon && inputDevice.Direction.Y < Mathf.Epsilon) {
 			Rigidbody rb = doctor.GetComponentInChildren<Rigidbody> ();
 			rb.velocity = Vector3.zero;
 		} else {
 			// Rotate target object with both sticks and d-pad.
-			var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
+			var direction = new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
 			//transform.Translate(direction);
-			if (doctor.onFireFrames == 0) {
+			if (doctor.onFireFrames <= 0) {
 				doctor.OnJoystickMovement(direction);
 				transform.LookAt(transform.position + direction);
 			}

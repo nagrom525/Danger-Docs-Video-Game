@@ -30,7 +30,7 @@ public class TempMovement : MonoBehaviour {
 			target.GetComponent<Doctor>().OnPickupButtonPressed();
 		}
 		if (Input.GetKeyDown(KeyCode.Q)) {
-			target.GetComponent<Doctor>().useCurrentToolOnPatient();
+			target.GetComponent<Doctor>().OnInteractionButtonPressed();
 		}
 	}
 }

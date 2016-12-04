@@ -203,11 +203,14 @@ public class Flame : MonoBehaviour
 		return Direction.NORTH;
 	}
 
+	// For igniting doctors.
 	void OnCollisionEnter(Collision col) {
 		GameObject go = col.gameObject;
 		if (go.CompareTag("Doctor")) {
 			Doctor thisDoc = go.GetComponent<Doctor>();
-			thisDoc.ignite(col.impulse.normalized);
+			if (thisDoc.onFireFrames <= 0) {
+				thisDoc.ignite();
+			}
 		}
 	}
 }
