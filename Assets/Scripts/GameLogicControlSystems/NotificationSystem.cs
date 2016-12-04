@@ -290,7 +290,7 @@ public class NotificationSystem : MonoBehaviour {
 
     private void moveNotificationByYOffset(GameObject notification, float yToMoveTotal, float t) {
         Vector3 currPos = notification.GetComponent<RectTransform>().anchoredPosition;
-        print(current_state);
+        //print(current_state);
         float startPositionY = firstNotificationLoc.y + startYOffset;
         notification.GetComponent<RectTransform>().anchoredPosition = new Vector3(currPos.x, Mathfx.Berp(startPositionY, startPositionY + yToMoveTotal, t), currPos.z);
     }
