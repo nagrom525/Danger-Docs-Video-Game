@@ -47,7 +47,7 @@ public class LevelUserInterface : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
-        DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEvent;
+		DoctorEvents.Instance.onPatientAboutToDie += OnPatientAboutToDie;
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
  
         DoctorEvents.Instance.GameOver += OnGameOver;
@@ -124,7 +124,7 @@ public class LevelUserInterface : MonoBehaviour {
     }
 
     // -- Listen for events -- //
-    void OnPatientCriticalEvent(float duration) {
+	void OnPatientAboutToDie(float duration) {
 		heartrateindicator.gameObject.SetActive(true);
 		heartrateindictatoron = true;
 		done = false;
