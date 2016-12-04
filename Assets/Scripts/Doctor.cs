@@ -20,6 +20,7 @@ public class Doctor : MonoBehaviour {
 	private Tool current_hl_tool;
 	private Material original_go_material;
 	private Vector3 checkOffset;
+	private Vector3 interactionBoxHalfExtents;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -38,6 +39,7 @@ public class Doctor : MonoBehaviour {
 		washingMeter = transform.GetComponentInChildren<Image> ();
 		washingMeter.enabled = false;
 		washingMeterFramesRemaining = 0;
+		interactionBoxHalfExtents = Vector3.one * 2.2f;
 	}
 	
 	// Update is called once per frame
@@ -53,7 +55,7 @@ public class Doctor : MonoBehaviour {
 		updateHighlights();
 
 		// Update checkOffset
-		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 8f) + (Vector3.down * 4f);
+		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 2.5f) + (Vector3.down * 4.5f);
 	}
 
 	// Currently just handles highlighting tools.
@@ -92,10 +94,13 @@ public class Doctor : MonoBehaviour {
 		last_hl_tool = current_hl_tool;
 	}
 
-	private GameObject getNearestGOwithTag(float range, string datTag) { 
+	private GameObject getNearestGOwithTag(float range, string datTag) {
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
+		//Collider[] objectsInRange = Physics.OverlapSphere(pos, range);
+		Collider[] objectsInRange = Physics.OverlapBox(pos + checkOffset, interactionBoxHalfExtents);
+		Debug.DrawRay(pos, checkOffset);
+		Debug.DrawRay(pos + checkOffset, Vector3.down);
 
 		// Setup linear search for nearest interactable.
 		GameObject nearestObj = null;
@@ -229,6 +234,8 @@ public class Doctor : MonoBehaviour {
 			if (wb.hasWater)
 			{
 				putOutFire(wb);
+				// Return so that it doesn't also fill the water bucket up.
+				return;
 			}
 		}
 
@@ -263,7 +270,7 @@ public class Doctor : MonoBehaviour {
 
 		// Get the interactables. Eventually, this should take a third agrument
 		// (layer mask) which ignores everything that isn't an interactable.
-		Collider[] interactablesInRange = Physics.OverlapSphere(pos, range);
+		Collider[] interactablesInRange = Physics.OverlapBox(pos + checkOffset, interactionBoxHalfExtents);
 		
 		// Setup linear search for nearest interactable.
 		Interactable nearestInteractable = null;
