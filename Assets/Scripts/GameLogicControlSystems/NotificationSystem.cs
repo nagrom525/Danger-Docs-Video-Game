@@ -11,6 +11,7 @@ public class NotificationSystem : MonoBehaviour {
     public GameObject anestheticNotificationPrefab;
     public GameObject stickPullOutNotificationPrefab;
     public GameObject bearNotificationPrefab;
+    public GameObject canvas;
     // /////////////////////////////////////////// //
     public float notificationRadius;
     public float notificationPadding = 1.0f;
@@ -237,9 +238,12 @@ public class NotificationSystem : MonoBehaviour {
 
             // instantiate object at currentNotificationIndex, and off screen
             Vector3 rectTransformPos = gameObject.GetComponent<RectTransform>().position;
-            GameObject instanceToAdd =  Instantiate(prefabToAdd, this.transform) as GameObject;
+            GameObject instanceToAdd =  Instantiate(prefabToAdd, canvas.transform) as GameObject;
             //// set up rectTransform
             RectTransform instanceRectTransform = instanceToAdd.GetComponent<RectTransform>();
+            instanceRectTransform.SetParent(canvas.transform, false);
+            instanceRectTransform.localScale = Vector3.one;
+            instanceRectTransform.localPosition = Vector3.one;
             instanceRectTransform.anchorMin = new Vector2(0.0f, 1.0f);
             instanceRectTransform.anchorMax = new Vector2(0.0f, 1.0f);
             instanceRectTransform.pivot = new Vector2(0.5f, 0.5f);
