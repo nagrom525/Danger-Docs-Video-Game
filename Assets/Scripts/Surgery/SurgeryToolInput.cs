@@ -89,9 +89,11 @@ public class SurgeryToolInput : MonoBehaviour {
 		// Rotate target object with both sticks and d-pad.
 
 		var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
+		direction = surgeryTool.transform.rotation * direction;
 		//transform.Translate(direction);
 		if (enableMovement)
+		{
 			surgeryTool.OnJoystickMovement(direction);
-
+		}
 	}
 }

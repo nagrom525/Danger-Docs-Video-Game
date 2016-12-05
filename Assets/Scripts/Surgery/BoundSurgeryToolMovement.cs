@@ -15,20 +15,32 @@ public class BoundSurgeryToolMovement : MonoBehaviour {
 	}
 
 	void Update() {
+		Vector3 p0Pos = p0.transform.localPosition;
+		Vector3 p1Pos = p1.transform.localPosition;
 
 		// We only need to worry about updating pos on the xz plane.
-		float x = Mathf.Clamp(pos.x, p0.transform.position.x, p1.transform.position.x);
-		float z = Mathf.Clamp(pos.z, p0.transform.position.z, p1.transform.position.z);
+		float x = Mathf.Clamp(
+			pos.x,
+			p1Pos.x,
+			p0Pos.x
+		);
+
+		float z = Mathf.Clamp(
+			pos.z,
+			p0Pos.z,
+			p1Pos.z
+		);
 
 		pos = new Vector3(x, pos.y, z);
+		Debug.Log("pos :: " + pos);
 	}
 
 	public Vector3 pos {
 		get {
-			return this.gameObject.transform.position;
+			return this.gameObject.transform.localPosition;
 		}
 		set {
-			this.gameObject.transform.position = value;
+			this.gameObject.transform.localPosition = value;
 		}
 	}
 }
