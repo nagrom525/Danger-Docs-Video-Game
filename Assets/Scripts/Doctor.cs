@@ -334,7 +334,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 		// Deplete water level
-		wb.pourWater();
+		wb.pourWater(transform.forward);
 		// Make hands dirty! Hard coding full dirt levels
 		makeDirty(1f);
 	}
