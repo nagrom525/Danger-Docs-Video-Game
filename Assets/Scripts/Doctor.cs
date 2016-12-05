@@ -238,8 +238,10 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
+        if(currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
+            DoctorEvents.Instance.InformSurgeryOperation();
+        }
         // Use current tool on patient.
-        DoctorEvents.Instance.InformSurgeryOperation();
         Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
 

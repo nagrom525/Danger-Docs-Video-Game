@@ -12,6 +12,7 @@ public class WashingStation : Interactable {
 
     void Start() {
         DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
+        DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashedHands;
     }
 
 	// Washing station requires that you have no tool in hand.
@@ -30,7 +31,6 @@ public class WashingStation : Interactable {
 			(interactingDoctor.currentTool as WaterBucket).gainWater(bucketFillRate);
 			return false;
 		}
-        actionButtonCanvas.SetActive(false);
 
 
 		Debug.Log("Cannot use this tool with WashingStation");
@@ -44,5 +44,9 @@ public class WashingStation : Interactable {
     private void OnDoctorNeedsToWashHands(float duration) {
         actionButtonCanvas.SetActive(true);
         actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+    }
+
+    private void OnDoctorWashedHands(float duration) {
+        actionButtonCanvas.SetActive(false);
     }
 }
