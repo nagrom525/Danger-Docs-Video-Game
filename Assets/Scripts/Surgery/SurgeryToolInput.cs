@@ -31,7 +31,7 @@ public class SurgeryToolInput : MonoBehaviour {
 		}
 	}
 
-	void ReturnControlToDoctor()
+	public void ReturnControlToDoctor()
 	{
 		//Get Doctor that initiated operation
 		GameObject doc = GameObject.Find("Doctor_" + (playerNum + 1).ToString());
@@ -41,6 +41,7 @@ public class SurgeryToolInput : MonoBehaviour {
 		}
 		//Disable their input component
 		doc.GetComponent<DoctorInputController>().enabled = true;
+        doc.GetComponent<Doctor>().informSurgeryFinished();
         DoctorEvents.Instance.InformDoctorLeftSurgeryOperaton();
 		doc.GetComponent<Doctor>().inSurgery = false;
 		Destroy(this.gameObject);
