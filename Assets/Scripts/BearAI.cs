@@ -9,6 +9,7 @@ public class BearAI : MonoBehaviour {
 	NavMeshAgent agent;
 	bool targetAcheived;
 	public GameObject Cave;
+	Vector3 startposition;
 
 	void Awake()
 	{
@@ -28,6 +29,7 @@ public class BearAI : MonoBehaviour {
 		this.agent.destination = patient.transform.position;
 		this.transform.LookAt(patient.transform.position);
 		//targetAcheived = false;
+		startposition = this.gameObject.transform.position;
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -39,7 +41,7 @@ public class BearAI : MonoBehaviour {
 		}
 		else if (other.transform.tag == "Doctor")
 		{
-			//swat away and stun
+			//if(other.gameObject.GetComponent<Doctor> ()
 		}
 		
 	}
@@ -49,6 +51,8 @@ public class BearAI : MonoBehaviour {
 		if (other.transform.tag == "Cave")
 		{
 			BearInCave();
+			this.gameObject.SetActive(false);
+			this.gameObject.transform.position = startposition;
 		}
 	}
 
