@@ -11,7 +11,9 @@ public class NotificationSystem : MonoBehaviour {
     public GameObject anestheticNotificationPrefab;
     public GameObject stickPullOutNotificationPrefab;
     public GameObject bearNotificationPrefab;
+    public GameObject washingStationNotification;
     public GameObject canvas;
+    public GameObject patient;
     // /////////////////////////////////////////// //
     public float notificationRadius;
     public float notificationPadding = 1.0f;
@@ -19,20 +21,29 @@ public class NotificationSystem : MonoBehaviour {
     public Vector2 firstNotificationLoc = new Vector2(60.0f, -60.0f);
 
     enum NotificationSystemState { SHIFTING_RIGHT, SHIFTING_LEFT, ADDING, REMOVING, STATIC}
-    public enum NotificationType { SCAPLE, SUTURE, BUCKET, ANESTHETIC, BEAR, GAUZE, STICK_PULL_OUT, NULL}
+    public enum NotificationType { SCAPLE, SUTURE, BUCKET, ANESTHETIC, BEAR, GAUZE, STICK_PULL_OUT, NULL, WASHING_HANDS}
+    enum WashingHandsTipState { FADING, APPEARING, SHOWING, GONE}
 
     private NotificationSystemState current_state = NotificationSystemState.STATIC;
+    private WashingHandsTipState washing_hands_tip_state = WashingHandsTipState.GONE;
 
     private List<NotificationType> activeNotifications = new List<NotificationType>(8);
     private Queue<NotificationType> toRemoveBuffer = new Queue<NotificationType>();
     private Queue<NotificationType> toAddBuffer = new Queue<NotificationType>();
     private Hashtable NotificationInstances = new Hashtable();
     private Hashtable NotificationStartPositions = new Hashtable();
+    private bool displayedDoctorWashingHands = false;
 
     private NotificationType currentNotification = NotificationType.NULL;
     private int currentNotificationIndex = -1;
     private float stateStartTime = 0.0f;
     public float timeToMoveNotification = 1.0f;
+
+    // -- Washing hands -- //
+    private float washingHandStateStartTime = 0.0f;
+    public GameObject washingHandToolTip;
+    public float washingHandApearDisapearDuration = 0.25f;
+    public float washingHandShowDuration = 2.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -69,6 +80,19 @@ public class NotificationSystem : MonoBehaviour {
             case NotificationSystemState.STATIC:
                 StaticUpdate();
                 break;
+        }
+
+        switch (washing_hands_tip_state) {
+            case WashingHandsTipState.APPEARING:
+                WashingHandsAppearingUpdate();
+                break;
+            case WashingHandsTipState.SHOWING:
+                WashingHandsShowingUpdate();
+                break;
+            case WashingHandsTipState.FADING:
+                WashingHandsFaddingUpdate();
+                break;
+
         }
 	}
 
@@ -133,6 +157,36 @@ public class NotificationSystem : MonoBehaviour {
         }
     }
 
+    // -- Washing Hands Update Functions -- // 
+    private void WashingHandsAppearingUpdate() {
+        float t = (Time.time - washingHandStateStartTime) / washingHandApearDisapearDuration;
+        if(t >= 1.0) {
+            washing_hands_tip_state = WashingHandsTipState.SHOWING;
+            washingHandStateStartTime = Time.time;
+            washingHandToolTip.transform.localScale = Vector3.one;
+        }
+        washingHandToolTip.transform.localScale = Vector3.one * t;
+    }
+
+    private void WashingHandsShowingUpdate() {
+        float t = (Time.time - washingHandStateStartTime) / washingHandShowDuration;
+        if(t >= 1.0f) {
+            washing_hands_tip_state = WashingHandsTipState.FADING;
+            washingHandStateStartTime = Time.time;
+        }
+    }
+
+    private void WashingHandsFaddingUpdate() {
+        float t = (Time.time - washingHandStateStartTime) / washingHandApearDisapearDuration;
+        if (t >= 1.0f) {
+            washing_hands_tip_state = WashingHandsTipState.GONE;
+            washingHandStateStartTime = Time.time;
+            washingHandToolTip.transform.localScale = Vector3.zero;
+            washingHandToolTip.SetActive(false);
+        }
+        washingHandToolTip.transform.localScale = Vector3.one * (1.0f - t);
+    }
+
     // -- MAIN SURGERY RECIEPE -- //
     private void OnPatientScaple(float duration) {
         addNotification(NotificationType.SCAPLE);
@@ -174,6 +228,27 @@ public class NotificationSystem : MonoBehaviour {
 
     private void OnAnestheticMachineReturned(float precentLeft) {
         removeNotification(NotificationType.ANESTHETIC);
+    }
+
+    private void OnDoctorNeedsToWashHands(float duration) {
+        if (!displayedDoctorWashingHands) {
+            addNotification(NotificationType.WASHING_HANDS);
+        }
+        if(washing_hands_tip_state == WashingHandsTipState.GONE) {
+            washingHandToolTip.SetActive(true);
+            washing_hands_tip_state = WashingHandsTipState.APPEARING;
+            washingHandStateStartTime = Time.time;
+            displayedDoctorWashingHands = true;
+        }
+    }
+
+    private void OnDoctorWashingHands(float duration) {
+        if (displayedDoctorWashingHands) {
+            if (findIndexFromList(activeNotifications, NotificationType.WASHING_HANDS) != -1) {
+                removeNotification(NotificationType.WASHING_HANDS);
+            }
+        }
+        displayedDoctorWashingHands = false;
     }
 
     private GameObject retriveNotificatioinPrefab(NotificationType notificationType) {
