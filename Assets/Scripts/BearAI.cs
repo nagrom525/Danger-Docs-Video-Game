@@ -66,7 +66,11 @@ public class BearAI : MonoBehaviour {
 		if (other.transform.tag == "Cave")
 		{
 			this.gameObject.SetActive(false);
-			patient.gameObject.SetActive(false);
+			if (patient.transform.parent != null)
+			{
+				patient.SetActive(false);
+				DoctorEvents.Instance.InducePatientDeath();
+			}
 			BearInCave();
 			this.gameObject.transform.position = startposition;
 		}
