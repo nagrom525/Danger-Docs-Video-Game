@@ -65,7 +65,7 @@ public class DoctorInputController : MonoBehaviour
         }
 
 		// If no input detected on the joysticks, set velocity to 0.
-		if (inputDevice.Direction.X < Mathf.Epsilon && inputDevice.Direction.Y < Mathf.Epsilon) {
+		if (Mathf.Abs(inputDevice.Direction.X) < Mathf.Epsilon && Mathf.Abs(inputDevice.Direction.Y) < Mathf.Epsilon) {
 			Rigidbody rb = doctor.GetComponentInChildren<Rigidbody> ();
 			rb.velocity = Vector3.zero;
 		} else {
