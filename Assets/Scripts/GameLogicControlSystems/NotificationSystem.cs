@@ -96,6 +96,10 @@ public class NotificationSystem : MonoBehaviour {
                 break;
 
         }
+
+        // move washing station tool tip to the location of the patient
+        Vector3 patientScreenCoords = Camera.main.WorldToScreenPoint(patient.transform.position);
+        washingHandToolTip.transform.position = patientScreenCoords;
 	}
 
     // -- Update functions -- //
