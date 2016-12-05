@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3a1ce60532b17cd4a8fda8c75b5b5cae
-timeCreated: 1480885225
+timeCreated: 1480898086
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -1198,45 +1198,6 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1188
-        y: 0
-        width: 1188
-        height: 918
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: HeartMonitorAnimationFrames_82
-      rect:
-        serializedVersion: 2
-        x: 2376
-        y: 0
-        width: 1188
-        height: 918
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: HeartMonitorAnimationFrames_83
-      rect:
-        serializedVersion: 2
-        x: 3564
-        y: 0
-        width: 1188
-        height: 918
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: HeartMonitorAnimationFrames_84
-      rect:
-        serializedVersion: 2
-        x: 4752
         y: 0
         width: 1188
         height: 918

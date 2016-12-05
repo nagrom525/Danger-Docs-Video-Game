@@ -15,7 +15,15 @@ public class LevelUserInterface : MonoBehaviour {
     public float statusIndicatorBlinkDuration = 1.0f;
     public GameObject gameLostPanel;
     public GameObject backButton;
+
+    // -- Heart Monitor -- //
+    public GameObject heartMonitorAnimation;
     public GameObject heartMonitor;
+    public string normalHeartMonitorSpritesName;
+    public string attackingHeartMonitorSpritesName;
+    public Sprite normalHeartMonitorSprite;
+    public Sprite attackingHeartMonitorSprite;
+    // -- // -- //
 
     private StatusIndicatorState status_state = StatusIndicatorState.INACTIVE;
     private float statusIndicatorStart = 0.0f;
@@ -42,18 +50,21 @@ public class LevelUserInterface : MonoBehaviour {
 		} else {
 			Debug.Log("UI only be set once");
 		}
-        heartRateAnimator = heartMonitor.GetComponent<SpriteAnimator>();
+        heartRateAnimator = heartMonitorAnimation.GetComponent<SpriteAnimator>();
 	}
 	// Use this for initialization
 	void Start () {
         // We probably want to register private member functions with DoctorEvents delegates
 		DoctorEvents.Instance.onPatientAboutToDie += OnPatientAboutToDie;
+        DoctorEvents.Instance.onPatientCriticalEventStart += OnPatientCriticalEventStart;
 		DoctorEvents.Instance.onPatientCriticalEventEnded += OnPatientCriticalEventEnded;
  
         DoctorEvents.Instance.GameOver += OnGameOver;
 		DoctorEvents.Instance.GameWon += OnGameWon;
         DoctorEvents.Instance.onSurgeryOperationLeftLast += OnLastDoctorLeavesSurgery;
         DoctorEvents.Instance.onSurgeryOperationFirst += OnFirstDoctorEntersSurgery;
+
+        SetHeartMonitorNormal();
 	}
 	
 	// Update is called once per frame
@@ -104,6 +115,18 @@ public class LevelUserInterface : MonoBehaviour {
         this.bpm = bpm;
 	}
 
+    private void SetHeartMonitorNormal() {
+        heartRateAnimator.updateFrames(normalHeartMonitorSpritesName);
+        heartMonitor.GetComponent<Image>().sprite = normalHeartMonitorSprite;
+        heartRateAnimator.startAnimation(true);
+    }
+
+    private void SetHeartMonitorAttacking() {
+        heartRateAnimator.updateFrames(attackingHeartMonitorSpritesName);
+        heartMonitor.GetComponent<Image>().sprite = attackingHeartMonitorSprite;
+        heartRateAnimator.startAnimation(true);
+    }
+
     // -- // -- //
 
     void StatusIndicatorActiveUpdate() {
@@ -134,10 +157,16 @@ public class LevelUserInterface : MonoBehaviour {
 		start = heartrateindicator.rectTransform.sizeDelta;
 		end = heartrateindicator.rectTransform.sizeDelta - new Vector2(900.0f, 600f);
     }
-	void OnPatientCriticalEventEnded(float duration)
-	{
+
+    void OnPatientCriticalEventStart(float duration) {
+        SetHeartMonitorAttacking();
+    }
+
+	void OnPatientCriticalEventEnded(float duration) {
 		heartrateindictatoron = false;
 		heartrateindicator.gameObject.SetActive(false);
+        SetHeartMonitorNormal();
+
 	}
 
     void OnGameOver(float duration) {
