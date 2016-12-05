@@ -12,6 +12,8 @@ public class BearAI : MonoBehaviour {
 	Vector3 startposition;
 	public int push_back_threshold = 3;
 	private int push_back_num;
+    public GameObject actionButtonCanvas;
+    public static bool scaredAwayOnce = false;
 
 	void Awake()
 	{
