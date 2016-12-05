@@ -14,6 +14,9 @@ public class WaterBucket : Tool
 	public GameObject water;
 	public float splashRadius;
 	public GameObject puddlePrefab;
+    public GameObject actionButtonCanvas;
+    private bool fire = false;
+    private bool bucketFilledOnce = false;
 
 	public override ToolType GetToolType()
 	{
@@ -26,15 +29,20 @@ public class WaterBucket : Tool
 		splashRadius = 7f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 		ps = transform.GetComponentInChildren<ParticleSystem>();
-		updateGraphics();
+        DoctorEvents.Instance.onFire += OnFire;
+        DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
+        DoctorEvents.Instance.onBucketFilled += OnBucketFilled;
+        DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
+        updateGraphics();
 	}
 
 
 	public void gainWater(float waterGainRate)
 	{
-		waterLevel += waterGainRate;
-		waterLevel = Mathf.Clamp(waterLevel, 0f, 1f);
-		updateGraphics();
+		waterLevel = (waterLevel + waterGainRate < 1f) ? (waterLevel + waterGainRate) : 1f;
+		if (waterLevel > 1f) waterLevel = 1f;
+        updateGraphics();
 	}
 
 	public void pourWater(Vector3 docDirection)
@@ -43,7 +51,8 @@ public class WaterBucket : Tool
 		Vector3 puddlePos = new Vector3(transform.position.x, 0f, transform.position.z) + (docDirection * 4f);
 		GameObject go = (GameObject)Instantiate(puddlePrefab, puddlePos, Quaternion.identity);
 		go.transform.localEulerAngles = new Vector3(0f, Random.Range(0, 360), 0f);
-		updateGraphics();
+        DoctorEvents.Instance.InformBucketEmptied();
+        updateGraphics();
 	}
 
 
@@ -68,4 +77,31 @@ public class WaterBucket : Tool
 	{
 		return;
 	}
+
+    private void OnFire(float duation) {
+        fire = true;
+        if (!bucketFilledOnce) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    private void OnFirePutOut(float duration) {
+        fire = false;
+    }
+
+    private void OnBucketPickedUp(bool full) {
+        actionButtonCanvas.SetActive(false);
+    }
+
+    private void OnBucketDropped(bool full) {
+        if (fire && !bucketFilledOnce) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    private void OnBucketFilled(float duration) {
+        bucketFilledOnce = true;
+    }
 }
