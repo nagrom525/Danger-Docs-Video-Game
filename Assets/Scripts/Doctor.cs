@@ -24,6 +24,8 @@ public class Doctor : MonoBehaviour {
 	private float drSpeedCoefficient;
 
 	private Rigidbody docRB;
+
+	public GameObject fireParticles;
 	//Dash variables
 	public float dashSpeed = 2f;
 	public float dashDelay = 2f;
@@ -42,7 +44,7 @@ public class Doctor : MonoBehaviour {
 
 		// Hands start out dirty.
 		dirtLevel = 1f;
-
+		fireParticles = transform.Find("Fire Particles").gameObject;
 
 		interacting = false;
 
@@ -85,12 +87,17 @@ public class Doctor : MonoBehaviour {
 													 //displayFireEffects();
 			onFireFrames--;
 		}
+		else
+		{
+			fireParticles.SetActive(false);
+		}
 	}
 
 	public void ignite() {
 		Vector3 dir = transform.forward * -1f;
 		print("ignited!");
-		onFireFrames = 45;
+		onFireFrames = 75;
+		fireParticles.SetActive(true);
 		onFireDir = new Vector3(dir.x, 0f, dir.z).normalized;
 	}
 
