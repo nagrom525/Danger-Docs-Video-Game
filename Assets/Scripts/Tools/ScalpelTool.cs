@@ -44,6 +44,7 @@ public class ScalpelTool : Tool {
     private void OnScalpelDroppedForSurgery(Tool.ToolType type) {
         if((type == ToolType.SCALPEL) && !surgeryInitiated) {
             actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
         }
     }
 
