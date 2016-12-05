@@ -65,8 +65,9 @@ public class BearAI : MonoBehaviour {
 	{
 		if (other.transform.tag == "Cave")
 		{
-			BearInCave();
 			this.gameObject.SetActive(false);
+			patient.gameObject.SetActive(false);
+			BearInCave();
 			this.gameObject.transform.position = startposition;
 		}
 	}
