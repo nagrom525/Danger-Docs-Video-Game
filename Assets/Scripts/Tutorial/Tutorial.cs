@@ -3,15 +3,15 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour {
-	Canvas[] slides;
-	Canvas currentSlide;
-	int slideIndex;
+	public CanvasGroup[] slides;
+	public CanvasGroup currentSlide;
+	public int slideIndex;
 
 	// Use this for initialization
 	void Start () {
-		slides = this.GetComponentsInChildren<Canvas> ();
+		slides = GetComponentsInChildren<CanvasGroup>();
 		slideIndex = 0;
-		currentSlide = slides [slideIndex];
+		currentSlide = slides[slideIndex];
 	}
 
 	void Update() {
@@ -21,6 +21,10 @@ public class Tutorial : MonoBehaviour {
 			} else {
 				slides [i].gameObject.SetActive (true);
 			}
+		}
+		if (Input.GetButtonDown("Fire1"))
+		{
+			incrementSlides();
 		}
 	}
 	
