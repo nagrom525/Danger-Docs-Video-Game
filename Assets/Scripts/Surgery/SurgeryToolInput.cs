@@ -14,6 +14,7 @@ public class SurgeryToolInput : MonoBehaviour {
 	{
 		playerRenderer = GetComponent<Renderer>();
 		surgeryTool = GetComponent<SurgeryTool>();
+        DoctorEvents.Instance.onBearStealsPatient += OnBearStealsPatient;
 	}
 
 	void Update()
@@ -96,4 +97,8 @@ public class SurgeryToolInput : MonoBehaviour {
 			surgeryTool.OnJoystickMovement(direction);
 		}
 	}
+
+    public void OnBearStealsPatient(float duration) {
+        ReturnControlToDoctor();
+    }
 }
