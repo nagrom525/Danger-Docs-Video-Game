@@ -63,6 +63,8 @@ public class LevelUserInterface : MonoBehaviour {
 		DoctorEvents.Instance.GameWon += OnGameWon;
         DoctorEvents.Instance.onSurgeryOperationLeftLast += OnLastDoctorLeavesSurgery;
         DoctorEvents.Instance.onSurgeryOperationFirst += OnFirstDoctorEntersSurgery;
+		start = heartrateindicator.rectTransform.sizeDelta;
+		end = heartrateindicator.rectTransform.sizeDelta - new Vector2(900.0f, 600f);
 
         SetHeartMonitorNormal();
 	}
@@ -154,8 +156,8 @@ public class LevelUserInterface : MonoBehaviour {
 		t = Time.time;
 		print(start);
 		print(end);
-		start = heartrateindicator.rectTransform.sizeDelta;
-		end = heartrateindicator.rectTransform.sizeDelta - new Vector2(900.0f, 600f);
+		//start = heartrateindicator.rectTransform.sizeDelta;
+		//end = heartrateindicator.rectTransform.sizeDelta - new Vector2(900.0f, 600f);
     }
 
     void OnPatientCriticalEventStart(float duration) {
