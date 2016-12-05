@@ -31,6 +31,8 @@ public class Doctor : MonoBehaviour {
 	public float dashDelay = 2f;
 	public bool justDashed;
 
+	public bool inSurgery;
+
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
 
@@ -73,6 +75,13 @@ public class Doctor : MonoBehaviour {
 
 		// Update checkOffset
 		checkOffset = transform.localRotation * (new Vector3(0, 0, 1) * 2.5f) + (Vector3.down * 4.5f);
+
+
+		if (inSurgery)
+		{
+			//dont move
+			docRB.velocity = Vector2.zero;
+		}
 	}
 
 	void FixedUpdate() {
