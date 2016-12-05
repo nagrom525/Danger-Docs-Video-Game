@@ -9,7 +9,7 @@ public class Tutorial : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		slides = GetComponentsInChildren<CanvasGroup>();
+		//slides = GetComponentsInChildren<CanvasGroup>();
 		slideIndex = 0;
 		currentSlide = slides[slideIndex];
 	}
