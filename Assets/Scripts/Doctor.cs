@@ -24,6 +24,8 @@ public class Doctor : MonoBehaviour {
 	private float drSpeedCoefficient;
 
 	private Rigidbody docRB;
+
+	public GameObject fireParticles;
 	//Dash variables
 	public float dashSpeed = 2f;
 	public float dashDelay = 2f;
@@ -42,7 +44,7 @@ public class Doctor : MonoBehaviour {
 
 		// Hands start out dirty.
 		dirtLevel = 1f;
-
+		fireParticles = transform.Find("Fire Particles").gameObject;
 
 		interacting = false;
 
@@ -85,12 +87,17 @@ public class Doctor : MonoBehaviour {
 													 //displayFireEffects();
 			onFireFrames--;
 		}
+		else
+		{
+			fireParticles.SetActive(false);
+		}
 	}
 
 	public void ignite() {
 		Vector3 dir = transform.forward * -1f;
 		print("ignited!");
-		onFireFrames = 45;
+		onFireFrames = 75;
+		fireParticles.SetActive(true);
 		onFireDir = new Vector3(dir.x, 0f, dir.z).normalized;
 	}
 
@@ -188,7 +195,13 @@ public class Doctor : MonoBehaviour {
 			if (nearestTool != null) {
 				equipTool (nearestTool);
                 nearestTool.OnDoctorInitatedInteracting();
-                DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType());
+                // special case for the bucket
+                bool full = false;
+                if(nearestTool.GetToolType() == Tool.ToolType.BUCKET) {
+                    WaterBucket bucket = nearestTool.GetComponent<WaterBucket>();
+                    full = bucket.hasWater;
+                }
+                DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
 			}
 		}
 	}
@@ -217,7 +230,13 @@ public class Doctor : MonoBehaviour {
 			rb.useGravity = true;
 			rb.isKinematic = false;
 		}
-        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType());
+        // special case for bucket
+        bool full = false;
+        if(currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+            WaterBucket bucket = currentTool.GetComponent<WaterBucket>();
+            full = bucket.hasWater;
+        }
+        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType(), full);
         currentTool.transform.parent = null;
 		currentTool = null;
 	}

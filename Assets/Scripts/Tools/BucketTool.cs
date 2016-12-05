@@ -7,7 +7,7 @@ using System;
 public class BucketTool : Tool {
 	public override ToolType GetToolType()
 	{
-		return ToolType.SUTURE;
+		return ToolType.BUCKET;
 	}
 
 	// 

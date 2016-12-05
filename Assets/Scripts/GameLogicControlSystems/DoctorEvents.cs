@@ -18,6 +18,7 @@ public class DoctorEvents : MonoBehaviour {
 
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
+    public delegate void BucketEvent(bool full);
 
     // Cut open patient event
     public DoctorEvent patientNeedsCutOpen;
@@ -61,13 +62,23 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onAnestheticMachineReturned;
     public DoctorEvent onDoctorNeedsToWashHands;
     public DoctorEvent onDoctorWashedHands;
+
+    // -- Tool Events
     public DoctorEvent onToolPickedUpForSurgery;
     public DoctorEvent onToolPickedUpGeneral;
     public DoctorEvent onToolPickedUpCanister;
     public DoctorEvent onToolDroppedCanister;
     public DoctorEvent onToolDroppedForSurgery;
+
+    // -- Surgery Events -- //
     public DoctorEvent onSurgeryOperationFirst;
     public DoctorEvent onSurgeryOperationLeftLast;
+
+    // -- Bucket Events
+    public BucketEvent onBucketPickedUp;
+    public DoctorEvent onBucketFilled;
+    public BucketEvent onBucketDropped;
+    public DoctorEvent onBucketEmptied;
 
     public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
@@ -336,14 +347,18 @@ public class DoctorEvents : MonoBehaviour {
         }
     }
 
-    public void InformToolPickedUp(Tool.ToolType toolType) {
+    public void InformToolPickedUp(Tool.ToolType toolType, bool full) {
         if ((currentIndexInReciepe != -1) && (toolType == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe]))) {
             if (onToolPickedUpForSurgery != null) {
                 onToolPickedUpForSurgery(0);
             }
-        } else if(toolType == Tool.ToolType.CANISTER) {
-            if(onToolPickedUpCanister != null) {
+        } else if (toolType == Tool.ToolType.CANISTER) {
+            if (onToolPickedUpCanister != null) {
                 onToolPickedUpCanister(0);
+            }
+        } else if(toolType == Tool.ToolType.BUCKET) {
+            if(onBucketPickedUp != null) {
+                onBucketPickedUp(full);
             }
         } else {
             if(onToolPickedUpGeneral != null) {
@@ -393,7 +408,7 @@ public class DoctorEvents : MonoBehaviour {
         }
     }
 
-    public void InformToolDropped(Tool.ToolType type) {
+    public void InformToolDropped(Tool.ToolType type, bool full) {
         if(type == Tool.ToolType.CANISTER) {
             if(onToolDroppedCanister != null) {
                 onToolDroppedCanister(0);
@@ -402,6 +417,8 @@ public class DoctorEvents : MonoBehaviour {
             if(onToolDroppedForSurgery != null) {
                 onToolDroppedForSurgery(0);
             }
+        } else if(type == Tool.ToolType.BUCKET) {
+            onBucketDropped(full);
         }
     }
 
@@ -429,6 +446,18 @@ public class DoctorEvents : MonoBehaviour {
     public void InformDoctorWashedHands() {
         if(onDoctorWashedHands != null) {
             onDoctorWashedHands(0.0f);
+        }
+    }
+
+    public void InformBucketFilled() {
+        if(onBucketFilled != null) {
+            onBucketFilled(0.0f);
+        }
+    }
+
+    public void InformBucketEmptied() {
+        if(onBucketEmptied != null) {
+            onBucketEmptied(0.0f);
         }
     }
 

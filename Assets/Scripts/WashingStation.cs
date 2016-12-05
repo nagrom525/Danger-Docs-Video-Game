@@ -8,11 +8,17 @@ public class WashingStation : Interactable {
 	// Washes hands 10% at a time.
 	private float washRate = 0.1f;
 	private float bucketFillRate = 1f;
+    private bool fireActionButtonActive = false;
+    private bool washHandsActionButtonActive = false;
+    private bool firePutOutOnce = false;
 
 
     void Start() {
         DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
         DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashedHands;
+        DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
+        DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
     }
 
 	// Washing station requires that you have no tool in hand.
@@ -29,6 +35,10 @@ public class WashingStation : Interactable {
 			return false;
 		} else if (interactingDoctor.currentTool.GetToolType() == Tool.ToolType.BUCKET) {
 			(interactingDoctor.currentTool as WaterBucket).gainWater(bucketFillRate);
+            DoctorEvents.Instance.InformBucketFilled();
+            if (!washHandsActionButtonActive) {
+                actionButtonCanvas.SetActive(false);
+            }
 			return false;
 		}
 
@@ -41,12 +51,37 @@ public class WashingStation : Interactable {
 		interactingDoctor.currentTool.OnDoctorTerminatedInteracting();
 	}
 
+    // -- Listen for events -- //
+
     private void OnDoctorNeedsToWashHands(float duration) {
         actionButtonCanvas.SetActive(true);
+        washHandsActionButtonActive = true;
         actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
     }
 
     private void OnDoctorWashedHands(float duration) {
-        actionButtonCanvas.SetActive(false);
+        if(!washHandsActionButtonActive && !fireActionButtonActive) {
+            actionButtonCanvas.SetActive(false);
+        }
+        washHandsActionButtonActive = false;
+    }
+
+    private void OnBucketPickedUp(bool full) {
+        if (!full && !firePutOutOnce) {
+            fireActionButtonActive = true;
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    private void OnBucketDropped(bool full) {
+        if (!washHandsActionButtonActive) {
+            actionButtonCanvas.SetActive(false);
+        }
+        fireActionButtonActive = false;
+    }
+
+    private void OnFirePutOut(float duration) {
+        firePutOutOnce = true;
     }
 }

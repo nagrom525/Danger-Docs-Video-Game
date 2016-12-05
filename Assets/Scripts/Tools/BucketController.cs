@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-enum BucketState { FULL, EMPTY };
+public enum BucketState { FULL, EMPTY };
 
 public class BucketController : MonoBehaviour {
 
-	private BucketState bstate;
+	public BucketState bstate { get; private set; }
 	private GameObject BucketObject;
 	private GameObject water;
 	public static BucketController BucketSingleton;
