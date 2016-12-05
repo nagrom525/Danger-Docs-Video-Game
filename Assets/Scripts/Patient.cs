@@ -383,12 +383,12 @@ public class Patient : Interactable {
         }
     }
 
-    private void OnToolForSurgeryPickedUp(float duration) {
+    private void OnToolForSurgeryPickedUp(Tool.ToolType type) {
         actionButtonCanvas.SetActive(true);
         actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
     }
 
-    private void OnToolForSurgeryDropped(float duration) {
+    private void OnToolForSurgeryDropped(Tool.ToolType type) {
         actionButtonCanvas.SetActive(false);
     }
 }

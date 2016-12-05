@@ -4,10 +4,12 @@ using System;
 
 public class ScalpelTool : Tool {
     public GameObject actionButtonCanvas;
-    private bool scalpelNeededCalledOnce = false;
+    private bool surgeryInitiated = false;
      
     void Start() {
         DoctorEvents.Instance.patientNeedsCutOpen += OnScalpelNeeded;
+        DoctorEvents.Instance.onSurgeryOperationFirst += OnSurgeryInitiated;
+        DoctorEvents.Instance.onToolDroppedForSurgery += OnScalpelDroppedForSurgery;
     }
 
 
@@ -28,10 +30,20 @@ public class ScalpelTool : Tool {
 	}
 
     private void OnScalpelNeeded(float duration) {
-        if (!scalpelNeededCalledOnce) {
+        if (!surgeryInitiated) {
             actionButtonCanvas.SetActive(true);
             actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
-            scalpelNeededCalledOnce = true;
+        }
+    }
+
+
+    private void OnSurgeryInitiated(float duration) {
+        surgeryInitiated = true;
+    }
+
+    private void OnScalpelDroppedForSurgery(Tool.ToolType type) {
+        if((type == ToolType.SCALPEL) && !surgeryInitiated) {
+            actionButtonCanvas.SetActive(true);
         }
     }
 
