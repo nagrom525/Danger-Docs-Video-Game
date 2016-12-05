@@ -1,6 +1,16 @@
-We need bear AI + Model
-
 We need at least one cooperative surgery
 
 Sounds effects throughout entire game.
+
+Tool Parachute drops old prefabs
+
+Raccoons fly to grab elevated objects
+
+Can't do surgery after bear moves patient
+
+Update tutorial slides
+
+When bear comes to patient, break operation
+
+doctor is immune to fire while in surgery
 
