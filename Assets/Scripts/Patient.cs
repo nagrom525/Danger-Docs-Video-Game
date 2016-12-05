@@ -336,13 +336,10 @@ public class Patient : Interactable {
 
 			Debug.Log("recieving gauze operation");
 		}
-		else
-		{
+		else {
 			print("defibulationsRemaining: " + defibulationsRemaining);
-			if (defibulationsRemaining > 0)
-			{
-				if (tool.GetToolType() == requiredTool)
-				{
+			if (defibulationsRemaining > 0) {
+				if (tool.GetToolType() == Tool.ToolType.DEFIBULATOR) {
 					defibulationsRemaining--;
 				}
 			}
