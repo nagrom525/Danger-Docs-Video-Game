@@ -137,6 +137,7 @@ public class LevelUserInterface : MonoBehaviour {
 	void OnPatientCriticalEventEnded(float duration)
 	{
 		heartrateindictatoron = false;
+		heartrateindicator.gameObject.SetActive(false);
 	}
 
     void OnGameOver(float duration) {
