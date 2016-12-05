@@ -76,15 +76,19 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onSurgeryOperationFirst;
     public DoctorEvent onSurgeryOperationLeftLast;
 
-    // -- Bucket Events
+    // -- Bucket Events -- //
     public BucketEvent onBucketPickedUp;
     public DoctorEvent onBucketFilled;
     public BucketEvent onBucketDropped;
     public DoctorEvent onBucketEmptied;
 
+    // Bear Events -- //
+    public DoctorEvent onBearStealsPatient;
+
     public GameObject 	parachutePrefab;
 	public Transform[] 	toolSpawnPoints;
 
+    
 
     // --- Main Reciepe Values --//
     public float timeDelayGameStart = 2.0f;
@@ -464,6 +468,12 @@ public class DoctorEvents : MonoBehaviour {
     public void InformBucketEmptied() {
         if(onBucketEmptied != null) {
             onBucketEmptied(0.0f);
+        }
+    }
+
+    public void InformBearStealingPatient() {
+        if(onBearStealsPatient != null) {
+            onBearStealsPatient(0.0f);
         }
     }
 

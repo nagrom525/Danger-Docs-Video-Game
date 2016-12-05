@@ -43,10 +43,12 @@ public class BearAI : MonoBehaviour {
 
 	void OnCollisionEnter(Collision other)
 	{
+        // bear stealing patient table
 		if (other.transform.tag == "PatientTable")
 		{
 			makeParent(other);
 			BearSwitchToCave();
+            DoctorEvents.Instance.InformBearStealingPatient();
 		}
 		else if (other.transform.tag == "Doctor")
 		{
