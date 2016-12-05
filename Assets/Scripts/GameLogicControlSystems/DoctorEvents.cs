@@ -66,7 +66,8 @@ public class DoctorEvents : MonoBehaviour {
 
     // -- Tool Events
     public ToolEvent onToolPickedUpForSurgery;
-    public DoctorEvent onToolPickedUpGeneral;
+    public ToolEvent onToolPickedUpGeneral;
+    public ToolEvent onToolDroppedGeneral;
     public DoctorEvent onToolPickedUpCanister;
     public DoctorEvent onToolDroppedCanister;
     public ToolEvent onToolDroppedForSurgery;
@@ -363,7 +364,7 @@ public class DoctorEvents : MonoBehaviour {
             }
         } else {
             if(onToolPickedUpGeneral != null) {
-                onToolPickedUpGeneral(0);
+                onToolPickedUpGeneral(toolType);
             }
         }
     }
@@ -420,6 +421,10 @@ public class DoctorEvents : MonoBehaviour {
             }
         } else if(type == Tool.ToolType.BUCKET) {
             onBucketDropped(full);
+        } else {
+            if(onToolDroppedGeneral != null) {
+                onToolDroppedGeneral(type);
+            }
         }
     }
 

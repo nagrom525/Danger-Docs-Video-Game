@@ -6,10 +6,13 @@ public class Defibulator : Tool
 {
 
     public GameObject actionButtonCanvas;
-    private bool defibulatorNeededCalledOnce = false;
+    private bool defibulatorUsedOnce = false;
+    public bool criticalEvent = false;
 
     void Start() {
-        DoctorEvents.Instance.patientNeedsStitches += OnDefibulatorNeeded;
+        DoctorEvents.Instance.onPatientCriticalEventStart += OnDefibulatorNeeded;
+        DoctorEvents.Instance.onPatientCriticalEventEnded += OnDefibulatorUsedOnce;
+        DoctorEvents.Instance.onToolDroppedGeneral += OnToolDropped;
     }
 
 
@@ -30,10 +33,24 @@ public class Defibulator : Tool
     }
 
     private void OnDefibulatorNeeded(float duration) {
-        if (!defibulatorNeededCalledOnce) {
+        if (!defibulatorUsedOnce) {
             actionButtonCanvas.SetActive(true);
             actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
-            defibulatorNeededCalledOnce = true;
+            criticalEvent = true;
         }
+    }
+
+    private void OnToolDropped(Tool.ToolType type) {
+        if(type == ToolType.DEFIBULATOR) {
+            if (!defibulatorUsedOnce && criticalEvent) {
+                actionButtonCanvas.SetActive(true);
+                actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+            }
+        }
+    }
+
+    private void OnDefibulatorUsedOnce(float duration) {
+        defibulatorUsedOnce = true;
+        criticalEvent = false;
     }
 }
