@@ -24,7 +24,6 @@ public class SpriteAnimator : MonoBehaviour {
     private Sprite[] frameSprites;
     private Image imageRenderer;
     private float startTime;
-    private float endTime;
 
     void Awake() {
         imageRenderer = GetComponent<Image>();
@@ -38,6 +37,7 @@ public class SpriteAnimator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        print("update");
         if (active) {
             float t = (Time.time - startTime) / getAnimationTime();
             if (t >= 1.0) {
