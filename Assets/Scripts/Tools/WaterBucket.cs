@@ -23,7 +23,7 @@ public class WaterBucket : Tool
 	void Start()
 	{
 		waterLevel = 0f;
-		splashRadius = 5f;
+		splashRadius = 7f;
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 		ps = transform.GetComponentInChildren<ParticleSystem>();
 	}
