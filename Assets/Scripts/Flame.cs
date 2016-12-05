@@ -5,12 +5,13 @@ public class Flame : MonoBehaviour
 {
 	private enum Direction { NORTH, EAST, SOUTH, WEST };
 	private enum CanSpawnState { OPEN, CLOSED, CHECK };
-
+    public static bool firePutOutOnce = false;
 	private static int flameCount = 0;
-
+    public bool motherFlame = false;
 	public float fireGridScale = 1.0f;
 	public float timeFireSpawnDelay = 2.0f;
 	public GameObject flamePrefab;
+    public GameObject actionButtonCanvas;
 	private static GameObject flameAnchor = null;
 
 	// flame graph connections
@@ -29,6 +30,8 @@ public class Flame : MonoBehaviour
 	void Awake()
 	{
 		nextFireSpawnDirection = getRandomDirection();
+        motherFlame = false;
+        actionButtonCanvas.SetActive(false);
 	}
 
 	// Use this for initialization
@@ -41,6 +44,10 @@ public class Flame : MonoBehaviour
 			flameAnchor = new GameObject("Flame Anchor");
 		}
 		flameCount++;
+        DoctorEvents.Instance.onBucketFilled += OnBucketFilled;
+        DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
+        DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketEmptied += OnBucketEmptied;
 	}
 
 	// Update is called once per frame
@@ -68,6 +75,7 @@ public class Flame : MonoBehaviour
 	// unity engine event.. called when the object is destroyed
 	void OnDestroy()
 	{
+        firePutOutOnce = true;
 		if (onDestroyEvent != null)
 		{
 			onDestroyEvent(directionSpawned);
@@ -213,4 +221,27 @@ public class Flame : MonoBehaviour
 			}
 		}
 	}
+
+    void OnBucketFilled(float duration) {
+        if (!firePutOutOnce && motherFlame) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    void OnBucketPickedUp(bool full) {
+        if (full && !firePutOutOnce && motherFlame) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    void OnBucketDropped(bool full) {
+        actionButtonCanvas.SetActive(false);
+    }
+
+    void OnBucketEmptied(float duration) {
+        actionButtonCanvas.SetActive(false);
+    }
+
 }

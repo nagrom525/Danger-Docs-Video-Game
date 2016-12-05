@@ -188,7 +188,13 @@ public class Doctor : MonoBehaviour {
 			if (nearestTool != null) {
 				equipTool (nearestTool);
                 nearestTool.OnDoctorInitatedInteracting();
-                DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType());
+                // special case for the bucket
+                bool full = false;
+                if(nearestTool.GetToolType() == Tool.ToolType.BUCKET) {
+                    WaterBucket bucket = nearestTool.GetComponent<WaterBucket>();
+                    full = bucket.hasWater;
+                }
+                DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
 			}
 		}
 	}
@@ -217,7 +223,13 @@ public class Doctor : MonoBehaviour {
 			rb.useGravity = true;
 			rb.isKinematic = false;
 		}
-        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType());
+        // special case for bucket
+        bool full = false;
+        if(currentTool.GetToolType() == Tool.ToolType.BUCKET) {
+            WaterBucket bucket = currentTool.GetComponent<WaterBucket>();
+            full = bucket.hasWater;
+        }
+        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType(), full);
         currentTool.transform.parent = null;
 		currentTool = null;
 	}

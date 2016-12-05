@@ -56,7 +56,8 @@ public class SpawningFactory : MonoBehaviour {
             DoctorEvents.Instance.InformFire(0);
             fire = true;
             // need to have some way of deciding where to instiantiate the fire!
-            Instantiate(firePrefab);
+            Flame flame = (Instantiate(firePrefab) as GameObject).GetComponent<Flame>();
+            flame.motherFlame = true;
         }
     }
 
