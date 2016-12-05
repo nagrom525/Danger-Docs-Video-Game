@@ -43,7 +43,8 @@ public class DoctorInputController : MonoBehaviour
         else
         if (inputDevice.Action2)
         {
-            //playerRenderer.material.color = Color.red;
+			//playerRenderer.material.color = Color.red;
+			doctor.Dash();
         }
         else
 		if (inputDevice.Action3.WasPressed)
@@ -65,7 +66,7 @@ public class DoctorInputController : MonoBehaviour
         }
 
 		// If no input detected on the joysticks, set velocity to 0.
-		if (inputDevice.Direction.X < Mathf.Epsilon && inputDevice.Direction.Y < Mathf.Epsilon) {
+		if (Mathf.Abs(inputDevice.Direction.X) < Mathf.Epsilon && Mathf.Abs(inputDevice.Direction.Y) < Mathf.Epsilon) {
 			Rigidbody rb = doctor.GetComponentInChildren<Rigidbody> ();
 			rb.velocity = Vector3.zero;
 		} else {
