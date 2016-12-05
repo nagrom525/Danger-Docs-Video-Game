@@ -10,6 +10,8 @@ public class BearAI : MonoBehaviour {
 	bool targetAcheived;
 	public GameObject Cave;
 	Vector3 startposition;
+	private static int push_back_threshold;
+	private int push_back_num;
 
 	void Awake()
 	{
@@ -41,7 +43,20 @@ public class BearAI : MonoBehaviour {
 		}
 		else if (other.transform.tag == "Doctor")
 		{
-			//if(other.gameObject.GetComponent<Doctor> ()
+			if (push_back_num - 1 <= push_back_threshold && other.gameObject.GetComponent<Doctor>().justDashed)
+			{
+				PatientGurney.parent = null;
+				patient.transform.parent = null;
+				BearSwitchToCave();
+			}
+			else if (other.gameObject.GetComponent<Doctor>().justDashed)
+			{
+				push_back_num--;
+
+			}
+			else {
+				//stun person
+			}
 		}
 		
 	}
@@ -75,8 +90,11 @@ public class BearAI : MonoBehaviour {
 
 	void BearInCave()
 	{
-		PatientGurney.parent = null;
-		patient.transform.parent = null;
+		if (PatientGurney.parent != null)
+		{
+			PatientGurney.parent = null;
+			patient.transform.parent = null;
+		}
 		DoctorEvents.Instance.InformBearLeft();
 
 	}
