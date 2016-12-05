@@ -60,6 +60,7 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onAnestheticMachineLow;
     public DoctorEvent onAnestheticMachineReturned;
     public DoctorEvent onDoctorNeedsToWashHands;
+    public DoctorEvent onDoctorWashedHands;
     public DoctorEvent onToolPickedUpForSurgery;
     public DoctorEvent onToolPickedUpGeneral;
     public DoctorEvent onToolPickedUpCanister;
@@ -422,6 +423,12 @@ public class DoctorEvents : MonoBehaviour {
     public void InformPatientAboutToDie(float timeLeftToLive) {
         if(onPatientAboutToDie != null) {
             onPatientAboutToDie(timeLeftToLive);
+        }
+    }
+
+    public void InformDoctorWashedHands() {
+        if(onDoctorWashedHands != null) {
+            onDoctorWashedHands(0.0f);
         }
     }
 
