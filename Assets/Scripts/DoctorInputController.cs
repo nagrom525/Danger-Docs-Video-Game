@@ -43,7 +43,8 @@ public class DoctorInputController : MonoBehaviour
         else
         if (inputDevice.Action2)
         {
-            //playerRenderer.material.color = Color.red;
+			//playerRenderer.material.color = Color.red;
+			doctor.Dash();
         }
         else
 		if (inputDevice.Action3.WasPressed)

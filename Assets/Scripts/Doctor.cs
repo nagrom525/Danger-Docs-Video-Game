@@ -23,6 +23,12 @@ public class Doctor : MonoBehaviour {
 	private Vector3 interactionBoxHalfExtents;
 	private float drSpeedCoefficient;
 
+	private Rigidbody docRB;
+	//Dash variables
+	public float dashSpeed = 2f;
+	public float dashDelay = 2f;
+	public bool justDashed;
+
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
 
@@ -48,6 +54,8 @@ public class Doctor : MonoBehaviour {
 		onFireFrames = 0;
 
 		drSpeedCoefficient = 10f;
+
+		docRB = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -375,6 +383,25 @@ public class Doctor : MonoBehaviour {
 		set {
 			this.transform.position = value;
 		}
+	}
+
+	/// <summary>
+	/// Dash the doctor in the direction it's facing
+	/// </summary>
+	public void Dash()
+	{
+		if (justDashed)
+			return;
+
+		docRB.velocity = Vector2.zero;
+		docRB.velocity += dashSpeed * transform.forward;
+		justDashed = true;
+		Invoke("ResetDash", dashDelay);
+	}
+
+	public void ResetDash()
+	{
+		justDashed = false;
 	}
 
 }
