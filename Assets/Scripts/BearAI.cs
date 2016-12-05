@@ -64,8 +64,10 @@ public class BearAI : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+		//print("trigger anything");
 		if (other.transform.tag == "Cave")
 		{
+			print("why are you not triggering");
 			this.gameObject.SetActive(false);
 			if (patient.transform.parent != null)
 			{

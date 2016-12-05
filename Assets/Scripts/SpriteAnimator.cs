@@ -37,7 +37,7 @@ public class SpriteAnimator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        print("update");
+        //print("update");
         if (active) {
             float t = (Time.time - startTime) / getAnimationTime();
             if (t >= 1.0) {
