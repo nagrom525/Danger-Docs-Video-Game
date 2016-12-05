@@ -8,10 +8,9 @@ public class BounceUpAndDown : MonoBehaviour {
     private bool bounceActive = false;
     private float startTime = 0.0f;
     private Vector3 startPosition;
-    private Vector3 endPosition;
 
     void Awake() {
-        startPosition = transform.position;
+        startPosition = transform.localPosition;
     }
 	
 	// Update is called once per frame
@@ -19,11 +18,11 @@ public class BounceUpAndDown : MonoBehaviour {
         if (bounceActive) {
             float t = ((Time.time - startTime) / bounceTime);
             if(t >= 1.0f) {
-                transform.position = startPosition;
+                transform.localPosition = startPosition;
                 bounceActive = false;
             }
-            Vector3 currPos = transform.position;
-            transform.position = new Vector3(currPos.x, startPosition.y + (Mathfx.Bounce(t) * bounceHeight), currPos.z);
+            Vector3 currPos = transform.localPosition;
+            transform.localPosition = new Vector3(currPos.x, startPosition.y + (Mathfx.Bounce(t) * bounceHeight), currPos.z);
         }
     }
 

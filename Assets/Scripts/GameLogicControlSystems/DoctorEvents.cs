@@ -19,6 +19,7 @@ public class DoctorEvents : MonoBehaviour {
     // Doctors / UI elements should register with the events they care about
     public delegate void DoctorEvent(float duration);
     public delegate void BucketEvent(bool full);
+    public delegate void ToolEvent(Tool.ToolType type);
 
     // Cut open patient event
     public DoctorEvent patientNeedsCutOpen;
@@ -64,11 +65,12 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onDoctorWashedHands;
 
     // -- Tool Events
-    public DoctorEvent onToolPickedUpForSurgery;
-    public DoctorEvent onToolPickedUpGeneral;
+    public ToolEvent onToolPickedUpForSurgery;
+    public ToolEvent onToolPickedUpGeneral;
+    public ToolEvent onToolDroppedGeneral;
     public DoctorEvent onToolPickedUpCanister;
     public DoctorEvent onToolDroppedCanister;
-    public DoctorEvent onToolDroppedForSurgery;
+    public ToolEvent onToolDroppedForSurgery;
 
     // -- Surgery Events -- //
     public DoctorEvent onSurgeryOperationFirst;
@@ -350,7 +352,7 @@ public class DoctorEvents : MonoBehaviour {
     public void InformToolPickedUp(Tool.ToolType toolType, bool full) {
         if ((currentIndexInReciepe != -1) && (toolType == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe]))) {
             if (onToolPickedUpForSurgery != null) {
-                onToolPickedUpForSurgery(0);
+                onToolPickedUpForSurgery(toolType);
             }
         } else if (toolType == Tool.ToolType.CANISTER) {
             if (onToolPickedUpCanister != null) {
@@ -362,7 +364,7 @@ public class DoctorEvents : MonoBehaviour {
             }
         } else {
             if(onToolPickedUpGeneral != null) {
-                onToolPickedUpGeneral(0);
+                onToolPickedUpGeneral(toolType);
             }
         }
     }
@@ -415,10 +417,14 @@ public class DoctorEvents : MonoBehaviour {
             }
         } else if((currentIndexInReciepe != -1) && (type == RequiredToolForReciepeState(scene1ReciepeElements[currentIndexInReciepe]))){
             if(onToolDroppedForSurgery != null) {
-                onToolDroppedForSurgery(0);
+                onToolDroppedForSurgery(type);
             }
         } else if(type == Tool.ToolType.BUCKET) {
             onBucketDropped(full);
+        } else {
+            if(onToolDroppedGeneral != null) {
+                onToolDroppedGeneral(type);
+            }
         }
     }
 
