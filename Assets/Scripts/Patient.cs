@@ -282,11 +282,12 @@ public class Patient : Interactable {
 		return (1f / (bpm / 60f));
 	}
 
-
-	public void receiveOperation(Tool tool, int doctorNumber = -1) {
+    // returns new surgery input (transfered control)
+	public SurgeryToolInput receiveOperation(Tool tool, int doctorNumber = -1) {
+        SurgeryToolInput newInputController = null;
 		if (tool == null)
 		{
-			return;
+			return newInputController;
 		}
 		if (tool.GetToolType() == Tool.ToolType.SUTURE)
 		{
@@ -298,10 +299,11 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+			
 			//Create tool and give control to Doctor
 			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
-			suture.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+            newInputController = suture.GetComponent<SurgeryToolInput>();
+			newInputController.playerNum = doctorNumber;
 
 			Debug.Log("recieving suture operation");
 		}
@@ -315,10 +317,11 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+			
 			//Create tool and give control to Doctor
 			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
-			scalpel.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+            newInputController = scalpel.GetComponent<SurgeryToolInput>();
+			newInputController.playerNum = doctorNumber;
 
 			Debug.Log("recieving scalpel operation");
 		}
@@ -332,10 +335,11 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+		
 			//Create tool and give control to Doctor
 			GameObject gauze = (GameObject)Instantiate(gauzeToolPrefab, toolSpawnPositions[0].transform);
-			gauze.GetComponent<SurgeryToolInput>().playerNum = doctorNumber;
+            newInputController = gauze.GetComponent<SurgeryToolInput>();
+			newInputController.playerNum = doctorNumber;
 
 			Debug.Log("recieving gauze operation");
 		}
@@ -352,7 +356,7 @@ public class Patient : Interactable {
 				DoctorEvents.Instance.PatientCriticalAdverted();
 			}		
 		}
-
+        return newInputController;
 	}
 
 	public override bool DocterIniatesInteracting(Doctor interactingDoctor)

@@ -8,6 +8,7 @@ public class Doctor : MonoBehaviour {
 
 	public float dirtLevel;
 	public bool interacting;
+    private bool inSurgery = false;
 	public bool dirtyHands {
 		get { return dirtLevel > 0f; }
 	}
@@ -22,6 +23,7 @@ public class Doctor : MonoBehaviour {
 	private Vector3 checkOffset;
 	private Vector3 interactionBoxHalfExtents;
 	private float drSpeedCoefficient;
+    private SurgeryToolInput surgeryInput = null;
 
 	private Rigidbody docRB;
 
@@ -30,8 +32,6 @@ public class Doctor : MonoBehaviour {
 	public float dashSpeed = 2f;
 	public float dashDelay = 2f;
 	public bool justDashed;
-
-	public bool inSurgery;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -108,6 +108,10 @@ public class Doctor : MonoBehaviour {
 		onFireFrames = 75;
 		fireParticles.SetActive(true);
 		onFireDir = new Vector3(dir.x, 0f, dir.z).normalized;
+        // check to see if we need to end the surgery!
+        if (inSurgery && (surgeryInput != null)) {
+            surgeryInput.ReturnControlToDoctor();
+        }
 	}
 
 	// Currently just handles highlighting tools.
@@ -266,11 +270,13 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
-        if(currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
+        if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
             DoctorEvents.Instance.InformSurgeryOperation();
+        } else {
+            inSurgery = true;
         }
         // Use current tool on patient.
-        Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
+        surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
 
 
@@ -433,5 +439,9 @@ public class Doctor : MonoBehaviour {
 	{
 		justDashed = false;
 	}
+
+    public void informSurgeryFinished() {
+        inSurgery = false;
+    }
 
 }
