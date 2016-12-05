@@ -10,7 +10,7 @@ public class BearAI : MonoBehaviour {
 	bool targetAcheived;
 	public GameObject Cave;
 	Vector3 startposition;
-	public static int push_back_threshold = 3;
+	public int push_back_threshold = 3;
 	private int push_back_num;
 
 	void Awake()
@@ -48,6 +48,7 @@ public class BearAI : MonoBehaviour {
 				PatientGurney.parent = null;
 				patient.transform.parent = null;
 				BearSwitchToCave();
+				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			}
 			else if (other.gameObject.GetComponent<Doctor>().justDashed)
 			{
