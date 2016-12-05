@@ -11,7 +11,7 @@ public class NotificationSystem : MonoBehaviour {
     public GameObject anestheticNotificationPrefab;
     public GameObject stickPullOutNotificationPrefab;
     public GameObject bearNotificationPrefab;
-    public GameObject washingStationNotification;
+    public GameObject washingStationNotificationPrefab;
     public GameObject canvas;
     public GameObject patient;
     // /////////////////////////////////////////// //
@@ -59,6 +59,8 @@ public class NotificationSystem : MonoBehaviour {
         DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
         DoctorEvents.Instance.onAnestheticMachineLow += OnAnestheticMachineLow;
         DoctorEvents.Instance.onAnestheticMachineReturned += OnAnestheticMachineReturned;
+        DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
+        DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashingHands;
 
 	}
 	
@@ -267,6 +269,8 @@ public class NotificationSystem : MonoBehaviour {
                 return bucketNotificationPrefab;
             case NotificationType.BEAR:
                 return bearNotificationPrefab;
+            case NotificationType.WASHING_HANDS:
+                return washingStationNotificationPrefab;
             default:
                 return null;
         }
@@ -369,7 +373,6 @@ public class NotificationSystem : MonoBehaviour {
 
     private void moveNotificationByYOffset(GameObject notification, float yToMoveTotal, float t) {
         Vector3 currPos = notification.GetComponent<RectTransform>().anchoredPosition;
-        //print(current_state);
         float startPositionY = firstNotificationLoc.y + startYOffset;
         notification.GetComponent<RectTransform>().anchoredPosition = new Vector3(currPos.x, Mathfx.Berp(startPositionY, startPositionY + yToMoveTotal, t), currPos.z);
     }
