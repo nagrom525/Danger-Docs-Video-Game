@@ -34,6 +34,11 @@ public class BearAI : MonoBehaviour {
 		this.transform.LookAt(patient.transform.position);
 		//targetAcheived = false;
 		startposition = this.gameObject.transform.position;
+        if (scaredAwayOnce) {
+            actionButtonCanvas.SetActive(false);
+        } else {
+            actionButtonCanvas.SetActive(true);
+        }
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -50,6 +55,7 @@ public class BearAI : MonoBehaviour {
 				PatientGurney.parent = null;
 				patient.transform.parent = null;
 				BearSwitchToCave();
+                actionButtonCanvas.SetActive(false);
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			}
 			else if (other.gameObject.GetComponent<Doctor>().justDashed)
