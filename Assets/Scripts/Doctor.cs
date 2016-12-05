@@ -8,7 +8,7 @@ public class Doctor : MonoBehaviour {
 
 	public float dirtLevel;
 	public bool interacting;
-    public bool inSurgery = false;
+    private bool inSurgery = false;
 	public bool dirtyHands {
 		get { return dirtLevel > 0f; }
 	}
@@ -32,8 +32,6 @@ public class Doctor : MonoBehaviour {
 	public float dashSpeed = 2f;
 	public float dashDelay = 2f;
 	public bool justDashed;
-
-	public bool inSurgery;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -110,6 +108,7 @@ public class Doctor : MonoBehaviour {
 		onFireFrames = 75;
 		fireParticles.SetActive(true);
 		onFireDir = new Vector3(dir.x, 0f, dir.z).normalized;
+        // check to see if we need to end the surgery!
         if (inSurgery && (surgeryInput != null)) {
             surgeryInput.ReturnControlToDoctor();
         }

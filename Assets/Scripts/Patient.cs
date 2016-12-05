@@ -299,7 +299,7 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+			
 			//Create tool and give control to Doctor
 			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
             newInputController = suture.GetComponent<SurgeryToolInput>();
@@ -317,7 +317,7 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+			
 			//Create tool and give control to Doctor
 			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
             newInputController = scalpel.GetComponent<SurgeryToolInput>();
@@ -335,7 +335,7 @@ public class Patient : Interactable {
 			}
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
-			doc.GetComponent<Doctor>().inSurgery = true;
+		
 			//Create tool and give control to Doctor
 			GameObject gauze = (GameObject)Instantiate(gauzeToolPrefab, toolSpawnPositions[0].transform);
             newInputController = gauze.GetComponent<SurgeryToolInput>();

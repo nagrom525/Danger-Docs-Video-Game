@@ -43,7 +43,6 @@ public class SurgeryToolInput : MonoBehaviour {
 		doc.GetComponent<DoctorInputController>().enabled = true;
         doc.GetComponent<Doctor>().informSurgeryFinished();
         DoctorEvents.Instance.InformDoctorLeftSurgeryOperaton();
-		doc.GetComponent<Doctor>().inSurgery = false;
 		Destroy(this.gameObject);
 	}
 
