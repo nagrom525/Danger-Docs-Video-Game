@@ -14,3 +14,34 @@ When bear comes to patient, break operation
 
 doctor is immune to fire while in surgery
 
+
+
+---- Live Demo Notes 12/4
+
+I think everything broke.
+
+Don't force them to click to restart
+
+We're seeing some build only bugs.
+
+There's no visual feeback to inform that bear is being deterred.
+    - Il y a buecoup de options
+
+Dashing is really unclear -- 
+
+Definitely focus on simplification
+
+We could make a killer trailer.
+
+Signal progress in a more transparent way
+        - Pie chart indicator
+
+Tutorial / Sandbox level?
+
+----
+
+Bucket bug
+
+Bear deterence mechanic
+
+Sprinting
