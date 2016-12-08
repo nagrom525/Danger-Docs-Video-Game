@@ -309,7 +309,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 		// If near patient, use tool on patient.
-		if (patientInRange())
+		if (patientInRange() && (currentTool.GetToolType() != Tool.ToolType.CANISTER))
 		{
 			useCurrentToolOnPatient();
 		}
