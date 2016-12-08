@@ -249,9 +249,10 @@ public class Doctor : MonoBehaviour {
             WaterBucket bucket = currentTool.GetComponent<WaterBucket>();
             full = bucket.hasWater;
         }
+        DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType(), full);
         currentTool.transform.parent = null;
 		currentTool = null;
-		DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType(), full);
+	
 	}
 
 	private bool patientInRange() {

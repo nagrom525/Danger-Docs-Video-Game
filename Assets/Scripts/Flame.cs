@@ -85,7 +85,12 @@ public class Flame : MonoBehaviour
 		{
 			DoctorEvents.Instance.InformFirePutOut();
 		}
-	}
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketEmptied -= OnBucketEmptied;
+    }
 
 	//// direction spawned is the direction the child is in relative to the parent
 	//private void SetParent(Direction directionSpawned) {

@@ -33,4 +33,8 @@ public class SutureTool : Tool {
             sutureNeededCalledOnce = true;
         }
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.patientNeedsStitches -= OnSutureNeeded;
+    }
 }

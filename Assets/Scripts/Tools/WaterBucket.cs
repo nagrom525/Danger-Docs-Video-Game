@@ -104,4 +104,8 @@ public class WaterBucket : Tool
     private void OnBucketFilled(float duration) {
         bucketFilledOnce = true;
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onFire -= OnFire;
+    }
 }
