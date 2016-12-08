@@ -273,9 +273,8 @@ public class Doctor : MonoBehaviour {
         }
         if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
             DoctorEvents.Instance.InformSurgeryOperation();
-        } else {
             inSurgery = true;
-        }
+        } 
         // Use current tool on patient.
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
