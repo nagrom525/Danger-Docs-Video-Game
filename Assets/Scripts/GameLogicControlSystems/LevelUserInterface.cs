@@ -187,7 +187,16 @@ public class LevelUserInterface : MonoBehaviour {
         backButton.SetActive(false);
     }
 
+    void OnDestroy() {
+        DoctorEvents.Instance.onPatientAboutToDie -= OnPatientAboutToDie;
+        DoctorEvents.Instance.onPatientCriticalEventStart -= OnPatientCriticalEventStart;
+        DoctorEvents.Instance.onPatientCriticalEventEnded -= OnPatientCriticalEventEnded;
 
+        DoctorEvents.Instance.GameOver -= OnGameOver;
+        DoctorEvents.Instance.GameWon -= OnGameWon;
+        DoctorEvents.Instance.onSurgeryOperationLeftLast -= OnLastDoctorLeavesSurgery;
+        DoctorEvents.Instance.onSurgeryOperationFirst -= OnFirstDoctorEntersSurgery;
+    }
  
 
 }

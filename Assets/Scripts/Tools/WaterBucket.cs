@@ -107,5 +107,9 @@ public class WaterBucket : Tool
 
     void OnDestroy() {
         DoctorEvents.Instance.onFire -= OnFire;
+        DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
+        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
     }
 }

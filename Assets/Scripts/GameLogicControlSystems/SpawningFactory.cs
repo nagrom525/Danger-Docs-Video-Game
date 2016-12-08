@@ -143,4 +143,9 @@ public class SpawningFactory : MonoBehaviour {
         }
         return false;
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+        DoctorEvents.Instance.onBearLeft -= OnBearLeft;
+    }
 }
