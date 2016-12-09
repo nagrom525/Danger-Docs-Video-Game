@@ -27,4 +27,9 @@ public class CanisterContainer : MonoBehaviour {
     private void OnAnestheticMachineReturned(float precentLeft) {
         actionButtonCanvas.SetActive(false);
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onAnestheticMachineLow -= OnAnestheticMachineLow;
+        DoctorEvents.Instance.onAnestheticMachineReturned -= OnAnestheticMachineReturned;
+    }
 }

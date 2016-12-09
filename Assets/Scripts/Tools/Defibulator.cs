@@ -53,4 +53,10 @@ public class Defibulator : Tool
         defibulatorUsedOnce = true;
         criticalEvent = false;
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onPatientCriticalEventStart -= OnDefibulatorNeeded;
+        DoctorEvents.Instance.onPatientCriticalEventEnded -= OnDefibulatorUsedOnce;
+        DoctorEvents.Instance.onToolDroppedGeneral -= OnToolDropped;
+    }
 }

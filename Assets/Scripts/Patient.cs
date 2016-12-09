@@ -398,4 +398,15 @@ public class Patient : Interactable {
     private void OnToolForSurgeryDropped(Tool.ToolType type) {
         actionButtonCanvas.SetActive(false);
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onPatientCriticalEventStart -= OnPatientCriticalEventStart;
+        DoctorEvents.Instance.onPatientCriticalEventEnded -= OnPatientCriticalEventEnded;
+        DoctorEvents.Instance.patientNeedsStitches -= OnSuture;
+        DoctorEvents.Instance.patientNeedsCutOpen -= OnCutPatientOpen;
+        DoctorEvents.Instance.patientNeedsBloodSoak -= OnSoakBlood;
+        DoctorEvents.Instance.onToolPickedUpForSurgery -= OnToolForSurgeryPickedUp;
+        DoctorEvents.Instance.onToolDroppedForSurgery -= OnToolForSurgeryDropped;
+        DoctorEvents.Instance.GameOver -= OnPatientDead;
+    }
 }

@@ -391,4 +391,21 @@ public class NotificationSystem : MonoBehaviour {
     private float tForState() {
         return (Time.time - stateStartTime) / (timeToMoveNotification / 2.0f);
     }
+
+    void OnDestroy() {
+        // -- Register main reciepe events -- //
+        DoctorEvents.Instance.patientNeedsCutOpen -= OnPatientScaple;
+        DoctorEvents.Instance.patientDoneCutOpen -= OnPatientScapleDone;
+        DoctorEvents.Instance.patientNeedsBloodSoak -= OnPatientGauze;
+        DoctorEvents.Instance.patientDoneBloodSoak -= OnPatientGauzeDone;
+        DoctorEvents.Instance.patientNeedsStitches -= OnPatientSuture;
+        DoctorEvents.Instance.patientDoneStitches -= OnPatientSutureDone;
+        // Register environement events -- //
+        DoctorEvents.Instance.onFire -= OnFire;
+        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+        DoctorEvents.Instance.onAnestheticMachineLow -= OnAnestheticMachineLow;
+        DoctorEvents.Instance.onAnestheticMachineReturned -= OnAnestheticMachineReturned;
+        DoctorEvents.Instance.onDoctorNeedsToWashHands -= OnDoctorNeedsToWashHands;
+        DoctorEvents.Instance.onDoctorWashedHands -= OnDoctorWashingHands;
+    }
 }

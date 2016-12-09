@@ -48,4 +48,10 @@ public class ScalpelTool : Tool {
         }
     }
 
+    void OnDestroy() {
+        DoctorEvents.Instance.patientNeedsCutOpen -= OnScalpelNeeded;
+        DoctorEvents.Instance.onSurgeryOperationFirst -= OnSurgeryInitiated;
+        DoctorEvents.Instance.onToolDroppedForSurgery -= OnScalpelDroppedForSurgery;
+    }
+
 }

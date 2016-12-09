@@ -84,4 +84,12 @@ public class WashingStation : Interactable {
     private void OnFirePutOut(float duration) {
         firePutOutOnce = true;
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onDoctorNeedsToWashHands -= OnDoctorNeedsToWashHands;
+        DoctorEvents.Instance.onDoctorWashedHands -= OnDoctorWashedHands;
+        DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+    }
 }

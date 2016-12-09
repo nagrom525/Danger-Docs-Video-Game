@@ -34,4 +34,8 @@ public class GauzeTool : Tool {
             gauzeNeededCaledOnce = true;
         }
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.patientNeedsBloodSoak -= OnGauzeNeeded;
+    }
 }

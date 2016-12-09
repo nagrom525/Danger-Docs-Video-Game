@@ -10,7 +10,7 @@ public class BearAI : MonoBehaviour {
 	bool targetAcheived;
 	public GameObject Cave;
 	Vector3 startposition;
-	public int push_back_threshold = 3;
+	public int push_back_threshold = 1;
 	private int push_back_num;
     public GameObject actionButtonCanvas;
     public static bool scaredAwayOnce = false;

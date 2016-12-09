@@ -104,4 +104,12 @@ public class WaterBucket : Tool
     private void OnBucketFilled(float duration) {
         bucketFilledOnce = true;
     }
+
+    void OnDestroy() {
+        DoctorEvents.Instance.onFire -= OnFire;
+        DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
+        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+    }
 }

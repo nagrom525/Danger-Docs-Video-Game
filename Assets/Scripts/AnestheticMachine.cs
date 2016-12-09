@@ -133,4 +133,9 @@ public class AnestheticMachine : Interactable {
         actionButtonCanvas.SetActive(false);
     }
 
+    void OnDestroy() {
+        DoctorEvents.Instance.onToolPickedUpCanister -= OnCanisterPickedUp;
+        DoctorEvents.Instance.onToolDroppedCanister -= OnCanisterDropped;
+    }
+
 }

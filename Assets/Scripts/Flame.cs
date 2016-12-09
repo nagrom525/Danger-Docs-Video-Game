@@ -72,20 +72,7 @@ public class Flame : MonoBehaviour
 		canSpawn[(int)d] = CanSpawnState.CHECK;
 	}
 
-	// unity engine event.. called when the object is destroyed
-	void OnDestroy()
-	{
-        firePutOutOnce = true;
-		if (onDestroyEvent != null)
-		{
-			onDestroyEvent(directionSpawned);
-		}
-		flameCount--;
-		if (flameCount == 0)
-		{
-			DoctorEvents.Instance.InformFirePutOut();
-		}
-	}
+	
 
 	//// direction spawned is the direction the child is in relative to the parent
 	//private void SetParent(Direction directionSpawned) {
@@ -242,6 +229,23 @@ public class Flame : MonoBehaviour
 
     void OnBucketEmptied(float duration) {
         actionButtonCanvas.SetActive(false);
+    }
+
+    // unity engine event.. called when the object is destroyed
+    void OnDestroy() {
+        firePutOutOnce = true;
+        if (onDestroyEvent != null) {
+            onDestroyEvent(directionSpawned);
+        }
+        flameCount--;
+        if (flameCount == 0) {
+            DoctorEvents.Instance.InformFirePutOut();
+        }
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
+        DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
+        DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
+        DoctorEvents.Instance.onBucketEmptied -= OnBucketEmptied;
     }
 
 }

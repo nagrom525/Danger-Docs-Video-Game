@@ -252,6 +252,7 @@ public class Doctor : MonoBehaviour {
         DoctorEvents.Instance.InformToolDropped(currentTool.GetToolType(), full);
         currentTool.transform.parent = null;
 		currentTool = null;
+	
 	}
 
 	private bool patientInRange() {
@@ -272,9 +273,8 @@ public class Doctor : MonoBehaviour {
         }
         if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
             DoctorEvents.Instance.InformSurgeryOperation();
-        } else {
             inSurgery = true;
-        }
+        } 
         // Use current tool on patient.
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
@@ -309,7 +309,7 @@ public class Doctor : MonoBehaviour {
 		}
 
 		// If near patient, use tool on patient.
-		if (patientInRange())
+		if (patientInRange() && (currentTool.GetToolType() != Tool.ToolType.CANISTER))
 		{
 			useCurrentToolOnPatient();
 		}
