@@ -2,18 +2,43 @@
 using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
-    enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR}
+    enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
     TutorailStates current_state;
 
-    public bool tutorialActive;
+    public bool tutorialActive { get; private set; }
+    public float numPlayers = 4;
 
+    // --            Wash Hands          -- //
     public delegate void WashHandsEvent(float precent, int playerNum);
-    WashHandsEvent washHands;
+    WashHandsEvent onWashHands;
+    private float[] precentHandsWashed = new float[4];
+    // -- Pick Up Tool and Go To Patient -- //
+    // --       Surgery On Patient       -- //
+    // --       Anesthetic Machine       -- //
+    // --          Heart Attack          -- //
+    // --              Fire              -- //
+    // --        Scare Away Raccoon      -- //
+    // --          Scare Away Bear       -- //
+
 
     private float timeStateStart = 0.0f;
 
-	// Use this for initialization
-	void Start () {
+    private static TutorialEventController _instance;
+    public static TutorialEventController Instance {
+        get { return _instance; }
+    }
+
+    void Awake() {
+        // setting up singleton code
+        if (_instance == null) {
+            _instance = this;
+        } else {
+            Debug.Log("TutorialEventController can only be set once");
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
         timeStateStart = Time.time;
 	}
 	
@@ -49,17 +74,30 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- Wash Hands -- //
     private void WashHandsUpdate() {
-
+        bool handWashingComplete = true;
+        foreach(float precent in precentHandsWashed){
+            if(precent < 0.99990000) {
+                handWashingComplete = false;
+                break;
+            }
+        }
+        if (handWashingComplete) {
+            WashHandsComplete();
+        }
     }
 
     private void WashHandsComplete() {
-
+        current_state = GetNextState(current_state);
+        timeStateStart = Time.time;
     }
 
     // player Num is indexed from 0
     // want to call this function every time player washes their hands
     public void InformWashingHands(float precentWashed, int playerNum) {
-
+        precentHandsWashed[playerNum] = precentWashed;
+        if(onWashHands != null) {
+            onWashHands(precentWashed, playerNum);
+        }
     }
 
 
@@ -161,5 +199,21 @@ public class TutorialEventController : MonoBehaviour {
 
     public void InfromPlayerScaredBear(int playerNum) {
 
+    }
+
+    // -- Utility -- // 
+    // T is a value from 0 - 1
+    // 
+    private float GetT(float startTime, float totalTime) {
+        return (Time.time - startTime) / totalTime;
+    }
+
+    private TutorailStates GetNextState(TutorailStates currState) {
+        if(currState == TutorailStates.DONE) {
+            return currState;
+        } else {
+            return currState + 1;
+            // return (TutorailStates)(((int)currState) + 1);
+        }
     }
 }
