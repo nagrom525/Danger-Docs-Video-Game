@@ -144,24 +144,69 @@ public class AudioControl : MonoBehaviour {
 		defibulatorSurgeAudioSrc.clip = defibulatorSurge;
 		defibulatorSurgeAudioSrc.Play();
 	}
-}
 
-/*
- 			heartRateAudioSrc = sources[3];
-			heartRateAudioSrc = sources[4];
-			bearEnterAudioSrc = sources[5];
-			bearExitAudioSrc = sources[6];
-			toolPickupAudioSrc = sources[7];
-			toolDropAudioSrc = sources[8];
-			defibulatorSurgeAudioSrc = sources[9];
-			doctorDashAudioSrc = sources[10];
-			doctorBumpAudioSrc = sources[11];
-			surgeryEnterAudioSrc = sources[12];
-			surgeryExitAudioSrc = sources[13];
-			surgeryInteractAudioSrc = sources[14];
-			waterBucketDumpAudioSrc = sources[15];
-			waterBucketFillAudioSrc = sources[16];
-			fireLoopAudioSrc = sources[17];
-			anestheticMachineFillAudioSrc = sources[18];
-			raccoonStealAudioSrc = sources[19];
-			*/
+	public void PlayDoctorDash()
+	{
+		doctorDashAudioSrc.clip = doctorDash;
+		doctorDashAudioSrc.Play();
+	}
+
+	public void PlayDoctorBump()
+	{
+		doctorBumpAudioSrc.clip = doctorBump;
+		doctorBumpAudioSrc.Play();
+	}
+
+	public void PlaySurgeryEnter()
+	{
+		surgeryEnterAudioSrc.clip = surgeryEnter;
+		surgeryEnterAudioSrc.Play();
+	}
+
+	public void PlaySurgeryExit()
+	{
+		surgeryExitAudioSrc.clip = surgeryExit;
+		surgeryExitAudioSrc.Play();
+	}
+
+	public void PlaySurgeryInteract()
+	{
+		surgeryInteractAudioSrc.clip = surgeryInteract;
+		surgeryInteractAudioSrc.Play();
+	}
+
+	public void PlayWaterBucketDump()
+	{
+		surgeryInteractAudioSrc.clip = surgeryInteract;
+		surgeryInteractAudioSrc.Play();
+	}
+
+	public void PlayWaterBucketFill()
+	{
+		waterBucketFillAudioSrc.clip = waterBucketFill;
+		waterBucketFillAudioSrc.Play();
+	}
+
+	public void PlayFireLoop()
+	{
+		fireLoopAudioSrc.clip = fireLoop;
+		fireLoopAudioSrc.Play();
+	}
+
+	public void StopFireLoop()
+	{
+		fireLoopAudioSrc.Stop();
+	}
+
+	public void PlayAnestheticMachineFill()
+	{
+		anestheticMachineFillAudioSrc.clip = anestheticMachineFill;
+		anestheticMachineFillAudioSrc.Play();
+	}
+
+	public void PlayRaccoonSteal()
+	{
+		raccoonStealAudioSrc.clip = raccoonSteal;
+		raccoonStealAudioSrc.Play();
+	}
+}
