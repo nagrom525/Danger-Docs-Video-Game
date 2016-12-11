@@ -1,6 +1,6 @@
 We need at least one cooperative surgery
 
-Sounds effects throughout entire game.
+Soundc effects throughout entire game.
 
 Tool Parachute drops old prefabs
 
@@ -49,7 +49,7 @@ Sprinting
 
 ---- Tutorial Planning (Gamma)
 
-- Improve Dashing Affordence / Signaling
+- [x] Improve Dashing Affordence / Signaling
 
 - Dash to get rid of raccoons as well as bear.
 
@@ -64,6 +64,7 @@ Sprinting
 - Tutorial Events controller
     + Maintain state for tutorial
     + Monitor progress
+    + Checkboxes above doctor heads
 
 - Spawning Controller
     + Handles timing of the spawning
