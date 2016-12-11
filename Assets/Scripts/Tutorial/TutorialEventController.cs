@@ -14,31 +14,31 @@ public class TutorialEventController : MonoBehaviour {
 
     // --            Wash Hands          -- //
     private float[] precentHandsWashed = new float[4];
-    PrecentPlayerNumEvent OnHandsWashed;
-    GeneralEvent OnWashingHandsStart;
+    public PrecentPlayerNumEvent OnHandsWashed;
+    public GeneralEvent OnWashingHandsStart;
 
     // -- Pick Up Tool and Go To Patient -- //
     private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
     private bool[] doctorAtPatient = new bool[4];
-    GeneralEvent OnPickupToolsStart;
-    GeneralEvent OnPickupToolsEnd;
-    ToolPlayerNumEvent OnToolPickedUp;
-    ToolPlayerNumEvent OnToolDropped;
-    PlayerNumEvent OnDoctorAtPatient;
-    PlayerNumEvent OnDoctorLeavesPatient;
+    public GeneralEvent OnPickupToolsStart;
+    public GeneralEvent OnPickupToolsEnd;
+    public ToolPlayerNumEvent OnToolPickedUp;
+    public ToolPlayerNumEvent OnToolDropped;
+    public PlayerNumEvent OnDoctorAtPatient;
+    public PlayerNumEvent OnDoctorLeavesPatient;
     
 
     // --       Surgery On Patient       -- //
     private bool[] surgeryComplete = new bool[4];
-    GeneralEvent OnSurgeryOnPatientStart;
-    GeneralEvent OnSurgeryOnPatientEnd;
-    PlayerNumEvent OnSurgeryComplete;
+    public GeneralEvent OnSurgeryOnPatientStart;
+    public GeneralEvent OnSurgeryOnPatientEnd;
+    public PlayerNumEvent OnSurgeryComplete;
 
     // --       Anesthetic Machine       -- //
     private bool[] batteryUsed = new bool[4];
     public GeneralEvent OnAnestheticMachineStart;
     public GeneralEvent OnAnestheticMachienEnd;
-    PlayerNumEvent OnBatteryUsed;
+    public PlayerNumEvent OnBatteryUsed;
 
     // --          Heart Attack          -- //
     public GeneralEvent OnHeartAttackStart;
@@ -48,15 +48,15 @@ public class TutorialEventController : MonoBehaviour {
 
     // --        Scare Away Raccoon      -- //
     private bool[] scaredAwayRaccon  = new bool[4];
-    GeneralEvent OnScareAwayRacconStart;
-    GeneralEvent OnScareAwayRacconEnd;
-    PlayerNumEvent OnPlayerScaredRaccoon;
+    public GeneralEvent OnScareAwayRacconStart;
+    public GeneralEvent OnScareAwayRacconEnd;
+    public PlayerNumEvent OnPlayerScaredRaccoon;
 
     // --          Scare Away Bear       -- //
     private bool[] scaredAwayBear = new bool[4];
-    GeneralEvent OnScareAwayBearEnd;
-    GeneralEvent OnScareAwayBearStart;
-    PlayerNumEvent OnPlayerScaredBear;
+    public GeneralEvent OnScareAwayBearEnd;
+    public GeneralEvent OnScareAwayBearStart;
+    public PlayerNumEvent OnPlayerScaredBear;
 
 
     private float timeStateStart = 0.0f;
