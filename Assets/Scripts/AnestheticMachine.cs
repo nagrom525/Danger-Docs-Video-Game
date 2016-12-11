@@ -18,8 +18,10 @@ public class AnestheticMachine : Interactable {
 	private int anestheticMeterFramesRemaining;
     bool lowAnestheticInformed = false;
 
+	bool inTutorialState;
+
 	void Start() {
-		// 5% depletion per second
+		// 2.5% depletion per second
 		depletion_rate = 0.025f;
 
 		anestheticMeter = transform.GetComponentInChildren<Image> ();
@@ -28,9 +30,16 @@ public class AnestheticMachine : Interactable {
 
         DoctorEvents.Instance.onToolPickedUpCanister += OnCanisterPickedUp;
         DoctorEvents.Instance.onToolDroppedCanister += OnCanisterDropped;
+		// Tutorial Startup Listeners
+		TutorialEventController.Instance.OnAnestheticMachineStart += OnTutorialStateBegin;
+		TutorialEventController.Instance.OnAnestheticMachienEnd += OnTutorialStateEnd;
+		
+
+		inTutorialState = false;
 	}
 
 	void Update() {
+
 		displayAnestheticMeter();
 		if (anestheticMeterFramesRemaining > 0) {
 			updateAnestheticMeter ();
@@ -39,9 +48,22 @@ public class AnestheticMachine : Interactable {
 		}
 
 		// Drain anesthetic over time.
-		drainAnesthetic();
+		if (TutorialEventController.Instance.tutorialActive)
+		{
+			if (inTutorialState)
+			{
+				// Tutorial anesthetic drain
+				float pending_anesthetic_level = anesthetic_levels - depletion_rate * Time.time;
+				anesthetic_levels = Mathf.Clamp(pending_anesthetic_level, 0.05f, 1f);
+			}
+			// Else, nothing because the machine should be stable.
+		}
+		else {
+			drainAnesthetic();
+		}
 
-        if (anesthetic_levels < 0.01f) {
+		// If we're in the tutorial, do not drain anesthetic.
+        if (!inTutorialState && anesthetic_levels < 0.01f) {
             Debug.Log("anesthetic lvl == 0");
             DoctorEvents.Instance.InducePatientCritical();
         } else if (anesthetic_levels < 0.1f) {
@@ -75,7 +97,7 @@ public class AnestheticMachine : Interactable {
 
 	private void drainAnesthetic() {
 		float pending_anesthetic = anesthetic_levels - depletion_rate * Time.deltaTime;
-		anesthetic_levels = (pending_anesthetic < 0f) ? 0f : pending_anesthetic;
+		anesthetic_levels = Mathf.Clamp(pending_anesthetic, 0f, 1f);
 	}
 
 	// The Anesthetic Machine does not require a tool to interact ... yet!
@@ -133,9 +155,24 @@ public class AnestheticMachine : Interactable {
         actionButtonCanvas.SetActive(false);
     }
 
+	private void OnTutorialStateBegin() {
+		inTutorialState = true;
+		anesthetic_levels = 0.5f;
+		// Drain 5% per second.
+		depletion_rate = 0.05f;
+	}
+
+	private void OnTutorialStateEnd() {
+		inTutorialState = false;
+		// Reset variables and such
+		Start();
+	}
+
     void OnDestroy() {
         DoctorEvents.Instance.onToolPickedUpCanister -= OnCanisterPickedUp;
         DoctorEvents.Instance.onToolDroppedCanister -= OnCanisterDropped;
-    }
 
+		TutorialEventController.Instance.OnAnestheticMachineStart -= OnTutorialStateBegin;
+		TutorialEventController.Instance.OnAnestheticMachienEnd -= OnTutorialStateEnd;
+    }
 }
