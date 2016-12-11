@@ -5,6 +5,8 @@ public class TutorialEventController : MonoBehaviour {
     enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR}
     TutorailStates current_state;
 
+    public bool tutorialActive;
+
     public delegate void WashHandsEvent(float precent, int playerNum);
     WashHandsEvent washHands;
 
@@ -60,6 +62,8 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+
+    // -- Pick up tool and Patient -- //
     private void PickUpToolGoToPatientUpdate() {
 
     }
@@ -76,6 +80,8 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+
+    // -- Surgery On Patient -- // 
     private void SurgeryOnPatientUpdate() {
 
     }
@@ -84,6 +90,8 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+
+    // -- Anesthetic Machine -- //
     public void InformSurgeryComplete(int playerNum) {
 
     }
@@ -91,6 +99,7 @@ public class TutorialEventController : MonoBehaviour {
     private void AnestheticMachineUpdate() {
 
     }
+
 
     private void InformBatteryUsed(int playerNum) {
 
@@ -100,6 +109,8 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+
+    // -- HeartAttack -- //
     private void HeartAttackUpdate() {
 
     }
@@ -112,6 +123,8 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+
+    // -- Fire -- //
     private void FireUpdate() {
 
     }
@@ -124,6 +137,7 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    // -- Scare Away Raccoon -- //
     private void ScareAwayRacconUpdate() {
 
     }
@@ -136,6 +150,7 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    // -- Scare Away Bear -- //
     private void ScareAwayBearUpdate() {
 
     }
