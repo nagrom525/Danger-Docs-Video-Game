@@ -6,13 +6,16 @@ public class TutorialEventController : MonoBehaviour {
     TutorailStates current_state;
 
     public bool tutorialActive { get; private set; }
-    public float numPlayers = 4;
+
 
     // --            Wash Hands          -- //
     public delegate void WashHandsEvent(float precent, int playerNum);
     WashHandsEvent onWashHands;
     private float[] precentHandsWashed = new float[4];
     // -- Pick Up Tool and Go To Patient -- //
+    private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
+    private bool[] doctorAtPatient = new bool[4];
+
     // --       Surgery On Patient       -- //
     // --       Anesthetic Machine       -- //
     // --          Heart Attack          -- //
@@ -74,16 +77,12 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- Wash Hands -- //
     private void WashHandsUpdate() {
-        bool handWashingComplete = true;
         foreach(float precent in precentHandsWashed){
             if(precent < 0.99990000) {
-                handWashingComplete = false;
-                break;
+                return;
             }
         }
-        if (handWashingComplete) {
-            WashHandsComplete();
-        }
+        WashHandsComplete();
     }
 
     private void WashHandsComplete() {
@@ -94,28 +93,49 @@ public class TutorialEventController : MonoBehaviour {
     // player Num is indexed from 0
     // want to call this function every time player washes their hands
     public void InformWashingHands(float precentWashed, int playerNum) {
-        precentHandsWashed[playerNum] = precentWashed;
-        if(onWashHands != null) {
-            onWashHands(precentWashed, playerNum);
+        if(current_state == TutorailStates.WASH_HANDS) {
+            precentHandsWashed[playerNum] = precentWashed;
+            if (onWashHands != null) {
+                onWashHands(precentWashed, playerNum);
+            }
         }
     }
 
 
     // -- Pick up tool and Patient -- //
     private void PickUpToolGoToPatientUpdate() {
-
+        foreach(var tool in toolsHeldByDoctor) {
+            if(tool == Tool.ToolType.NONE) {
+                return;
+            }
+        }
+        foreach(bool atPatient in doctorAtPatient) {
+            if (!atPatient) {
+                return;
+            }
+        }
+        PickUpToolGoToPatientComplete();
     }
 
     private void PickUpToolGoToPatientComplete() {
-
+        current_state = GetNextState(current_state);
+        timeStateStart = Time.time;
     }
 
     public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
-
+            toolsHeldByDoctor[playerNum] = type;
     }
 
     public void InformToolDropped(Tool.ToolType type, int playerNum) {
+        toolsHeldByDoctor[playerNum] = Tool.ToolType.NONE;
+    }
 
+    public void InformDoctorAtPatient(int playerNum) {
+        doctorAtPatient[playerNum] = true;
+    }
+
+    public void InformDoctorLeftPatient(int playerNum) {
+        doctorAtPatient[playerNum] = false;
     }
 
 
