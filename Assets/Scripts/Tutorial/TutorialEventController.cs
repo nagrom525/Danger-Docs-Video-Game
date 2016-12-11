@@ -194,7 +194,9 @@ public class TutorialEventController : MonoBehaviour {
     // -- Anesthetic Machine -- //
 
     private void StartAnestheticMachine() {
-
+        if(OnAnestheticMachineStart != null) {
+            OnAnestheticMachineStart();
+        }
     }
 
     private void AnestheticMachineUpdate() {
@@ -212,6 +214,9 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     private void AnestheticMachineComplete() {
+        if(OnAnestheticMachienEnd != null) {
+            OnAnestheticMachienEnd();
+        }
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
