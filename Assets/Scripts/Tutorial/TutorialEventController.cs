@@ -12,16 +12,26 @@ public class TutorialEventController : MonoBehaviour {
     public delegate void WashHandsEvent(float precent, int playerNum);
     WashHandsEvent onWashHands;
     private float[] precentHandsWashed = new float[4];
+
     // -- Pick Up Tool and Go To Patient -- //
     private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
     private bool[] doctorAtPatient = new bool[4];
 
     // --       Surgery On Patient       -- //
+    private bool[] surgeryComplete = new bool[4];
+
     // --       Anesthetic Machine       -- //
+    private bool[] batteryUsed = new bool[4];
+
     // --          Heart Attack          -- //
+
     // --              Fire              -- //
+
     // --        Scare Away Raccoon      -- //
+    private bool[] scaredAwayRaccon  = new bool[4];
+
     // --          Scare Away Bear       -- //
+    private bool[] scaredAwayBear = new bool[4];
 
 
     private float timeStateStart = 0.0f;
@@ -120,6 +130,7 @@ public class TutorialEventController : MonoBehaviour {
     private void PickUpToolGoToPatientComplete() {
         current_state = GetNextState(current_state);
         timeStateStart = Time.time;
+        
     }
 
     public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
@@ -141,84 +152,111 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- Surgery On Patient -- // 
     private void SurgeryOnPatientUpdate() {
-
+        foreach(var complete in surgeryComplete) {
+            if (!complete) {
+                return;
+            }
+        }
+        SurgeryOnPatientComplete();
     }
 
     private void SurgeryOnPatientComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
+
+    public void InformSurgeryComplete(int playerNum) {
+        surgeryComplete[playerNum] = true;
+    }
+
 
 
     // -- Anesthetic Machine -- //
-    public void InformSurgeryComplete(int playerNum) {
-
-    }
-
     private void AnestheticMachineUpdate() {
-
+        foreach(var battery in batteryUsed) {
+            if (!battery) {
+                return;
+            }
+        }
+        AnestheticMachineComplete();
     }
 
 
     private void InformBatteryUsed(int playerNum) {
-
+        batteryUsed[playerNum] = true;
     }
 
     private void AnestheticMachineComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
 
 
     // -- HeartAttack -- //
     private void HeartAttackUpdate() {
-
+       // does nothing //
     }
 
     private void HeartAttackComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
 
     public void InformHeartAttackAdverted() {
-
+        HeartAttackComplete();
     }
 
 
     // -- Fire -- //
     private void FireUpdate() {
-
+        // does nothing
     }
 
     private void FireComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
 
     public void InfromFirePutOut() {
-
+        FireComplete();
     }
 
     // -- Scare Away Raccoon -- //
     private void ScareAwayRacconUpdate() {
-
+        foreach(var scaredAway in scaredAwayRaccon) {
+            if (!scaredAway) {
+                return;
+            }
+        }
+        ScareAwayBearComplete();
     }
 
     private void ScareAwayRaccoonComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
 
     public void ScaredAwayRaccon(int playerNum) {
-
+        scaredAwayRaccon[playerNum] = true;
     }
 
     // -- Scare Away Bear -- //
     private void ScareAwayBearUpdate() {
-
+        foreach(var scaredAway in scaredAwayBear) {
+            if (!scaredAway) {
+                return;
+            }
+        }
+        ScareAwayBearComplete();
     }
 
     private void ScareAwayBearComplete() {
-
+        timeStateStart = Time.time;
+        current_state = GetNextState(current_state);
     }
 
     public void InfromPlayerScaredBear(int playerNum) {
-
+        scaredAwayBear[playerNum] = true;
     }
 
     // -- Utility -- // 
@@ -236,4 +274,12 @@ public class TutorialEventController : MonoBehaviour {
             // return (TutorailStates)(((int)currState) + 1);
         }
     }
+
+    private void resetBools(bool[] boolArray) {
+        for(int i = 0; i < boolArray.Length; ++i) {
+            boolArray[i] = false;
+        }
+    }
+
+
 }
