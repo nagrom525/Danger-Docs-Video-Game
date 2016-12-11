@@ -22,6 +22,9 @@ public class TutorialEventController : MonoBehaviour {
 
     // --       Anesthetic Machine       -- //
     private bool[] batteryUsed = new bool[4];
+    public delegate void GeneralEvent();
+    public GeneralEvent OnAnestheticMachineStart;
+    public GeneralEvent OnAnestheticMachienEnd;
 
     // --          Heart Attack          -- //
 
