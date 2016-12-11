@@ -27,7 +27,7 @@ We're seeing some build only bugs.
 There's no visual feeback to inform that bear is being deterred.
     - Il y a buecoup de options
 
-Dashing is really unclear -- 
+Dashing is really unclear --
 
 Definitely focus on simplification
 
@@ -45,3 +45,43 @@ Bucket bug
 Bear deterence mechanic
 
 Sprinting
+
+
+---- Tutorial Planning (Gamma)
+
+- Improve Dashing Affordence / Signaling
+
+- Dash to get rid of raccoons as well as bear.
+
+- Make it more obvious that the dash is working on the bear.
+
+- Require all players to work together on bear
+
+- Display graphic to explicitly instruct player
+
+- Progress bar (for player progress through task and tutorial overall)
+
+- Tutorial Events controller
+    + Maintain state for tutorial
+    + Monitor progress
+
+- Spawning Controller
+    + Handles timing of the spawning
+
+- Table by the patient
+
+- Transitions!
+    + Cannot have people using the mouse
+
+## Tutorial Order
+
+1. Pickup a random tool
+1. Spawn each type of surgery step
+1. Each player completes a different surgery step
+  + Somewhat of a forces specialization
+1. Teach anestetic machine
+1. Teach heart attack
+  + To just one person
+1. Teach raccoon
+1. Teach bear
+
