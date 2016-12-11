@@ -3,45 +3,60 @@ using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
     enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+    public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
+    public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
+    public delegate void GeneralEvent();
+    public delegate void PlayerNumEvent(int playerNum);
     TutorailStates current_state;
 
     public bool tutorialActive { get; private set; }
 
 
     // --            Wash Hands          -- //
-    public delegate void WashHandsEvent(float precent, int playerNum);
-    WashHandsEvent OnHandsWashed;
-    GeneralEvent OnWashingHandsStart;
     private float[] precentHandsWashed = new float[4];
+    PrecentPlayerNumEvent OnHandsWashed;
+    GeneralEvent OnWashingHandsStart;
 
     // -- Pick Up Tool and Go To Patient -- //
     private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
     private bool[] doctorAtPatient = new bool[4];
-    GeneralEvent OnPickupTools;
+    GeneralEvent OnPickupToolsStart;
+    GeneralEvent OnPickupToolsEnd;
+    ToolPlayerNumEvent OnToolPickedUp;
+    ToolPlayerNumEvent OnToolDropped;
+    PlayerNumEvent OnDoctorAtPatient;
+    PlayerNumEvent OnDoctorLeavesPatient;
+    
 
     // --       Surgery On Patient       -- //
     private bool[] surgeryComplete = new bool[4];
-    GeneralEvent OnSurgeryOnPatient;
+    GeneralEvent OnSurgeryOnPatientStart;
+    GeneralEvent OnSurgeryOnPatientEnd;
+    PlayerNumEvent OnSurgeryComplete;
 
     // --       Anesthetic Machine       -- //
     private bool[] batteryUsed = new bool[4];
-    public delegate void GeneralEvent();
     public GeneralEvent OnAnestheticMachineStart;
     public GeneralEvent OnAnestheticMachienEnd;
+    PlayerNumEvent OnBatteryUsed;
 
     // --          Heart Attack          -- //
-    public GeneralEvent OnHeartAttack;
+    public GeneralEvent OnHeartAttackStart;
 
     // --              Fire              -- //
     public GeneralEvent OnFire;
 
     // --        Scare Away Raccoon      -- //
     private bool[] scaredAwayRaccon  = new bool[4];
-    GeneralEvent OnScareAwayRaccon;
+    GeneralEvent OnScareAwayRacconStart;
+    GeneralEvent OnScareAwayRacconEnd;
+    PlayerNumEvent OnPlayerScaredRaccoon;
 
     // --          Scare Away Bear       -- //
     private bool[] scaredAwayBear = new bool[4];
-    GeneralEvent OnScareAwayBear;
+    GeneralEvent OnScareAwayBearEnd;
+    GeneralEvent OnScareAwayBearStart;
+    PlayerNumEvent OnPlayerScaredBear;
 
 
     private float timeStateStart = 0.0f;
@@ -132,8 +147,8 @@ public class TutorialEventController : MonoBehaviour {
     // -- Pick up tool and Patient -- //
 
     private void StartPickUpToolGoToPatient() {
-        if(OnPickupTools != null) {
-            OnPickupTools();
+        if(OnPickupToolsStart != null) {
+            OnPickupToolsStart();
         }
     }
 
@@ -155,31 +170,43 @@ public class TutorialEventController : MonoBehaviour {
         current_state = GetNextState(current_state);
         timeStateStart = Time.time;
         StartNewState(current_state);
+        if(OnPickupToolsEnd != null) {
+            OnPickupToolsEnd();
+        }
 
     }
 
     public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
-            toolsHeldByDoctor[playerNum] = type;
+        toolsHeldByDoctor[playerNum] = type;
+        OnToolPickedUp(type, playerNum);    
     }
 
     public void InformToolDropped(Tool.ToolType type, int playerNum) {
         toolsHeldByDoctor[playerNum] = Tool.ToolType.NONE;
+        OnToolDropped(type, playerNum);
     }
 
     public void InformDoctorAtPatient(int playerNum) {
         doctorAtPatient[playerNum] = true;
+        if(OnDoctorAtPatient != null) {
+            OnDoctorAtPatient(playerNum);
+        }
+        
     }
 
     public void InformDoctorLeftPatient(int playerNum) {
         doctorAtPatient[playerNum] = false;
+        if(OnDoctorLeavesPatient != null) {
+            OnDoctorLeavesPatient(playerNum);
+        }
     }
 
 
     // -- Surgery On Patient -- // 
 
     private void StartSurgeryOnPatient() {
-        if(OnSurgeryOnPatient != null) {
-            OnSurgeryOnPatient();
+        if(OnSurgeryOnPatientStart != null) {
+            OnSurgeryOnPatientStart();
         }
     }
 
@@ -196,10 +223,16 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        if(OnSurgeryOnPatientEnd != null) {
+            OnSurgeryOnPatientEnd();
+        }
     }
 
     public void InformSurgeryComplete(int playerNum) {
         surgeryComplete[playerNum] = true;
+        if(OnSurgeryComplete != null) {
+            OnSurgeryComplete(playerNum);
+        }
     }
 
 
@@ -224,6 +257,9 @@ public class TutorialEventController : MonoBehaviour {
 
     private void InformBatteryUsed(int playerNum) {
         batteryUsed[playerNum] = true;
+        if(OnBatteryUsed != null) {
+            OnBatteryUsed(playerNum);
+        }
     }
 
     private void AnestheticMachineComplete() {
@@ -238,8 +274,8 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- HeartAttack -- //
     private void StartHeartAttack() {
-        if(OnHeartAttack != null) {
-            OnHeartAttack();
+        if(OnHeartAttackStart != null) {
+            OnHeartAttackStart();
         }
     }
 
@@ -284,8 +320,8 @@ public class TutorialEventController : MonoBehaviour {
     // -- Scare Away Raccoon -- //
 
     private void StartScareAwayRaccoon() {
-        if(OnScareAwayRaccon != null) {
-            OnScareAwayRaccon();
+        if(OnScareAwayRacconStart != null) {
+            OnScareAwayRacconStart();
         }
     }
 
@@ -302,17 +338,23 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        if(OnScareAwayRacconEnd != null) {
+            OnScareAwayRacconEnd();
+        }
     }
 
     public void ScaredAwayRaccon(int playerNum) {
         scaredAwayRaccon[playerNum] = true;
+        if(OnPlayerScaredRaccoon != null) {
+            OnPlayerScaredRaccoon(playerNum);
+        }
     }
 
     // -- Scare Away Bear -- //
 
     private void StartScareAwayBear() {
-        if(OnScareAwayBear != null) {
-            OnScareAwayBear();
+        if(OnScareAwayBearStart != null) {
+            OnScareAwayBearStart();
         }
     }
 
@@ -329,10 +371,16 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        if(OnScareAwayBearEnd != null) {
+            OnScareAwayBearEnd();
+        }
     }
 
     public void InfromPlayerScaredBear(int playerNum) {
         scaredAwayBear[playerNum] = true;
+        if(OnPlayerScaredBear != null) {
+            OnPlayerScaredBear(playerNum);
+        }
     }
 
     // -- Utility -- // 
