@@ -89,6 +89,10 @@ public class TutorialEventController : MonoBehaviour {
 	}
 
     // -- Wash Hands -- //
+    private void StartWashHands() {
+
+    }
+
     private void WashHandsUpdate() {
         foreach(float precent in precentHandsWashed){
             if(precent < 0.99990000) {
@@ -100,6 +104,7 @@ public class TutorialEventController : MonoBehaviour {
 
     private void WashHandsComplete() {
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
         timeStateStart = Time.time;
     }
 
@@ -116,6 +121,11 @@ public class TutorialEventController : MonoBehaviour {
 
 
     // -- Pick up tool and Patient -- //
+
+    private void StartPickUpToolGoToPatient() {
+
+    }
+
     private void PickUpToolGoToPatientUpdate() {
         foreach(var tool in toolsHeldByDoctor) {
             if(tool == Tool.ToolType.NONE) {
@@ -133,7 +143,8 @@ public class TutorialEventController : MonoBehaviour {
     private void PickUpToolGoToPatientComplete() {
         current_state = GetNextState(current_state);
         timeStateStart = Time.time;
-        
+        StartNewState(current_state);
+
     }
 
     public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
@@ -154,6 +165,11 @@ public class TutorialEventController : MonoBehaviour {
 
 
     // -- Surgery On Patient -- // 
+
+    private void StartSurgeryOnPatient() {
+
+    }
+
     private void SurgeryOnPatientUpdate() {
         foreach(var complete in surgeryComplete) {
             if (!complete) {
@@ -166,6 +182,7 @@ public class TutorialEventController : MonoBehaviour {
     private void SurgeryOnPatientComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
     public void InformSurgeryComplete(int playerNum) {
@@ -175,6 +192,11 @@ public class TutorialEventController : MonoBehaviour {
 
 
     // -- Anesthetic Machine -- //
+
+    private void StartAnestheticMachine() {
+
+    }
+
     private void AnestheticMachineUpdate() {
         foreach(var battery in batteryUsed) {
             if (!battery) {
@@ -192,10 +214,17 @@ public class TutorialEventController : MonoBehaviour {
     private void AnestheticMachineComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
 
     // -- HeartAttack -- //
+
+    private void StartHeartAttack() {
+
+    }
+
+
     private void HeartAttackUpdate() {
        // does nothing //
     }
@@ -203,6 +232,7 @@ public class TutorialEventController : MonoBehaviour {
     private void HeartAttackComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
     public void InformHeartAttackAdverted() {
@@ -211,6 +241,11 @@ public class TutorialEventController : MonoBehaviour {
 
 
     // -- Fire -- //
+
+    private void StartFire() {
+
+    }
+     
     private void FireUpdate() {
         // does nothing
     }
@@ -218,6 +253,7 @@ public class TutorialEventController : MonoBehaviour {
     private void FireComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
     public void InfromFirePutOut() {
@@ -225,6 +261,11 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     // -- Scare Away Raccoon -- //
+
+    private void StartScareAwayRaccoon() {
+
+    }
+
     private void ScareAwayRacconUpdate() {
         foreach(var scaredAway in scaredAwayRaccon) {
             if (!scaredAway) {
@@ -237,6 +278,7 @@ public class TutorialEventController : MonoBehaviour {
     private void ScareAwayRaccoonComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
     public void ScaredAwayRaccon(int playerNum) {
@@ -244,6 +286,11 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     // -- Scare Away Bear -- //
+
+    private void StartScareAwayBear() {
+
+    }
+
     private void ScareAwayBearUpdate() {
         foreach(var scaredAway in scaredAwayBear) {
             if (!scaredAway) {
@@ -256,6 +303,7 @@ public class TutorialEventController : MonoBehaviour {
     private void ScareAwayBearComplete() {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
+        StartNewState(current_state);
     }
 
     public void InfromPlayerScaredBear(int playerNum) {
@@ -281,6 +329,36 @@ public class TutorialEventController : MonoBehaviour {
     private void resetBools(bool[] boolArray) {
         for(int i = 0; i < boolArray.Length; ++i) {
             boolArray[i] = false;
+        }
+    }
+
+    private void StartNewState(TutorailStates newState) {
+        switch (newState) {
+            case TutorailStates.WASH_HANDS:
+                StartWashHands();
+                break;
+            case TutorailStates.PICK_UP_TOOL_GO_TO_PATIENT:
+                StartPickUpToolGoToPatient();
+                break;
+            case TutorailStates.SURGERY_ON_PATIENT:
+                StartSurgeryOnPatient();
+                break;
+            case TutorailStates.ANESTHETIC_MACHINE:
+                StartAnestheticMachine();
+                break;
+            case TutorailStates.HEART_ATTACK:
+                StartHeartAttack();
+                break;
+            case TutorailStates.FIRE:
+                StartFire();
+                break;
+            case TutorailStates.SCARE_AWAY_RACCON:
+                StartScareAwayRaccoon();
+                break;
+            case TutorailStates.SCARE_AWAY_BEAR:
+                StartScareAwayBear();
+                break;
+
         }
     }
 
