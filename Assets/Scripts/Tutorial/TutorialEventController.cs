@@ -5,6 +5,9 @@ public class TutorialEventController : MonoBehaviour {
     enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR}
     TutorailStates current_state;
 
+    public delegate void WashHandsEvent(float precent, int playerNum);
+    WashHandsEvent washHands;
+
     private float timeStateStart = 0.0f;
 
 	// Use this for initialization
@@ -42,11 +45,18 @@ public class TutorialEventController : MonoBehaviour {
         }
 	}
 
+    // -- Wash Hands -- //
     private void WashHandsUpdate() {
 
     }
 
     private void WashHandsComplete() {
+
+    }
+
+    // player Num is indexed from 0
+    // want to call this function every time player washes their hands
+    public void InformWashingHands(float precentWashed, int playerNum) {
 
     }
 
@@ -58,6 +68,14 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
+
+    }
+
+    public void InformToolDropped(Tool.ToolType type, int playerNum) {
+
+    }
+
     private void SurgeryOnPatientUpdate() {
 
     }
@@ -66,7 +84,15 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    public void InformSurgeryComplete(int playerNum) {
+
+    }
+
     private void AnestheticMachineUpdate() {
+
+    }
+
+    private void InformBatteryUsed(int playerNum) {
 
     }
 
@@ -82,11 +108,19 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    public void InformHeartAttackAdverted() {
+
+    }
+
     private void FireUpdate() {
 
     }
 
     private void FireComplete() {
+
+    }
+
+    public void InfromFirePutOut() {
 
     }
 
@@ -98,11 +132,19 @@ public class TutorialEventController : MonoBehaviour {
 
     }
 
+    public void ScaredAwayRaccon(int playerNum) {
+
+    }
+
     private void ScareAwayBearUpdate() {
 
     }
 
     private void ScareAwayBearComplete() {
+
+    }
+
+    public void InfromPlayerScaredBear(int playerNum) {
 
     }
 }
