@@ -41,7 +41,7 @@ public class DoctorInputController : MonoBehaviour
             doctor.OnPickupButtonPressed();
         }
         else
-        if (inputDevice.Action2)
+        if (inputDevice.Action2.WasPressed)
         {
 			//playerRenderer.material.color = Color.red;
 			doctor.Dash();
@@ -67,8 +67,12 @@ public class DoctorInputController : MonoBehaviour
 
 		// If no input detected on the joysticks, set velocity to 0.
 		if (Mathf.Abs(inputDevice.Direction.X) < Mathf.Epsilon && Mathf.Abs(inputDevice.Direction.Y) < Mathf.Epsilon) {
-			Rigidbody rb = doctor.GetComponentInChildren<Rigidbody> ();
-			rb.velocity = Vector3.zero;
+			if (!doctor.justDashed)
+			{
+				Rigidbody rb = doctor.GetComponentInChildren<Rigidbody>();
+				rb.velocity = Vector3.zero;			
+			}
+
 		} else {
 			// Rotate target object with both sticks and d-pad.
 			var direction = new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);

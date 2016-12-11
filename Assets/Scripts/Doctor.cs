@@ -29,9 +29,10 @@ public class Doctor : MonoBehaviour {
 
 	public GameObject fireParticles;
 	//Dash variables
-	public float dashSpeed = 2f;
-	public float dashDelay = 2f;
-	public bool justDashed;
+	public float 		dashSpeed = 2f;
+	public float 		dashDelay = 2f;
+	public bool 		justDashed;
+	public GameObject 	dustParticlePrefab;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -192,7 +193,16 @@ public class Doctor : MonoBehaviour {
 		// We should never be moving in the z direction.
 		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.
-		pos += joystickVec * Time.deltaTime;
+		//pos += joystickVec * Time.deltaTime;
+		if (justDashed)
+		{
+			docRB.velocity = dashSpeed*joystickVec;
+		}
+		else 
+		{
+			docRB.velocity = joystickVec;
+		}
+
 	}
 
 	public void OnPickupButtonPressed() {
@@ -429,11 +439,33 @@ public class Doctor : MonoBehaviour {
 		if (justDashed)
 			return;
 
+		//create puff particles
+		CreateDustPlooms();
+
 		docRB.velocity = Vector2.zero;
 		docRB.velocity += dashSpeed * transform.forward;
 		justDashed = true;
 		Invoke("ResetDash", dashDelay);
 	}
+
+	void CreateDustPlooms()
+	{
+		Invoke("CreateDustPloom", 0.1f);
+		Invoke("CreateDustPloom", 0.3f);
+		Invoke("CreateDustPloom", 0.6f);
+	}
+
+	void CreateDustPloom()
+	{
+		GameObject go = (GameObject)Instantiate(dustParticlePrefab, (transform.position-transform.forward), Quaternion.identity);
+		Vector3 newPos = go.transform.position;
+		newPos = new Vector3(newPos.x, 1.0f, newPos.z);
+		//set direction of particles to point away from doctor
+		go.transform.position = newPos;
+		Vector3 direction = go.transform.position - transform.position;
+		go.transform.rotation = Quaternion.LookRotation(direction);
+	}
+
 
 	public void ResetDash()
 	{
