@@ -7,9 +7,49 @@ public class AudioControl : MonoBehaviour {
     public AudioClip heartMonitorBeep;
     public AudioClip heartMonitorLong;
 
+	public AudioClip bearEnter;
+
+	public AudioClip bearExit;	//when bear is succesfully scared away
+
+	public AudioClip toolPickup;
+	public AudioClip toolDrop;
+
+	public AudioClip defibulatorSurge;	//plays when defibulator is used
+
+	public AudioClip doctorDash;
+	public AudioClip doctorBump;
+
+	public AudioClip surgeryEnter;
+	public AudioClip surgeryExit;
+	public AudioClip surgeryInteract;
+
+	public AudioClip waterBucketDump;
+	public AudioClip waterBucketFill;
+
+	public AudioClip fireLoop;  //looping fire when a fire has started
+
+	public AudioClip anestheticMachineFill; //when a battery is used to fill up the machine
+
+	public AudioClip raccoonSteal; 	//plays when raccoon picks up an item
 
     private AudioSource mainGameMusicAudioSrc;
-    private AudioSource heartRateAudioSrc;
+	private AudioSource heartRateAudioSrc;
+	private AudioSource bearEnterAudioSrc;
+	private AudioSource bearExitAudioSrc;
+	private AudioSource toolPickupAudioSrc;
+	private AudioSource toolDropAudioSrc;
+	private AudioSource defibulatorSurgeAudioSrc;
+	private AudioSource doctorDashAudioSrc;
+	private AudioSource doctorBumpAudioSrc;
+	private AudioSource surgeryEnterAudioSrc;
+	private AudioSource surgeryExitAudioSrc;
+	private AudioSource surgeryInteractAudioSrc;
+	private AudioSource waterBucketDumpAudioSrc;
+	private AudioSource waterBucketFillAudioSrc;
+	private AudioSource fireLoopAudioSrc;
+	private AudioSource anestheticMachineFillAudioSrc;
+	private AudioSource raccoonStealAudioSrc;
+
 
     private static AudioControl _instance;
     public static AudioControl Instance {
@@ -29,7 +69,28 @@ public class AudioControl : MonoBehaviour {
         } else {
             mainGameMusicAudioSrc = sources[0];
             heartRateAudioSrc = sources[1];
+
+			heartRateAudioSrc = sources[3];
+			heartRateAudioSrc = sources[4];
+			bearEnterAudioSrc = sources[5];
+			bearExitAudioSrc = sources[6];
+			toolPickupAudioSrc = sources[7];
+			toolDropAudioSrc = sources[8];
+			defibulatorSurgeAudioSrc = sources[9];
+			doctorDashAudioSrc = sources[10];
+			doctorBumpAudioSrc = sources[11];
+			surgeryEnterAudioSrc = sources[12];
+			surgeryExitAudioSrc = sources[13];
+			surgeryInteractAudioSrc = sources[14];
+			waterBucketDumpAudioSrc = sources[15];
+			waterBucketFillAudioSrc = sources[16];
+			fireLoopAudioSrc = sources[17];
+			anestheticMachineFillAudioSrc = sources[18];
+			raccoonStealAudioSrc = sources[19];
         }
+
+
+		//
     }
     // Use this for initialization
     void Start () {
@@ -43,7 +104,7 @@ public class AudioControl : MonoBehaviour {
 
     public void PlayHeartMonitorBeep() {
 		// set clip and play audio
-		Debug.Log("Beep");
+		//Debug.Log("Beep");
         heartRateAudioSrc.clip = heartMonitorBeep;
         heartRateAudioSrc.Play();
     }
@@ -53,4 +114,54 @@ public class AudioControl : MonoBehaviour {
         heartRateAudioSrc.clip = heartMonitorLong;
         heartRateAudioSrc.Play();
     }
+
+	public void PlayBearEnter()
+	{
+		bearEnterAudioSrc.clip = bearEnter;
+		bearEnterAudioSrc.Play();
+	}
+
+	public void PlayBearExit()
+	{
+		bearExitAudioSrc.clip = bearExit;
+		bearExitAudioSrc.Play();
+	}
+
+	public void PlayToolPickup()
+	{
+		toolPickupAudioSrc.clip = toolPickup;
+		toolPickupAudioSrc.Play();
+	}
+
+	public void PlayToolDrop()
+	{
+		toolDropAudioSrc.clip = toolDrop;
+		toolDropAudioSrc.Play();
+	}
+
+	public void PlayDefibulatorSurge()
+	{
+		defibulatorSurgeAudioSrc.clip = defibulatorSurge;
+		defibulatorSurgeAudioSrc.Play();
+	}
 }
+
+/*
+ 			heartRateAudioSrc = sources[3];
+			heartRateAudioSrc = sources[4];
+			bearEnterAudioSrc = sources[5];
+			bearExitAudioSrc = sources[6];
+			toolPickupAudioSrc = sources[7];
+			toolDropAudioSrc = sources[8];
+			defibulatorSurgeAudioSrc = sources[9];
+			doctorDashAudioSrc = sources[10];
+			doctorBumpAudioSrc = sources[11];
+			surgeryEnterAudioSrc = sources[12];
+			surgeryExitAudioSrc = sources[13];
+			surgeryInteractAudioSrc = sources[14];
+			waterBucketDumpAudioSrc = sources[15];
+			waterBucketFillAudioSrc = sources[16];
+			fireLoopAudioSrc = sources[17];
+			anestheticMachineFillAudioSrc = sources[18];
+			raccoonStealAudioSrc = sources[19];
+			*/
