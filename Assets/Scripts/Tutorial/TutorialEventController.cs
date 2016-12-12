@@ -58,6 +58,7 @@ public class TutorialEventController : MonoBehaviour {
     public GeneralEvent OnScareAwayBearStart;
     public PlayerNumEvent OnPlayerScaredBear;
 
+	public GameObject PatientCameras;
 
     private float timeStateStart = 0.0f;
 
