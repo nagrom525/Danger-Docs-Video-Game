@@ -28,6 +28,7 @@ public class StepCompletePanel : MonoBehaviour {
         rect3posOrig = rectTrans.position;
         startPos = new Vector3(rect3posOrig.x, rect3posOrig.y - 200, rect3posOrig.z);
         rectTrans.position = startPos;
+        current_state = StepCompletePanelState.ENTERING;
 
 
         TutorialEventController.Instance.OnHandsWashed += OnHandsWashed;
