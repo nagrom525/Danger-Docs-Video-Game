@@ -13,6 +13,7 @@ public class StepCompletePanel : MonoBehaviour {
     public GameObject[] playerCircles;
     private int[] circlesFilled = new int[4] { -1, -1, -1, -1 };
     private bool[] playerCircleShown = new bool[4];
+    private bool[] playerCirclesChecked = new bool[4];
 
     private float timeLastState = 0.0f;
     private Vector3 rect3posOrig;
@@ -84,6 +85,13 @@ public class StepCompletePanel : MonoBehaviour {
                 return;
             }
         }
+        if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
+            foreach (var playerChecked in playerCirclesChecked) {
+                if (!playerChecked) {
+                    return;
+                }
+            }
+        }
         current_state = StepCompletePanelState.WAITING_TO_LEAVE;
         timeLastState = Time.time;
     }
@@ -129,10 +137,15 @@ public class StepCompletePanel : MonoBehaviour {
         }
     }
 
-    private void SetPlayerCircleChecked(int playerNum) {
+    private void SetPlayerCircleChecked(int playerNum, bool check) {
+        if(check == true) {
+            playerCirclesChecked[playerNum] = true;
+        } else {
+            playerCirclesChecked[playerNum] = false;
+        }
         for(int i = 0; i < circlesFilled.Length; ++i) {
             if (playerNum == circlesFilled[i]) {
-                playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumNoAnimation(playerNum, true);
+                    playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumNoAnimation(playerNum, check);
                 return;
             }
         }
@@ -197,30 +210,38 @@ public class StepCompletePanel : MonoBehaviour {
 
     private void OnDoctorAtPatient(int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
-            AddPlayerCircle(playerNum, true);
+            SetPlayerCircleChecked(playerNum, true);
         }
     }
 
     private void OnDoctorLeavesPatient(int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
-            RemovePlayerCircle(playerNum);
+            SetPlayerCircleChecked(playerNum, false);
         }
     }
 
     private void OnSurgeryComplete(int playerNum) {
-
+        if(panel_type == TutorialEventController.TutorialStates.SURGERY_ON_PATIENT) {
+            AddPlayerCircle(playerNum, true);
+        }
     }
 
     private void OnBatteryUsed(int playerNum) {
-
+        if(panel_type == TutorialEventController.TutorialStates.ANESTHETIC_MACHINE) {
+            AddPlayerCircle(playerNum, true);
+        }
     }
 
     private void OnFirePutOut(float duration) {
-
+        if(panel_type == TutorialEventController.TutorialStates.FIRE) {
+           
+        }
     }
 
     private void OnHeartAttackAdverted(float duration) {
+        if(panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
 
+        }
     }
 
     private void OnScareAwayRaccoon(int playerNum) {

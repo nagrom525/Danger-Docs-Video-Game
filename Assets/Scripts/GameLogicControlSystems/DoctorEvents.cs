@@ -282,40 +282,50 @@ public class DoctorEvents : MonoBehaviour {
 
     //////         ----------- Main Event Public Interface -----------              ///////////////
     public void OnPatientCutOpen() {
-        SetRecipePostState();
-        if (patientDoneCutOpen != null) {
-            patientDoneCutOpen(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            SetRecipePostState();
+            if (patientDoneCutOpen != null) {
+                patientDoneCutOpen(0);
+            }
         }
     }
 
     public void OnPatientStickPulledOut() {
-        SetRecipePostState();
-        if (patientDonePullOutStick != null) {
-            patientDonePullOutStick(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            SetRecipePostState();
+            if (patientDonePullOutStick != null) {
+                patientDonePullOutStick(0);
+            }
         }
     }
 
     public void OnPatientBloodSoaked() {
-        SetRecipePostState();
-        if (patientDoneBloodSoak != null) {
-            patientDoneBloodSoak(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            SetRecipePostState();
+            if (patientDoneBloodSoak != null) {
+                patientDoneBloodSoak(0);
+            }
         }
     }
 
     public void OnPatientStitched() {
-        SetRecipePostState();
-        if (patientDoneStitches != null) {
-            patientDoneStitches(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            SetRecipePostState();
+            if (patientDoneStitches != null) {
+                patientDoneStitches(0);
+            }
         }
     }
 
     public void SetRecipePostState() {
-        inRecipePostState = true;
-        timeStartReciepeState = Time.time;
-        if(currentIndexInReciepe == scene1ReciepeElements.Length - 1) {
-            // then we have won the game!
-            if (GameWon != null) {
-                GameWon(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            inRecipePostState = true;
+            timeStartReciepeState = Time.time;
+            if (currentIndexInReciepe == scene1ReciepeElements.Length - 1) {
+                // then we have won the game!
+                if (GameWon != null) {
+                    GameWon(0);
+                }
             }
         }
     }
@@ -351,7 +361,7 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     public void InformDoctorNeedsToWashHands(float duration) {
-        if(onDoctorNeedsToWashHands != null) {
+        if(onDoctorNeedsToWashHands != null && !TutorialEventController.Instance.tutorialActive) {
             onDoctorNeedsToWashHands(duration);
         }
     }
@@ -437,16 +447,20 @@ public class DoctorEvents : MonoBehaviour {
 
 
     public void InformSurgeryOperation() {
-        if((numDoctorsOperating == 0) && (onSurgeryOperationFirst != null)) {
-            onSurgeryOperationFirst(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            if ((numDoctorsOperating == 0) && (onSurgeryOperationFirst != null)) {
+                onSurgeryOperationFirst(0);
+            }
+            ++numDoctorsOperating;
         }
-        ++numDoctorsOperating;
     }
 
     public void InformDoctorLeftSurgeryOperaton() {
-        --numDoctorsOperating;
-        if ((numDoctorsOperating == 0) && (onSurgeryOperationLeftLast != null)) {
-            onSurgeryOperationLeftLast(0);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            --numDoctorsOperating;
+            if ((numDoctorsOperating == 0) && (onSurgeryOperationLeftLast != null)) {
+                onSurgeryOperationLeftLast(0);
+            }
         }
     }
 
