@@ -3,7 +3,8 @@ using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
 
-    public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+    // HEARTATTACKAND FIRE
+    public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
@@ -397,6 +398,7 @@ public class TutorialEventController : MonoBehaviour {
 
     private TutorialStates GetNextState(TutorialStates currState) {
         if(currState == TutorialStates.DONE) {
+            // NEXT SCENE
             return currState;
         } else {
             return currState + 1;
