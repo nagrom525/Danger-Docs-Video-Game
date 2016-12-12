@@ -6,6 +6,7 @@ public class PlayerCircle : MonoBehaviour {
     enum PlayerCircleStates { APPEARING, SHOWING, DISAPPEARING, NOTHING}
     PlayerCircleStates current_state = PlayerCircleStates.NOTHING;
     public Sprite[] doctorIconImages;
+    public Sprite[] doctorIconImagesNoCheck;
     public float timeToAppear = 0.5f;
     public float timeToDissapear = 0.5f;
     private float startTime;
@@ -42,11 +43,19 @@ public class PlayerCircle : MonoBehaviour {
         }
 	}
 
-    public void SetPlayerNumAndInitiateAnimation(int playerNum) {
-        this.GetComponent<Image>().sprite = doctorIconImages[playerNum];
+    public void SetPlayerNumAndInitiateAnimation(int playerNum, bool check) {
+        SetPlayerNumNoAnimation(playerNum, check);
         current_state = PlayerCircleStates.APPEARING;
         startTime = Time.time;
         rectTrans.localScale = Vector3.zero;
+    }
+
+    public void SetPlayerNumNoAnimation(int playerNum, bool check) {
+        if (check) {
+            this.GetComponent<Image>().sprite = doctorIconImages[playerNum];
+        } else {
+            this.GetComponent<Image>().sprite = doctorIconImagesNoCheck[playerNum];
+        }
     }
 
     public void RemoveIcon() {

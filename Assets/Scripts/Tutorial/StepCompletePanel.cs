@@ -75,7 +75,7 @@ public class StepCompletePanel : MonoBehaviour {
     private void ShowingUpdate() {
         if (playerBuffer.Count != 0) {
             foreach(var playerNum in playerBuffer) {
-                AddPlayerCircle(playerNum);
+                AddPlayerCircle(playerNum, true);
             }
             playerBuffer.Clear();
         }
@@ -111,7 +111,7 @@ public class StepCompletePanel : MonoBehaviour {
         return (Time.time - timeStart) / timeTotal;
     }
 
-    private void AddPlayerCircle(int playerNum) {
+    private void AddPlayerCircle(int playerNum, bool check) {
         if (playerCircleShown[playerNum]) {
             return;
         }
@@ -122,10 +122,42 @@ public class StepCompletePanel : MonoBehaviour {
                 if (circlesFilled[i] == -1) {
                     circlesFilled[i] = playerNum;
                     playerCircleShown[playerNum] = true;
-                    playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(playerNum);
+                    playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(playerNum, check);
                     return;
                 }
             }
+        }
+    }
+
+    private void SetPlayerCircleChecked(int playerNum) {
+        for(int i = 0; i < circlesFilled.Length; ++i) {
+            if (playerNum == circlesFilled[i]) {
+                playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumNoAnimation(playerNum, true);
+                return;
+            }
+        }
+    }
+
+    private void AddPlayerCircle(int playerNum, Tool.ToolType toolType, bool check) {
+        if (playerCircleShown[playerNum]) {
+            return;
+        }
+        if(current_state != StepCompletePanelState.SHOWING) {
+            playerBuffer.Add(playerNum);
+        } else {
+            int i = 0;
+            if (toolType == Tool.ToolType.SCALPEL) {
+                if(circlesFilled[i] != -1) {
+                    i = 1;
+                }
+            } else if(toolType == Tool.ToolType.GAUZE) {
+                i = 2;
+            } else {
+                i = 3;
+            }
+            circlesFilled[i] = playerNum;
+            playerCircleShown[playerNum] = true;
+            playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(playerNum, check);
         }
     }
 
@@ -146,14 +178,14 @@ public class StepCompletePanel : MonoBehaviour {
     private void OnHandsWashed(float precent, int playerNum) {
         if (panel_type == TutorialEventController.TutorialStates.WASH_HANDS) {
             if(precent >= 0.999990) {
-                AddPlayerCircle(playerNum);
+                AddPlayerCircle(playerNum, true);
             }
         }
     }
 
     private void OnToolPickedUp(Tool.ToolType type, int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
-            AddPlayerCircle(playerNum);
+            AddPlayerCircle(playerNum, false);
         }
     }
 
@@ -165,7 +197,7 @@ public class StepCompletePanel : MonoBehaviour {
 
     private void OnDoctorAtPatient(int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
-            AddPlayerCircle(playerNum);
+            AddPlayerCircle(playerNum, true);
         }
     }
 
@@ -193,13 +225,13 @@ public class StepCompletePanel : MonoBehaviour {
 
     private void OnScareAwayRaccoon(int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.SCARE_AWAY_RACCON) {
-            AddPlayerCircle(playerNum);
+            AddPlayerCircle(playerNum, true);
         }
     }
 
     private void OnScareAwayBear(int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.SCARE_AWAY_BEAR) {
-            AddPlayerCircle(playerNum);
+            AddPlayerCircle(playerNum, true);
         }
     }
 
