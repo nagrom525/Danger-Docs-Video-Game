@@ -120,7 +120,7 @@ public class StepCompletePanel : MonoBehaviour {
     }
 
     private void AddPlayerCircle(int playerNum, bool check) {
-        if (!playerCircleShown[playerNum]) {
+        if (playerCircleShown[playerNum]) {
             return;
         }
         if (current_state != StepCompletePanelState.SHOWING) {
@@ -221,19 +221,27 @@ public class StepCompletePanel : MonoBehaviour {
     }
 
     private void OnSurgeryComplete(int playerNum) {
-
+        if(panel_type == TutorialEventController.TutorialStates.SURGERY_ON_PATIENT) {
+            AddPlayerCircle(playerNum, true);
+        }
     }
 
     private void OnBatteryUsed(int playerNum) {
-
+        if(panel_type == TutorialEventController.TutorialStates.ANESTHETIC_MACHINE) {
+            AddPlayerCircle(playerNum, true);
+        }
     }
 
     private void OnFirePutOut(float duration) {
-
+        if(panel_type == TutorialEventController.TutorialStates.FIRE) {
+           
+        }
     }
 
     private void OnHeartAttackAdverted(float duration) {
+        if(panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
 
+        }
     }
 
     private void OnScareAwayRaccoon(int playerNum) {
