@@ -5,7 +5,17 @@ public class TutorialEventController : MonoBehaviour {
 
     // HEARTATTACKAND FIRE
 
-    public enum TutorialStates {WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE, UNINITIALIZED }
+    public enum TutorialStates
+	{
+		WASH_HANDS,
+		PICK_UP_TOOL_GO_TO_PATIENT,
+		SURGERY_ON_PATIENT,
+		ANESTHETIC_MACHINE,
+		SCARE_AWAY_RACCON,
+		SCARE_AWAY_BEAR,
+		DONE,
+		UNINITIALIZED
+	}
 
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
