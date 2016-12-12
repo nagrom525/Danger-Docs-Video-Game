@@ -10,10 +10,13 @@ public class BearAI : MonoBehaviour {
 	bool targetAcheived;
 	public GameObject Cave;
 	Vector3 startposition;
-	public int push_back_threshold = 1;
-	private int push_back_num;
+	public int push_back_threshold = 4;
+	private int push_back_num = 0;
     public GameObject actionButtonCanvas;
     public static bool scaredAwayOnce = false;
+
+	public float doctorDashTimerPadding = 1f;	//if all doctors dash the bear within a second of each other
+
 
 	void Awake()
 	{
@@ -28,6 +31,7 @@ public class BearAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
 		patient = Patient.Instance.gameObject;
 		this.agent = GetComponent<NavMeshAgent>();
 		this.agent.destination = patient.transform.position;
@@ -39,6 +43,7 @@ public class BearAI : MonoBehaviour {
         } else {
             actionButtonCanvas.SetActive(true);
         }
+        
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -52,7 +57,11 @@ public class BearAI : MonoBehaviour {
 		}
 		else if (other.transform.tag == "Doctor")
 		{
-			if (push_back_num - 1 <= push_back_threshold && other.gameObject.GetComponent<Doctor>().justDashed)
+			Debug.Log("bear-doctor collision");
+			if (other.gameObject.GetComponent<Doctor>().justDashed)
+				push_back_num++;
+
+			if (push_back_num >= push_back_threshold)
 			{
 				PatientGurney.parent = null;
 				patient.transform.parent = null;
@@ -60,16 +69,15 @@ public class BearAI : MonoBehaviour {
                 actionButtonCanvas.SetActive(false);
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			}
-			else if (other.gameObject.GetComponent<Doctor>().justDashed)
-			{
-				push_back_num--;
 
-			}
-			else {
-				//stun person
-			}
+			Invoke("ResetThreshold", doctorDashTimerPadding);
 		}
 		
+	}
+
+	void ResetThreshold()
+	{
+		push_back_num = 0;
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -87,6 +95,7 @@ public class BearAI : MonoBehaviour {
 			BearInCave();
 			this.gameObject.transform.position = startposition;
 		}
+
 	}
 
 	void makeParent(Collision other)
