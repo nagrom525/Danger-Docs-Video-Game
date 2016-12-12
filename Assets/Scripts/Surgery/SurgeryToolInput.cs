@@ -15,7 +15,6 @@ public class SurgeryToolInput : MonoBehaviour {
 		playerRenderer = GetComponent<Renderer>();
 		surgeryTool = GetComponent<SurgeryTool>();
         DoctorEvents.Instance.onBearStealsPatient += OnBearStealsPatient;
-		ogRotation = transform.rotation;
 	}
 
 	void Update()
