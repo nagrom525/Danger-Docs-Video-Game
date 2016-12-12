@@ -5,7 +5,10 @@ public class TutorialEventController : MonoBehaviour {
 
     public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 =======
 >>>>>>> origin/master
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
