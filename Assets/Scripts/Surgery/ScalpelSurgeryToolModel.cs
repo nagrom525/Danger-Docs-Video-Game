@@ -65,7 +65,10 @@ public class ScalpelSurgeryToolModel : MonoBehaviour {
 				Debug.Log("Succesful procedure!");
 
 				DoctorEvents.Instance.OnPatientCutOpen();
-				TutorialEventController.Instance.OnSurgeryComplete(scalpel.gameObject.GetComponent<SurgeryToolInput>().playerNum);
+                if (TutorialEventController.Instance.tutorialActive) {
+                    TutorialEventController.Instance.OnSurgeryComplete(scalpel.gameObject.GetComponent<SurgeryToolInput>().playerNum);
+                }
+
 				Destroy(track.transform.parent.gameObject);
 			}
 			else if (objectsInTrigger == 0)
