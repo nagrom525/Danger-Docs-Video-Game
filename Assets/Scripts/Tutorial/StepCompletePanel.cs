@@ -185,7 +185,7 @@ public class StepCompletePanel : MonoBehaviour {
 
     private void OnToolPickedUp(Tool.ToolType type, int playerNum) {
         if(panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
-            AddPlayerCircle(playerNum, false);
+            AddPlayerCircle(playerNum, type, false);
         }
     }
 

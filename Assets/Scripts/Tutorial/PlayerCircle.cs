@@ -33,7 +33,7 @@ public class PlayerCircle : MonoBehaviour {
             }
         } else if(current_state == PlayerCircleStates.DISAPPEARING) {
             var t = (Time.time - startTime) / timeToAppear;
-            if(t >= 0.0f) {
+            if(t >= 1.0f) {
                 current_state = PlayerCircleStates.NOTHING;
                 startTime = Time.time;
             } else {
