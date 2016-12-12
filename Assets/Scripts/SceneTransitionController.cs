@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class SceneTransitionController : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class SceneTransitionController : MonoBehaviour {
 			blackCanvasGroup.alpha = 0f;
 			whiteCanvasGroup.alpha = 0f;
 		}
+
 	}
 
 	// Use this for initialization
@@ -44,6 +46,26 @@ public class SceneTransitionController : MonoBehaviour {
 		{
 			//don't do anything to the camera
 		}
+	}
+
+	public void NextScene()
+	{
+		StartCoroutine(FadeToBlack());
+	}
+
+
+	IEnumerator FadeToBlack()
+	{
+		//fade out canvas group
+
+		yield return new WaitForSeconds(.1f);
+		while (blackCanvasGroup.alpha < 1f)
+		{
+			blackCanvasGroup.alpha += blackTransitionRate;
+			yield return new WaitForEndOfFrame();
+		}
+		blackCanvasGroup.alpha = 1f;
+		SceneManager.LoadScene("Debug_Ben_2");
 	}
 
 	IEnumerator SceneStartTransition()
