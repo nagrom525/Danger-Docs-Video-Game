@@ -12,8 +12,10 @@ public class SutureController : MonoBehaviour {
 		if (sutureCount == 0)
 		{
 			DoctorEvents.Instance.OnPatientStitched();
-			TutorialEventController.Instance.OnSurgeryComplete(lastPlayerToSuture);
-			Destroy(this.gameObject);
+            if (TutorialEventController.Instance.tutorialActive) {
+                TutorialEventController.Instance.InformSurgeryComplete(lastPlayerToSuture);
+            }
+            Destroy(this.gameObject);
 		}
 	}
 

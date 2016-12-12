@@ -85,7 +85,10 @@ public class BearAI : MonoBehaviour {
 				push_back_num++;
 				bearRenderer.material = hitMat;
 				Invoke("ResetMaterial", .2f);
-				TutorialEventController.Instance.OnPlayerScaredBear(other.gameObject.GetComponent<DoctorInputController>().playerNum);
+                if (TutorialEventController.Instance.tutorialActive) {
+                    TutorialEventController.Instance.InfromPlayerScaredBear(other.gameObject.GetComponent<DoctorInputController>().playerNum);
+                }
+				
 			}
 
 

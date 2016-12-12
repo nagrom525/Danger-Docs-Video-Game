@@ -67,7 +67,10 @@ public class Raccoon : MonoBehaviour {
 				currentState = RaccoonState.Leaving;
 				other.GetComponent<Doctor>().makeDirty(1f);
 				other.GetComponent<Doctor>().displayWashingMeter();
-				TutorialEventController.Instance.ScaredAwayRaccon(other.GetComponent<DoctorInputController>().playerNum);
+                if (TutorialEventController.Instance.tutorialActive) {
+                    TutorialEventController.Instance.ScaredAwayRaccon(other.GetComponent<DoctorInputController>().playerNum);
+                }
+				
 			}
 		}
 	}
