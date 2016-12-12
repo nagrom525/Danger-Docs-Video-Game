@@ -51,9 +51,9 @@ Sprinting
 
 - [x] Improve Dashing Affordence / Signaling
 
-- Dash to get rid of raccoons as well as bear.
+- [x] Dash to get rid of raccoons as well as bear.
 
-- Make it more obvious that the dash is working on the bear.
+- [x] Make it more obvious that the dash is working on the bear.
 
 - Require all players to work together on bear
 
