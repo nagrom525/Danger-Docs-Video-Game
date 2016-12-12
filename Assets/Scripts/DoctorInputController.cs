@@ -6,13 +6,12 @@ public class DoctorInputController : MonoBehaviour
 {
     public Doctor doctor;
     public int playerNum;
-    Renderer playerRenderer;
     public Vector3 dir;
     
     // Use this for initialization
     void Start()
     {
-        playerRenderer = GetComponent<Renderer>();
+        
         doctor = GetComponent<Doctor>();
     }
 

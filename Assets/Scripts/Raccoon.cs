@@ -59,11 +59,15 @@ public class Raccoon : MonoBehaviour {
 	{
 		if (other.tag == "Doctor")
 		{
-			Debug.Log("Raccoon collided with doctor!");
-			DropTool();
-			currentState = RaccoonState.Leaving;
-			other.GetComponent<Doctor>().makeDirty(1f);
-			other.GetComponent<Doctor>().displayWashingMeter();
+			if (other.GetComponent<Doctor>().justDashed)
+			{
+				Debug.Log("Raccoon collided with doctor!");
+
+				DropTool();
+				currentState = RaccoonState.Leaving;
+				other.GetComponent<Doctor>().makeDirty(1f);
+				other.GetComponent<Doctor>().displayWashingMeter();
+			}
 		}
 	}
 

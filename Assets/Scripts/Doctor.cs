@@ -415,6 +415,11 @@ public class Doctor : MonoBehaviour {
 		}
 		displayWashingMeter ();
 		print ("dirtLevel ::" + dirtLevel);
+		if (TutorialEventController.Instance.tutorialActive) {
+			DoctorInputController thisInput = transform.GetComponentInChildren<DoctorInputController>();
+			int this_player_num = thisInput.playerNum;
+			TutorialEventController.Instance.OnHandsWashed(1f - dirtLevel, this_player_num);
+		}
 	}
 
 	public void displayWashingMeter() {
