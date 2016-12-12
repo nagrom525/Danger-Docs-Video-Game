@@ -2,7 +2,11 @@
 using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
+<<<<<<< HEAD
     public enum TutorialStates { SURGERY_ON_PATIENT, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT,  ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+=======
+    public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+>>>>>>> origin/master
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
@@ -257,7 +261,7 @@ public class TutorialEventController : MonoBehaviour {
     }
 
 
-    private void InformBatteryUsed(int playerNum) {
+    public void InformBatteryUsed(int playerNum) {
         batteryUsed[playerNum] = true;
         if(OnBatteryUsed != null) {
             OnBatteryUsed(playerNum);
