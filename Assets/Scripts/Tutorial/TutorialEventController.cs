@@ -7,9 +7,9 @@ public class TutorialEventController : MonoBehaviour {
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
     public delegate void PlayerNumEvent(int playerNum);
-    TutorailStates current_state;
+    TutorailStates current_state = TutorailStates.WASH_HANDS;
 
-    public bool tutorialActive { get; private set; }
+    public bool tutorialActive = false;
 
 
     // --            Wash Hands          -- //
