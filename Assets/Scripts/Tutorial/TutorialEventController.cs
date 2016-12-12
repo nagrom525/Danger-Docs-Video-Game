@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
-    enum TutorailStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+    public enum TutorialStates { WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
     public delegate void PlayerNumEvent(int playerNum);
-    TutorailStates current_state = TutorailStates.WASH_HANDS;
+    TutorialStates current_state = TutorialStates.WASH_HANDS;
 
     public bool tutorialActive = false;
 
@@ -83,28 +83,28 @@ public class TutorialEventController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         switch (current_state) {
-            case TutorailStates.WASH_HANDS:
+            case TutorialStates.WASH_HANDS:
                 WashHandsUpdate();
                 break;
-            case TutorailStates.PICK_UP_TOOL_GO_TO_PATIENT:
+            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
                 PickUpToolGoToPatientUpdate();
                 break;
-            case TutorailStates.SURGERY_ON_PATIENT:
+            case TutorialStates.SURGERY_ON_PATIENT:
                 SurgeryOnPatientUpdate();
                 break;
-            case TutorailStates.ANESTHETIC_MACHINE:
+            case TutorialStates.ANESTHETIC_MACHINE:
                 AnestheticMachineUpdate();
                 break;
-            case TutorailStates.HEART_ATTACK:
+            case TutorialStates.HEART_ATTACK:
                 HeartAttackUpdate();
                 break;
-            case TutorailStates.FIRE:
+            case TutorialStates.FIRE:
                 FireUpdate();
                 break;
-            case TutorailStates.SCARE_AWAY_RACCON:
+            case TutorialStates.SCARE_AWAY_RACCON:
                 ScareAwayRacconUpdate();
                 break;
-            case TutorailStates.SCARE_AWAY_BEAR:
+            case TutorialStates.SCARE_AWAY_BEAR:
                 ScareAwayBearUpdate();
                 break;
         }
@@ -135,7 +135,7 @@ public class TutorialEventController : MonoBehaviour {
     // player Num is indexed from 0
     // want to call this function every time player washes their hands
     public void InformWashingHands(float precentWashed, int playerNum) {
-        if(current_state == TutorailStates.WASH_HANDS) {
+        if(current_state == TutorialStates.WASH_HANDS) {
             precentHandsWashed[playerNum] = precentWashed;
             if (OnHandsWashed != null) {
                 OnHandsWashed(precentWashed, playerNum);
@@ -390,8 +390,8 @@ public class TutorialEventController : MonoBehaviour {
         return (Time.time - startTime) / totalTime;
     }
 
-    private TutorailStates GetNextState(TutorailStates currState) {
-        if(currState == TutorailStates.DONE) {
+    private TutorialStates GetNextState(TutorialStates currState) {
+        if(currState == TutorialStates.DONE) {
             return currState;
         } else {
             return currState + 1;
@@ -405,30 +405,30 @@ public class TutorialEventController : MonoBehaviour {
         }
     }
 
-    private void StartNewState(TutorailStates newState) {
+    private void StartNewState(TutorialStates newState) {
         switch (newState) {
-            case TutorailStates.WASH_HANDS:
+            case TutorialStates.WASH_HANDS:
                 StartWashHands();
                 break;
-            case TutorailStates.PICK_UP_TOOL_GO_TO_PATIENT:
+            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
                 StartPickUpToolGoToPatient();
                 break;
-            case TutorailStates.SURGERY_ON_PATIENT:
+            case TutorialStates.SURGERY_ON_PATIENT:
                 StartSurgeryOnPatient();
                 break;
-            case TutorailStates.ANESTHETIC_MACHINE:
+            case TutorialStates.ANESTHETIC_MACHINE:
                 StartAnestheticMachine();
                 break;
-            case TutorailStates.HEART_ATTACK:
+            case TutorialStates.HEART_ATTACK:
                 StartHeartAttack();
                 break;
-            case TutorailStates.FIRE:
+            case TutorialStates.FIRE:
                 StartFire();
                 break;
-            case TutorailStates.SCARE_AWAY_RACCON:
+            case TutorialStates.SCARE_AWAY_RACCON:
                 StartScareAwayRaccoon();
                 break;
-            case TutorailStates.SCARE_AWAY_BEAR:
+            case TutorialStates.SCARE_AWAY_BEAR:
                 StartScareAwayBear();
                 break;
 

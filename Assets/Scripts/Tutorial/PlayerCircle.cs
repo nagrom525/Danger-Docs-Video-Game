@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerCircle : MonoBehaviour {
-    enum PlayerCircleStates { APPEARING, SHOWING, NOTHING}
+    enum PlayerCircleStates { APPEARING, SHOWING, DISAPPEARING, NOTHING}
     PlayerCircleStates current_state = PlayerCircleStates.NOTHING;
     public Sprite[] doctorIconImages;
-    public float timeToAppear;
+    public float timeToAppear = 0.5f;
+    public float timeToDissapear = 0.5f;
     private float startTime;
     private RectTransform rectTrans;
 
@@ -29,6 +30,15 @@ public class PlayerCircle : MonoBehaviour {
                 var newScale = Mathfx.Hermite(Vector3.zero, Vector3.one, t);
                 rectTrans.localScale = newScale;
             }
+        } else if(current_state == PlayerCircleStates.DISAPPEARING) {
+            var t = (Time.time - startTime) / timeToAppear;
+            if(t >= 0.0f) {
+                current_state = PlayerCircleStates.NOTHING;
+                startTime = Time.time;
+            } else {
+                var newScale = Mathfx.Hermite(Vector3.one, Vector3.zero, t);
+                rectTrans.localScale = newScale;
+            }
         }
 	}
 
@@ -37,5 +47,10 @@ public class PlayerCircle : MonoBehaviour {
         current_state = PlayerCircleStates.APPEARING;
         startTime = Time.time;
         rectTrans.localScale = Vector3.zero;
+    }
+
+    public void RemoveIcon() {
+        current_state = PlayerCircleStates.DISAPPEARING;
+        startTime = Time.time;
     }
 }
