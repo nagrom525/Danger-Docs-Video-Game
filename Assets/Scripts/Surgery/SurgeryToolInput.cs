@@ -33,6 +33,7 @@ public class SurgeryToolInput : MonoBehaviour {
 
 	public void ReturnControlToDoctor()
 	{
+		TutorialEventController.Instance.OnDoctorLeavesPatient(playerNum);
 		//Get Doctor that initiated operation
 		GameObject doc = GameObject.Find("Doctor_" + (playerNum + 1).ToString());
 		if (doc == null)
@@ -43,7 +44,10 @@ public class SurgeryToolInput : MonoBehaviour {
 		doc.GetComponent<DoctorInputController>().enabled = true;
         doc.GetComponent<Doctor>().informSurgeryFinished();
         DoctorEvents.Instance.InformDoctorLeftSurgeryOperaton();
-		Destroy(this.gameObject);
+
+		if (this.gameObject != null) {
+			Destroy(this.gameObject);
+		}
 	}
 
 	void UpdateWithInputDevice(InputDevice inputDevice)
@@ -93,6 +97,8 @@ public class SurgeryToolInput : MonoBehaviour {
 		var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
 		Quaternion patient_cam_rotation = Patient.Instance.GetComponentInChildren<Camera>().transform.rotation;
 		direction = patient_cam_rotation * direction;
+		// HACK: This is to make the rotation correct dispite movement.
+		surgeryTool.transform.localRotation = new Quaternion(0f, 270f, 0f, 0f);
 		//transform.Translate(direction);
 		if (enableMovement)
 		{

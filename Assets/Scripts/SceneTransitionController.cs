@@ -93,6 +93,7 @@ public class SceneTransitionController : MonoBehaviour {
 	{
 		cam.transform.position = cameraDefaultTransform.position;
 		cam.transform.rotation = cameraDefaultTransform.rotation;
+        TutorialEventController.Instance.InformTutorialStart();
 	}
 	
 	// Update is called once per frame

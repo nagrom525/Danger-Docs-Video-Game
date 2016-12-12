@@ -228,6 +228,7 @@ public class Doctor : MonoBehaviour {
                     full = bucket.hasWater;
                 }
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
+				TutorialEventController.Instance.InformToolPickedUp(nearestTool.GetToolType(), GetComponent<DoctorInputController>().playerNum);
 				AudioControl.Instance.PlayToolPickup();
 			}
 		}
@@ -240,6 +241,7 @@ public class Doctor : MonoBehaviour {
 		tool.transform.parent = this.transform;
 		// Transform tool position to doctor.
 		tool.transform.localPosition = new Vector3 (1, 3, 0) * 0.3f;
+		TutorialEventController.Instance.OnToolPickedUp(tool.GetToolType(), GetComponent<DoctorInputController>().playerNum);
 		Rigidbody rb = tool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
 			// Add constraints
@@ -250,6 +252,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	private void dropCurrentTool() {
+		TutorialEventController.Instance.OnToolDropped(currentTool.GetToolType(), GetComponent<DoctorInputController>().playerNum);
 		Rigidbody rb = currentTool.transform.GetComponentInChildren<Rigidbody> ();
 		if (rb != null) {
 			// Remove Constraints
@@ -285,6 +288,12 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
+
+		if (Patient.Instance.transform.parent != null) {
+			Debug.Log("Patient being carried off -- can't operate");
+			return;
+		}
+
 		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
 		{
 			DoctorEvents.Instance.InformSurgeryOperation();
@@ -295,7 +304,8 @@ public class Doctor : MonoBehaviour {
 			//play defibulator surge
 			AudioControl.Instance.PlayDefibulatorSurge();
 		}
-        // Use current tool on patient.
+		// Use current tool on patient.
+		TutorialEventController.Instance.OnDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
 

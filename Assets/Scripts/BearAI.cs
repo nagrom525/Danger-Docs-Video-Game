@@ -22,6 +22,11 @@ public class BearAI : MonoBehaviour {
 	public Material hitMat;
 	public GameObject bearModel;
 
+	void OnEnable()
+	{
+		AudioControl.Instance.PlayBearEnter();
+	}
+
 	void Awake()
 	{
 		if (B == null)
@@ -32,12 +37,12 @@ public class BearAI : MonoBehaviour {
 			Debug.Log("There is more than one bear on the screen");
 		}
 		bearRenderer = bearModel.GetComponent<Renderer>();
-		defaultMat = bearRenderer.material;
+		defaultMat = bearRenderer.sharedMaterial;
 	}
 
 	// Use this for initialization
 	void Start () {
-		
+		AudioControl.Instance.PlayBearEnter();
 		patient = Patient.Instance.gameObject;
 		this.agent = GetComponent<NavMeshAgent>();
 		this.agent.destination = patient.transform.position;
@@ -47,9 +52,8 @@ public class BearAI : MonoBehaviour {
         if (scaredAwayOnce) {
             actionButtonCanvas.SetActive(false);
         } else {
-            actionButtonCanvas.SetActive(true);
+			actionButtonCanvas.SetActive(true);
         }
-        
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -119,6 +123,7 @@ public class BearAI : MonoBehaviour {
 
 	void BearSwitchToCave()
 	{
+		AudioControl.Instance.PlayBearExit();
 		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		agent.Stop();
 		agent.destination = Cave.transform.position;
@@ -139,6 +144,7 @@ public class BearAI : MonoBehaviour {
 			PatientGurney.parent = null;
 			patient.transform.parent = null;
 		}
+		AudioControl.Instance.PlayBearExit();
 		DoctorEvents.Instance.InformBearLeft();
 
 	}
