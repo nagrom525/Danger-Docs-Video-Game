@@ -179,8 +179,10 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     public void InformToolPickedUp(Tool.ToolType type, int playerNum) {
-        toolsHeldByDoctor[playerNum] = type;
-        OnToolPickedUp(type, playerNum);    
+        if (tutorialActive) {
+            toolsHeldByDoctor[playerNum] = type;
+            OnToolPickedUp(type, playerNum);
+        } 
     }
 
     public void InformToolDropped(Tool.ToolType type, int playerNum) {
