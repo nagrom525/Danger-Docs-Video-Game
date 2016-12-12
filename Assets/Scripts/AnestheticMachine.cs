@@ -53,7 +53,7 @@ public class AnestheticMachine : Interactable {
 			if (inTutorialState)
 			{
 				// Tutorial anesthetic drain
-				float pending_anesthetic_level = anesthetic_levels - depletion_rate * Time.time;
+				float pending_anesthetic_level = anesthetic_levels - depletion_rate * Time.deltaTime;
 				anesthetic_levels = Mathf.Clamp(pending_anesthetic_level, 0.05f, 1f);
 			}
 			// Else, nothing because the machine should be stable.
@@ -114,8 +114,11 @@ public class AnestheticMachine : Interactable {
 			displayAnestheticMeter ();
 			return false;
 		}
-		// If the doctor does have a canister
-		consumeCanister(interactingDoctor.currentTool as Canister);
+        // If the doctor does have a canister
+        if (TutorialEventController.Instance.tutorialActive) {
+            TutorialEventController.Instance.InformBatteryUsed(interactingDoctor.GetComponent<DoctorInputController>().playerNum);
+        }
+        consumeCanister(interactingDoctor.currentTool as Canister);
 		return false;
 	}
 

@@ -349,14 +349,18 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     public void InformAnestheticMachineLow(float precentLeft) {
-        if(onAnestheticMachineLow != null) {
-            onAnestheticMachineLow(precentLeft);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            if (onAnestheticMachineLow != null) {
+                onAnestheticMachineLow(precentLeft);
+            }
         }
     }
 
     public void InformAnestheticMachineReturnedHigh(float precentLeft) {
-        if(onAnestheticMachineReturned != null) {
-            onAnestheticMachineReturned(precentLeft);
+        if (!TutorialEventController.Instance.tutorialActive) {
+            if (onAnestheticMachineReturned != null) {
+                onAnestheticMachineReturned(precentLeft);
+            }
         }
     }
 
