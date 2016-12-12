@@ -137,38 +137,38 @@ public class DoctorEvents : MonoBehaviour {
 	}
 
     void Update() {
-        switch (gameState) {
-            case GeneralGameState.NORMAL:
-                GameNormalUpdate();
-                break;
-            case GeneralGameState.PATIENT_CRITICAL:
-                GamePatientCriticalUpdate();
-                break;
-            case GeneralGameState.POST_PATIENT_CRITICAL:
-                GamePostPatientCriticalUpdate();
-                break;
-        }
+        if (!TutorialEventController.Instance.tutorialActive) {
+            switch (gameState) {
+                case GeneralGameState.NORMAL:
+                    GameNormalUpdate();
+                    break;
+                case GeneralGameState.PATIENT_CRITICAL:
+                    GamePatientCriticalUpdate();
+                    break;
+                case GeneralGameState.POST_PATIENT_CRITICAL:
+                    GamePostPatientCriticalUpdate();
+                    break;
+            }
 
-        switch (inRecipePostState) {
-            case true:
-                RecipePostStateUpdate();
-                break;
-            case false:
-                break;
+            switch (inRecipePostState) {
+                case true:
+                    RecipePostStateUpdate();
+                    break;
+                case false:
+                    break;
+            }
         }
     }
-	
-    private void GameNormalUpdate() {
-        if (!TutorialEventController.Instance.tutorialActive) {
-            if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
-                lastTimePatientCriticalChecked = Time.time;
 
-                if (UnityEngine.Random.value < probabiltyPatientCritical) {
-                    gameState = GeneralGameState.PATIENT_CRITICAL;
-                    patientCriticalStartTime = Time.time;
-                    if (onPatientCriticalEventStart != null) {
-                        onPatientCriticalEventStart(patientCriticalDuration);
-                    }
+    private void GameNormalUpdate() {
+        if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
+            lastTimePatientCriticalChecked = Time.time;
+
+            if (UnityEngine.Random.value < probabiltyPatientCritical) {
+                gameState = GeneralGameState.PATIENT_CRITICAL;
+                patientCriticalStartTime = Time.time;
+                if (onPatientCriticalEventStart != null) {
+                    onPatientCriticalEventStart(patientCriticalDuration);
                 }
             }
         }

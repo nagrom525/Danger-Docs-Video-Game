@@ -7,7 +7,7 @@ public class TutorialEventController : MonoBehaviour {
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
     public delegate void PlayerNumEvent(int playerNum);
-    TutorialStates current_state = TutorialStates.WASH_HANDS;
+    TutorialStates current_state = TutorialStates.DONE;
 
     public bool tutorialActive = false;
 
@@ -78,6 +78,7 @@ public class TutorialEventController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         timeStateStart = Time.time;
+        current_state = TutorialStates.DONE;
 	}
 	
 	// Update is called once per frame
@@ -433,6 +434,10 @@ public class TutorialEventController : MonoBehaviour {
                 break;
 
         }
+    }
+
+    public void InformTutorialStart() {
+        StartWashHands();
     }
 
 
