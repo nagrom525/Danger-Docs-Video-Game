@@ -15,6 +15,7 @@ public class SurgeryToolInput : MonoBehaviour {
 		playerRenderer = GetComponent<Renderer>();
 		surgeryTool = GetComponent<SurgeryTool>();
         DoctorEvents.Instance.onBearStealsPatient += OnBearStealsPatient;
+		ogRotation = transform.rotation;
 	}
 
 	void Update()
@@ -93,6 +94,8 @@ public class SurgeryToolInput : MonoBehaviour {
 		var direction = 10.0f * new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
 		Quaternion patient_cam_rotation = Patient.Instance.GetComponentInChildren<Camera>().transform.rotation;
 		direction = patient_cam_rotation * direction;
+		// HACK: This is to make the rotation correct dispite movement.
+		surgeryTool.transform.localRotation = new Quaternion(0f, 270f, 0f, 0f);
 		//transform.Translate(direction);
 		if (enableMovement)
 		{
