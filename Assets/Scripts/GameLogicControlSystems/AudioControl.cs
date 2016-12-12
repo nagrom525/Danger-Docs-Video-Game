@@ -30,7 +30,10 @@ public class AudioControl : MonoBehaviour {
 
 	public AudioClip anestheticMachineFill; //when a battery is used to fill up the machine
 
-	public AudioClip raccoonSteal; 	//plays when raccoon picks up an item
+	public AudioClip raccoonSteal;  //plays when raccoon picks up an item
+	public AudioClip operationSuccessful;
+	public AudioClip tutorialTaskComplete;
+
 
     private AudioSource mainGameMusicAudioSrc;
 	private AudioSource heartRateAudioSrc;
@@ -49,7 +52,8 @@ public class AudioControl : MonoBehaviour {
 	private AudioSource fireLoopAudioSrc;
 	private AudioSource anestheticMachineFillAudioSrc;
 	private AudioSource raccoonStealAudioSrc;
-
+	private AudioSource operationSuccessfulAudioSrc;
+	private AudioSource tutorialTaskCompleteAudioSrc;
 
     private static AudioControl _instance;
     public static AudioControl Instance {
@@ -87,6 +91,8 @@ public class AudioControl : MonoBehaviour {
 			fireLoopAudioSrc = sources[17];
 			anestheticMachineFillAudioSrc = sources[18];
 			raccoonStealAudioSrc = sources[19];
+			operationSuccessfulAudioSrc = sources[20];
+			tutorialTaskCompleteAudioSrc = sources[21];
         }
 
 
@@ -208,5 +214,17 @@ public class AudioControl : MonoBehaviour {
 	{
 		raccoonStealAudioSrc.clip = raccoonSteal;
 		raccoonStealAudioSrc.Play();
+	}
+
+	public void PlayOperationSuccessful()
+	{
+		operationSuccessfulAudioSrc.clip = operationSuccessful;
+		operationSuccessfulAudioSrc.Play();
+	}
+
+	public void PlayTutorialTaskComplete()
+	{
+		tutorialTaskCompleteAudioSrc.clip = tutorialTaskComplete;
+		tutorialTaskCompleteAudioSrc.Play();
 	}
 }
