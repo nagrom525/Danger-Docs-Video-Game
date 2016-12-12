@@ -132,6 +132,7 @@ public class DoctorEvents : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 1f;
+        TutorialEventController.Instance.OnHeartAttackStart += OnTutorialHeartAttack;
 
 	}
 
@@ -158,14 +159,16 @@ public class DoctorEvents : MonoBehaviour {
     }
 	
     private void GameNormalUpdate() {
-        if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
-            lastTimePatientCriticalChecked = Time.time;
+        if (!TutorialEventController.Instance.tutorialActive) {
+            if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
+                lastTimePatientCriticalChecked = Time.time;
 
-            if (UnityEngine.Random.value < probabiltyPatientCritical) {
-                gameState = GeneralGameState.PATIENT_CRITICAL;
-                patientCriticalStartTime = Time.time;
-                if (onPatientCriticalEventStart != null) {
-                    onPatientCriticalEventStart(patientCriticalDuration);
+                if (UnityEngine.Random.value < probabiltyPatientCritical) {
+                    gameState = GeneralGameState.PATIENT_CRITICAL;
+                    patientCriticalStartTime = Time.time;
+                    if (onPatientCriticalEventStart != null) {
+                        onPatientCriticalEventStart(patientCriticalDuration);
+                    }
                 }
             }
         }
@@ -556,4 +559,12 @@ public class DoctorEvents : MonoBehaviour {
 	{
 		return new Vector3(UnityEngine.Random.Range(-3f, 3f), 0f, UnityEngine.Random.Range(-3f, 3f));
 	}
+
+    private void OnTutorialHeartAttack() {
+        InducePatientCritical();
+    }
+
+    private void OnDestroy() {
+        TutorialEventController.Instance.OnHeartAttackStart -= OnTutorialHeartAttack;
+    }
 }
