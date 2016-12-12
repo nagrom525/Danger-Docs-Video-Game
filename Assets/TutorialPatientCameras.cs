@@ -6,7 +6,9 @@ public class TutorialPatientCameras : MonoBehaviour {
 
 	void Start () {
 		TutorialEventController.Instance.OnPickupToolsEnd += ShowCameras;
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += ShowCameras;
 		TutorialEventController.Instance.OnSurgeryOnPatientEnd += HideCameras;
+
 	}
 
 	void ShowCameras()
