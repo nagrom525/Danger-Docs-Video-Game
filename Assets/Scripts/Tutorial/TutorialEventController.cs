@@ -5,7 +5,7 @@ public class TutorialEventController : MonoBehaviour {
 
     // HEARTATTACKAND FIRE
 
-    public enum TutorialStates { SCARE_AWAY_RACCON, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE,  SCARE_AWAY_BEAR, DONE}
+    public enum TutorialStates {WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE, UNINITIALIZED }
 
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
@@ -83,11 +83,14 @@ public class TutorialEventController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         timeStateStart = Time.time;
-        current_state = TutorialStates.DONE;
+        current_state = TutorialStates.UNINITIALIZED;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if(current_state == TutorialStates.DONE) {
+            SceneTransitionController.Instance.NextScene();
+        }
         switch (current_state) {
             case TutorialStates.WASH_HANDS:
                 WashHandsUpdate();
@@ -400,7 +403,7 @@ public class TutorialEventController : MonoBehaviour {
 
     private TutorialStates GetNextState(TutorialStates currState) {
         if(currState == TutorialStates.DONE) {
-            // NEXT SCENE
+            SceneTransitionController.Instance.NextScene();
             return currState;
         } else {
             return currState + 1;

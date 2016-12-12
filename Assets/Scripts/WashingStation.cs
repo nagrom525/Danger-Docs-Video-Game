@@ -31,6 +31,7 @@ public class WashingStation : Interactable {
 			// If no tool in hand, wash hands.
 			interactingDoctor.washHands(washRate);
             DoctorEvents.Instance.InformDoctorWashedHands();
+           
 			// The washing station does not require sustained interaction.
 			return false;
 		} else if (interactingDoctor.currentTool.GetToolType() == Tool.ToolType.BUCKET) {

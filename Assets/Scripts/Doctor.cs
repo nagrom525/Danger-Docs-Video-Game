@@ -434,7 +434,7 @@ public class Doctor : MonoBehaviour {
 		if (TutorialEventController.Instance.tutorialActive) {
 			DoctorInputController thisInput = transform.GetComponentInChildren<DoctorInputController>();
 			int this_player_num = thisInput.playerNum;
-			TutorialEventController.Instance.OnHandsWashed(1f - dirtLevel, this_player_num);
+			TutorialEventController.Instance.InformWashingHands(1f - dirtLevel, this_player_num);
 		}
 	}
 

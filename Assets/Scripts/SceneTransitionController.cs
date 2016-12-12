@@ -14,8 +14,13 @@ public class SceneTransitionController : MonoBehaviour {
 
 	public float 		blackTransitionRate = .03f;
 
+    private static SceneTransitionController _instance;
+    public static SceneTransitionController Instance {
+        get { return _instance; }
+    }
 
-	void Awake()
+
+    void Awake()
 	{
 		if (!inEditor)
 		{
@@ -28,7 +33,13 @@ public class SceneTransitionController : MonoBehaviour {
 			whiteCanvasGroup.alpha = 0f;
 		}
 
-	}
+        if (_instance == null) {
+            _instance = this;
+        } else {
+            Debug.Log("DoctorEvents can only be set once");
+        }
+
+    }
 
 	// Use this for initialization
 	void Start () {
