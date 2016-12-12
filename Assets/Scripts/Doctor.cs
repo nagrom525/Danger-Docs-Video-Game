@@ -310,7 +310,7 @@ public class Doctor : MonoBehaviour {
 		}
         // Use current tool on patient.
         if (TutorialEventController.Instance.tutorialActive) {
-            TutorialEventController.Instance.OnDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
+            TutorialEventController.Instance.InformDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
         }
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}

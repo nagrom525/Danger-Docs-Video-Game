@@ -3,16 +3,16 @@ using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
 
-    // HEARTATTACKAND FIRE
+    // HEARTATTACK AND FIRE // 
+    // PICK_UP_TOOL_GO_TO_PATIENT,
+    // SURGERY_ON_PATIENT,
 
     public enum TutorialStates
 	{
 		WASH_HANDS,
-		PICK_UP_TOOL_GO_TO_PATIENT,
-		SURGERY_ON_PATIENT,
 		ANESTHETIC_MACHINE,
 		SCARE_AWAY_RACCON,
-		SCARE_AWAY_BEAR,
+		//SCARE_AWAY_BEAR,
 		DONE,
 		UNINITIALIZED
 	}
@@ -105,12 +105,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.WASH_HANDS:
                 WashHandsUpdate();
                 break;
-            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
-                PickUpToolGoToPatientUpdate();
-                break;
-            case TutorialStates.SURGERY_ON_PATIENT:
-                SurgeryOnPatientUpdate();
-                break;
+            //case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
+            //    PickUpToolGoToPatientUpdate();
+            //    break;
+            //case TutorialStates.SURGERY_ON_PATIENT:
+            //    SurgeryOnPatientUpdate();
+            //    break;
             case TutorialStates.ANESTHETIC_MACHINE:
                 AnestheticMachineUpdate();
                 break;
@@ -123,9 +123,9 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.SCARE_AWAY_RACCON:
                 ScareAwayRacconUpdate();
                 break;
-            case TutorialStates.SCARE_AWAY_BEAR:
-                ScareAwayBearUpdate();
-                break;
+            //case TutorialStates.SCARE_AWAY_BEAR:
+            //    ScareAwayBearUpdate();
+            //    break;
         }
 	}
 
@@ -432,12 +432,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.WASH_HANDS:
                 StartWashHands();
                 break;
-            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
-                StartPickUpToolGoToPatient();
-                break;
-            case TutorialStates.SURGERY_ON_PATIENT:
-                StartSurgeryOnPatient();
-                break;
+            //case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
+            //    StartPickUpToolGoToPatient();
+            //    break;
+            //case TutorialStates.SURGERY_ON_PATIENT:
+            //    StartSurgeryOnPatient();
+            //    break;
             case TutorialStates.ANESTHETIC_MACHINE:
                 StartAnestheticMachine();
                 break;
@@ -450,9 +450,9 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.SCARE_AWAY_RACCON:
                 StartScareAwayRaccoon();
                 break;
-            case TutorialStates.SCARE_AWAY_BEAR:
-                StartScareAwayBear();
-                break;
+            //case TutorialStates.SCARE_AWAY_BEAR:
+            //    StartScareAwayBear();
+            //    break;
 
         }
     }
