@@ -47,13 +47,14 @@ public class StepCompletePanel : MonoBehaviour {
         if(t >= 1.0) {
             current_state = StepCompletePanelState.SHOWING;
             timeLastState = Time.time;
+            playerCircles[0].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(0);
         }
         Vector3 newPos = Mathfx.Hermite(startPos, rect3posOrig, t);
         rectTrans.position = newPos;
     }
 
     private void ShowingUpdate() {
- 
+       
     }
 
     private void WaitingToLeaveUpdate() {

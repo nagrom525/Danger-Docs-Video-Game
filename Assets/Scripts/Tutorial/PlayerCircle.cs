@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerCircle : MonoBehaviour {
-    enum PlayerCircleStates { APPEARING, SHOWING}
-    PlayerCircleStates current_state = PlayerCircleStates.APPEARING;
-    public GameObject[] doctorIconPrefabs;
+    enum PlayerCircleStates { APPEARING, SHOWING, NOTHING}
+    PlayerCircleStates current_state = PlayerCircleStates.NOTHING;
+    public Sprite[] doctorIconImages;
     public float timeToAppear;
-    public float startTime;
+    private float startTime;
     private RectTransform rectTrans;
 
     // Use this for initialization
@@ -14,7 +15,7 @@ public class PlayerCircle : MonoBehaviour {
         rectTrans = GetComponent<RectTransform>();
         rectTrans.localScale = Vector3.zero;
         startTime = Time.time;
-        current_state = PlayerCircleStates.APPEARING;
+        current_state = PlayerCircleStates.NOTHING;
 	}
 	
 	// Update is called once per frame
@@ -30,4 +31,11 @@ public class PlayerCircle : MonoBehaviour {
             }
         }
 	}
+
+    public void SetPlayerNumAndInitiateAnimation(int playerNum) {
+        this.GetComponent<Image>().sprite = doctorIconImages[playerNum];
+        current_state = PlayerCircleStates.APPEARING;
+        startTime = Time.time;
+        rectTrans.localScale = Vector3.zero;
+    }
 }
