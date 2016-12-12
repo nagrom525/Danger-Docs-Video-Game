@@ -70,7 +70,6 @@ public class Patient : Interactable {
 		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SUTURE;
 	}
-		
 
 	public void OnCutPatientOpen(float duration)
 	{
@@ -84,6 +83,21 @@ public class Patient : Interactable {
 		requiredTool = Tool.ToolType.GAUZE;
 	}
 
+	public void OnTutorialSuture()
+	{
+		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SUTURE;
+	}
+	public void OnTutorialScalpel()
+	{
+		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SCALPEL;
+	}
+	public void OnTutorialGauze()
+	{
+		Instantiate(gauzeHotspotsPrefab, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.GAUZE;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -99,6 +113,10 @@ public class Patient : Interactable {
         DoctorEvents.Instance.onToolPickedUpForSurgery += OnToolForSurgeryPickedUp;
         DoctorEvents.Instance.onToolDroppedForSurgery += OnToolForSurgeryDropped;
         DoctorEvents.Instance.GameOver += OnPatientDead;
+
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSuture;
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpel;
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialGauze;
 	}
 
     // Update is called once per frame
