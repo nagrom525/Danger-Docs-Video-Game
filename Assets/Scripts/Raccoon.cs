@@ -177,6 +177,7 @@ public class Raccoon : MonoBehaviour {
 	}
 	void Leaving()
 	{
+		AudioControl.Instance.PlayRaccoonSteal();
 		//look at it
 		transform.LookAt(leavingTarget);
 		//move to it

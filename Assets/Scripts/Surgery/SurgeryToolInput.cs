@@ -15,7 +15,6 @@ public class SurgeryToolInput : MonoBehaviour {
 		playerRenderer = GetComponent<Renderer>();
 		surgeryTool = GetComponent<SurgeryTool>();
         DoctorEvents.Instance.onBearStealsPatient += OnBearStealsPatient;
-		ogRotation = transform.rotation;
 	}
 
 	void Update()
@@ -44,7 +43,10 @@ public class SurgeryToolInput : MonoBehaviour {
 		doc.GetComponent<DoctorInputController>().enabled = true;
         doc.GetComponent<Doctor>().informSurgeryFinished();
         DoctorEvents.Instance.InformDoctorLeftSurgeryOperaton();
-		Destroy(this.gameObject);
+
+		if (this.gameObject != null) {
+			Destroy(this.gameObject);
+		}
 	}
 
 	void UpdateWithInputDevice(InputDevice inputDevice)

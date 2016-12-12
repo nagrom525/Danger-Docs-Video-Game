@@ -285,6 +285,12 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
+
+		if (Patient.Instance.transform.parent != null) {
+			Debug.Log("Patient being carried off -- can't operate");
+			return;
+		}
+
 		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
 		{
 			DoctorEvents.Instance.InformSurgeryOperation();
