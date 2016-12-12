@@ -15,8 +15,12 @@ public class BearAI : MonoBehaviour {
     public GameObject actionButtonCanvas;
     public static bool scaredAwayOnce = false;
 
-	public float doctorDashTimerPadding = 1f;	//if all doctors dash the bear within a second of each other
+	public float doctorDashTimerPadding = 1f;   //if all doctors dash the bear within a second of each other
 
+	public Renderer bearRenderer;
+	public Material defaultMat;
+	public Material hitMat;
+	public GameObject bearModel;
 
 	void Awake()
 	{
@@ -27,6 +31,8 @@ public class BearAI : MonoBehaviour {
 		{
 			Debug.Log("There is more than one bear on the screen");
 		}
+		bearRenderer = bearModel.GetComponent<Renderer>();
+		defaultMat = bearRenderer.material;
 	}
 
 	// Use this for initialization
@@ -59,7 +65,12 @@ public class BearAI : MonoBehaviour {
 		{
 			Debug.Log("bear-doctor collision");
 			if (other.gameObject.GetComponent<Doctor>().justDashed)
+			{
 				push_back_num++;
+				bearRenderer.material = hitMat;
+				Invoke("ResetMaterial", .2f);
+			}
+				
 
 			if (push_back_num >= push_back_threshold)
 			{
@@ -114,6 +125,11 @@ public class BearAI : MonoBehaviour {
 		AudioControl.Instance.PlayBearExit();
 		agent.Resume();
 
+	}
+
+	void ResetMaterial()
+	{
+		bearRenderer.material = defaultMat; 
 	}
 
 	void BearInCave()
