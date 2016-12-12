@@ -42,6 +42,7 @@ public class WaterBucket : Tool
 	{
 		waterLevel = (waterLevel + waterGainRate < 1f) ? (waterLevel + waterGainRate) : 1f;
 		if (waterLevel > 1f) waterLevel = 1f;
+		AudioControl.Instance.PlayWaterBucketFill();
         updateGraphics();
 	}
 
@@ -53,6 +54,7 @@ public class WaterBucket : Tool
 		go.transform.localEulerAngles = new Vector3(0f, Random.Range(0, 360), 0f);
         DoctorEvents.Instance.InformBucketEmptied();
         updateGraphics();
+		AudioControl.Instance.PlayWaterBucketDump();
 	}
 
 

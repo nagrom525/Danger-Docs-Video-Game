@@ -29,8 +29,10 @@ public class Doctor : MonoBehaviour {
 
 	public GameObject fireParticles;
 	//Dash variables
+	public bool 		canDash = true;
 	public float 		dashSpeed = 2f;
 	public float 		dashDelay = 2f;
+	public float 		timeBetweenDashes = 4f;
 	public bool 		justDashed;
 	public GameObject 	dustParticlePrefab;
 
@@ -209,6 +211,7 @@ public class Doctor : MonoBehaviour {
 		// If we currently have a tool, drop the tool.
 		if (currentTool != null) {
 			dropCurrentTool ();
+			AudioControl.Instance.PlayToolDrop();
 		} else {
 			// If there is a tool in range, get that tool.
 			// Otherwise, nearestTool == null
@@ -225,6 +228,7 @@ public class Doctor : MonoBehaviour {
                     full = bucket.hasWater;
                 }
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
+				AudioControl.Instance.PlayToolPickup();
 			}
 		}
 	}
@@ -281,10 +285,16 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
-        if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
-            DoctorEvents.Instance.InformSurgeryOperation();
-            inSurgery = true;
-        } 
+		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
+		{
+			DoctorEvents.Instance.InformSurgeryOperation();
+			inSurgery = true;
+		}
+		else
+		{
+			//play defibulator surge
+			AudioControl.Instance.PlayDefibulatorSurge();
+		}
         // Use current tool on patient.
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
@@ -441,16 +451,23 @@ public class Doctor : MonoBehaviour {
 	/// </summary>
 	public void Dash()
 	{
-		if (justDashed)
+		if (!canDash)
 			return;
 
 		//create puff particles
 		CreateDustPlooms();
-
+		AudioControl.Instance.PlayDoctorDash();
 		docRB.velocity = Vector2.zero;
 		docRB.velocity += dashSpeed * transform.forward;
 		justDashed = true;
+		canDash = false;
 		Invoke("ResetDash", dashDelay);
+		Invoke("AllowDash", timeBetweenDashes);
+	}
+
+	void AllowDash()
+	{
+		canDash = true;	
 	}
 
 	void CreateDustPlooms()
