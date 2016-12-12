@@ -233,15 +233,15 @@ public class StepCompletePanel : MonoBehaviour {
     }
 
     private void OnFirePutOut(float duration) {
-        if(panel_type == TutorialEventController.TutorialStates.FIRE) {
+        //if(panel_type == TutorialEventController.TutorialStates.FIRE) {
            
-        }
+        //}
     }
 
     private void OnHeartAttackAdverted(float duration) {
-        if(panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
+        //if(panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
 
-        }
+        //}
     }
 
     private void OnScareAwayRaccoon(int playerNum) {

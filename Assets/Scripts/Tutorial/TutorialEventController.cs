@@ -4,7 +4,7 @@ using System.Collections;
 public class TutorialEventController : MonoBehaviour {
 
     // HEARTATTACKAND FIRE
-    public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
+    public enum TutorialStates { SCARE_AWAY_RACCON, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, ANESTHETIC_MACHINE,  SCARE_AWAY_BEAR, DONE}
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
@@ -99,12 +99,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.ANESTHETIC_MACHINE:
                 AnestheticMachineUpdate();
                 break;
-            case TutorialStates.HEART_ATTACK:
-                HeartAttackUpdate();
-                break;
-            case TutorialStates.FIRE:
-                FireUpdate();
-                break;
+            //case TutorialStates.HEART_ATTACK:
+            //    HeartAttackUpdate();
+            //    break;
+            //case TutorialStates.FIRE:
+            //    FireUpdate();
+            //    break;
             case TutorialStates.SCARE_AWAY_RACCON:
                 ScareAwayRacconUpdate();
                 break;
@@ -426,12 +426,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.ANESTHETIC_MACHINE:
                 StartAnestheticMachine();
                 break;
-            case TutorialStates.HEART_ATTACK:
-                StartHeartAttack();
-                break;
-            case TutorialStates.FIRE:
-                StartFire();
-                break;
+            //case TutorialStates.HEART_ATTACK:
+            //    StartHeartAttack();
+            //    break;
+            //case TutorialStates.FIRE:
+            //    StartFire();
+            //    break;
             case TutorialStates.SCARE_AWAY_RACCON:
                 StartScareAwayRaccoon();
                 break;
