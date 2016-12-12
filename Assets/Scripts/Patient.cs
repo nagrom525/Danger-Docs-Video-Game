@@ -19,6 +19,7 @@ public class Patient : Interactable {
 
 	public bool 			sutureHotspotsPlaced;
 	public GameObject 		duplicateSutureHotspots;
+	public GameObject 		duplicateSutureSurgeryTool;
 
 	public GameObject[] 	toolSpawnPositions;
 
@@ -90,7 +91,16 @@ public class Patient : Interactable {
 	{
 		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
 		requiredTool = Tool.ToolType.SUTURE;
+
 	}
+
+	public void OnTutorialSutureDuplicate()
+	{
+		Instantiate(duplicateSutureHotspots, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SUTURE;
+
+	}
+
 	public void OnTutorialScalpel()
 	{
 		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
@@ -118,6 +128,7 @@ public class Patient : Interactable {
         DoctorEvents.Instance.GameOver += OnPatientDead;
 
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSuture;
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSutureDuplicate;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpel;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialGauze;
 	}
@@ -332,18 +343,18 @@ public class Patient : Interactable {
 				newInputController = suture.GetComponent<SurgeryToolInput>();
 				newInputController.playerNum = doctorNumber;
 				sutureHotspotsPlaced = true;
+				sutureHotspotsPlaced = true;
 			}
 			else
 			{
-				//For tutorial use
-				if (duplicateSutureHotspots != null)
-				{
-					sutureHotspotsPlaced = true;
-					duplicateSutureHotspots.SetActive(true);
-					newInputController = duplicateSutureHotspots.GetComponent<SurgeryToolInput>();
-					newInputController.playerNum = doctorNumber;
-				}
+				GameObject suture = (GameObject)Instantiate(duplicateSutureSurgeryTool, toolSpawnPositions[0].transform);
+				newInputController = suture.GetComponent<SurgeryToolInput>();
+				newInputController.playerNum = doctorNumber;
+				sutureHotspotsPlaced = true;
 			}
+
+
+
 
 
 			Debug.Log("recieving suture operation");
