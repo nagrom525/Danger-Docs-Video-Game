@@ -22,6 +22,11 @@ public class BearAI : MonoBehaviour {
 	public Material hitMat;
 	public GameObject bearModel;
 
+	void OnEnable()
+	{
+		AudioControl.Instance.PlayBearEnter();
+	}
+
 	void Awake()
 	{
 		if (B == null)
@@ -139,6 +144,7 @@ public class BearAI : MonoBehaviour {
 			PatientGurney.parent = null;
 			patient.transform.parent = null;
 		}
+		AudioControl.Instance.PlayBearExit();
 		DoctorEvents.Instance.InformBearLeft();
 
 	}
