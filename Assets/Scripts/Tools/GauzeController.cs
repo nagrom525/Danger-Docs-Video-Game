@@ -7,6 +7,7 @@ public class GauzeController : MonoBehaviour {
 	public GameObject[] gauzeSpots;
 	public int gauzeSpotsCount;
 
+	public int lastPlayerToSoak;
 
 
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class GauzeController : MonoBehaviour {
 		if (gauzeSpotsCount == 0)
 		{
 			DoctorEvents.Instance.OnPatientBloodSoaked();
+			TutorialEventController.Instance.OnSurgeryComplete(lastPlayerToSoak);
 			foreach (GameObject go in gauzeSpots)
 			{
 				go.GetComponent<GauzeHotspot>().Reset();

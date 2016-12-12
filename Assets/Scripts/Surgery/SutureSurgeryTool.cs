@@ -6,7 +6,6 @@ public class SutureSurgeryTool : SurgeryTool {
 	public Transform model;
 	public Vector3 idlePos;
 	public Vector3 activatedPos;
-
 	public bool touchedHotspot;
 
 	public void Reset()

@@ -4,9 +4,10 @@ using System.Collections;
 public class GauzeHotspot : MonoBehaviour {
 	public GauzeController gauzeController;
 
-	public void Activate()
+	public void Activate(int player)
 	{
 		gauzeController.Soaked();
+		gauzeController.lastPlayerToSoak = player;
 		GetComponent<Renderer>().enabled = false;
 		GetComponent<Collider>().enabled = false;
 	}

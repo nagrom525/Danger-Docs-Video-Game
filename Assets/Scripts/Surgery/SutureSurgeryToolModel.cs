@@ -5,11 +5,12 @@ public class SutureSurgeryToolModel : MonoBehaviour {
 
 	public SutureSurgeryTool suture;
 	public int objectsInTrigger = 0;
-
+	public int playerNumber;
 	// Use this for initialization
 	void Start()
 	{
 		suture = transform.parent.GetComponent<SutureSurgeryTool>();
+		playerNumber = suture.gameObject.GetComponent<SurgeryToolInput>().playerNum;
 	}
 
 
@@ -23,7 +24,7 @@ public class SutureSurgeryToolModel : MonoBehaviour {
 		SutureHotspot hotspot = other.GetComponent<SutureHotspot>();
 		if (hotspot != null)
 		{
-			hotspot.Activate();
+			hotspot.Activate(playerNumber);
 			suture.Deactivate();
 		}
 	}

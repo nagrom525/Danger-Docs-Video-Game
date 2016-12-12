@@ -2,14 +2,23 @@
 using System.Collections;
 
 public class TutorialPatientCameras : MonoBehaviour {
+	public GameObject[] cameras;
 
-	// Use this for initialization
 	void Start () {
-	
+		TutorialEventController.Instance.OnPickupToolsEnd += ShowCameras;
+		TutorialEventController.Instance.OnSurgeryOnPatientEnd += HideCameras;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void ShowCameras()
+	{
+		foreach (GameObject x in cameras)
+			x.SetActive(true);
 	}
+
+	void HideCameras()
+	{
+		foreach (GameObject x in cameras)
+			x.SetActive(false);
+	}
+
 }
