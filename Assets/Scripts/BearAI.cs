@@ -73,8 +73,9 @@ public class BearAI : MonoBehaviour {
 				push_back_num++;
 				bearRenderer.material = hitMat;
 				Invoke("ResetMaterial", .2f);
+				TutorialEventController.Instance.OnPlayerScaredBear(other.gameObject.GetComponent<DoctorInputController>().playerNum);
 			}
-				
+
 
 			if (push_back_num >= push_back_threshold)
 			{
@@ -83,6 +84,7 @@ public class BearAI : MonoBehaviour {
 				BearSwitchToCave();
                 actionButtonCanvas.SetActive(false);
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
 			}
 
 			Invoke("ResetThreshold", doctorDashTimerPadding);
