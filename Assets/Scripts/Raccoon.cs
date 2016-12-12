@@ -95,6 +95,7 @@ public class Raccoon : MonoBehaviour {
 				if (tool.GetComponent<Rigidbody>())
 					tool.GetComponent<Rigidbody>().isKinematic = true;
 				currentPickup = tool;
+				AudioControl.Instance.PlayRaccoonSteal();
 			}
 		}
 		else
