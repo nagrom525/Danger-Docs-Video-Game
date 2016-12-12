@@ -9,7 +9,10 @@ public class Flame : MonoBehaviour
 	private static int flameCount = 0;
     public bool motherFlame = false;
 	public float fireGridScale = 1.0f;
+    public float origTimeFireSpawnDealy = 2.0f;
 	public float timeFireSpawnDelay = 2.0f;
+    public float fireGrowthInhibiter = 2.0f;
+    public int maxTutorialFireGrowth = 5;
 	public GameObject flamePrefab;
     public GameObject actionButtonCanvas;
 	private static GameObject flameAnchor = null;
@@ -23,6 +26,7 @@ public class Flame : MonoBehaviour
 
 	private float lastFireTime;
 	private Direction nextFireSpawnDirection;
+    private int distanceFromMotherFlame = 0;
 
 
 
@@ -53,6 +57,7 @@ public class Flame : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+        timeFireSpawnDelay = origTimeFireSpawnDealy * (flameCount - 1) * fireGrowthInhibiter;
 		if (TimeToSpawnFire())
 		{
 			if (CanSpawnInRegion(nextFireSpawnDirection))
@@ -79,9 +84,13 @@ public class Flame : MonoBehaviour
 	//    //hasParent = true;
 	//    dire
 	//}
-	private void SetDirectionSpawned(Direction directionSpawned)
+	private void SetChildProperties(Direction directionSpawned, int distance)
 	{
 		this.directionSpawned = directionSpawned;
+        this.distanceFromMotherFlame = distance;
+        if (TutorialEventController.Instance.tutorialActive && distance >= maxTutorialFireGrowth) {
+            timeFireSpawnDelay = float.MaxValue;
+        }
 	}
 
 	// returns true if the space is open to spawning fire
@@ -114,7 +123,7 @@ public class Flame : MonoBehaviour
 		Flame childFlame = (Instantiate(flamePrefab, GetSpawnLocation(d), Quaternion.identity, flameAnchor.transform) as GameObject).GetComponent<Flame>();
 		childFlame.gameObject.name = this.gameObject.name + DirectionToLetter(d);
 		canSpawn[(int)d] = CanSpawnState.CLOSED;
-		childFlame.SetDirectionSpawned(d);
+		childFlame.SetChildProperties(d, distanceFromMotherFlame + 1);
 	}
 
 	private char DirectionToLetter(Direction d)
