@@ -3,19 +3,9 @@ using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
 
-<<<<<<< HEAD
-    public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, HEART_ATTACK, FIRE, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-=======
     // HEARTATTACKAND FIRE
     public enum TutorialStates { ANESTHETIC_MACHINE, WASH_HANDS, PICK_UP_TOOL_GO_TO_PATIENT, SURGERY_ON_PATIENT, SCARE_AWAY_RACCON, SCARE_AWAY_BEAR, DONE}
->>>>>>> origin/master
+
     public delegate void PrecentPlayerNumEvent(float precent, int playerNum);
     public delegate void ToolPlayerNumEvent(Tool.ToolType type, int playerNum);
     public delegate void GeneralEvent();
