@@ -102,6 +102,7 @@ public class BearAI : MonoBehaviour {
 		this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		agent.Stop();
 		agent.destination = Cave.transform.position;
+		AudioControl.Instance.PlayBearExit();
 		agent.Resume();
 
 	}

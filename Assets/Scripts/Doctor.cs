@@ -29,9 +29,12 @@ public class Doctor : MonoBehaviour {
 
 	public GameObject fireParticles;
 	//Dash variables
-	public float dashSpeed = 2f;
-	public float dashDelay = 2f;
-	public bool justDashed;
+	public bool 		canDash = true;
+	public float 		dashSpeed = 2f;
+	public float 		dashDelay = 2f;
+	public float 		timeBetweenDashes = 4f;
+	public bool 		justDashed;
+	public GameObject 	dustParticlePrefab;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -192,13 +195,23 @@ public class Doctor : MonoBehaviour {
 		// We should never be moving in the z direction.
 		//joystickVec.z = 0f;
 		// Move in the direction of the joystick.
-		pos += joystickVec * Time.deltaTime;
+		//pos += joystickVec * Time.deltaTime;
+		if (justDashed)
+		{
+			docRB.velocity = dashSpeed*joystickVec;
+		}
+		else 
+		{
+			docRB.velocity = joystickVec;
+		}
+
 	}
 
 	public void OnPickupButtonPressed() {
 		// If we currently have a tool, drop the tool.
 		if (currentTool != null) {
 			dropCurrentTool ();
+			AudioControl.Instance.PlayToolDrop();
 		} else {
 			// If there is a tool in range, get that tool.
 			// Otherwise, nearestTool == null
@@ -215,6 +228,7 @@ public class Doctor : MonoBehaviour {
                     full = bucket.hasWater;
                 }
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
+				AudioControl.Instance.PlayToolPickup();
 			}
 		}
 	}
@@ -271,10 +285,16 @@ public class Doctor : MonoBehaviour {
             DoctorEvents.Instance.InformDoctorNeedsToWashHands(0.0f);
             return;
         }
-        if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
-            DoctorEvents.Instance.InformSurgeryOperation();
-            inSurgery = true;
-        } 
+		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
+		{
+			DoctorEvents.Instance.InformSurgeryOperation();
+			inSurgery = true;
+		}
+		else
+		{
+			//play defibulator surge
+			AudioControl.Instance.PlayDefibulatorSurge();
+		}
         // Use current tool on patient.
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
 	}
@@ -426,14 +446,43 @@ public class Doctor : MonoBehaviour {
 	/// </summary>
 	public void Dash()
 	{
-		if (justDashed)
+		if (!canDash)
 			return;
 
+		//create puff particles
+		CreateDustPlooms();
+		AudioControl.Instance.PlayDoctorDash();
 		docRB.velocity = Vector2.zero;
 		docRB.velocity += dashSpeed * transform.forward;
 		justDashed = true;
+		canDash = false;
 		Invoke("ResetDash", dashDelay);
+		Invoke("AllowDash", timeBetweenDashes);
 	}
+
+	void AllowDash()
+	{
+		canDash = true;	
+	}
+
+	void CreateDustPlooms()
+	{
+		Invoke("CreateDustPloom", 0.1f);
+		Invoke("CreateDustPloom", 0.3f);
+		Invoke("CreateDustPloom", 0.6f);
+	}
+
+	void CreateDustPloom()
+	{
+		GameObject go = (GameObject)Instantiate(dustParticlePrefab, (transform.position-transform.forward), Quaternion.identity);
+		Vector3 newPos = go.transform.position;
+		newPos = new Vector3(newPos.x, 1.0f, newPos.z);
+		//set direction of particles to point away from doctor
+		go.transform.position = newPos;
+		Vector3 direction = go.transform.position - transform.position;
+		go.transform.rotation = Quaternion.LookRotation(direction);
+	}
+
 
 	public void ResetDash()
 	{
