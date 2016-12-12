@@ -74,6 +74,8 @@ Sprinting
 - Transitions!
     + Cannot have people using the mouse
 
+- Signal dirt level more obviously
+
 ## Tutorial Order
 
 1. Pickup a random tool
