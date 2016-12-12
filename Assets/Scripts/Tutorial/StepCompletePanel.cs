@@ -66,7 +66,6 @@ public class StepCompletePanel : MonoBehaviour {
         if(t >= 1.0) {
             current_state = StepCompletePanelState.SHOWING;
             timeLastState = Time.time;
-            playerCircles[0].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(0);
         }
         Vector3 newPos = Mathfx.Hermite(startPos, rect3posOrig, t);
         rectTrans.position = newPos;
@@ -145,7 +144,9 @@ public class StepCompletePanel : MonoBehaviour {
 
     private void OnHandsWashed(float precent, int playerNum) {
         if (panel_type == TutorialEventController.TutorialStates.WASH_HANDS) {
-            AddPlayerCircle(playerNum);
+            if(precent >= 0.999990) {
+                AddPlayerCircle(playerNum);
+            }
         }
     }
 
