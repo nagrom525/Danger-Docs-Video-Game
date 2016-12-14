@@ -48,6 +48,7 @@ public class Patient : Interactable {
     private FlashColor flash_color;
 	private PatientCriticalState critical_state;
 	private Material NormalStateMaterial;
+    private bool tutorialToopPickUp = false;
 
     private float adverted_bpm;
     //	private float flash_timer = 0.0f;
@@ -131,7 +132,10 @@ public class Patient : Interactable {
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpelDuplicate;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpel;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialGauze;
-	}
+        TutorialEventController.Instance.OnPickupToolsStart += OnToolPickUpTutorialStart;
+        TutorialEventController.Instance.OnPickupToolsEnd += OnToolPickUpTutorialEnd;
+        TutorialEventController.Instance.OnToolPickedUp += OnToolPickedUp;
+    }
 
     // Update is called once per frame
     void Update() {
@@ -458,6 +462,21 @@ public class Patient : Interactable {
         actionButtonCanvas.SetActive(false);
     }
 
+    private void OnToolPickUpTutorialStart() {
+        tutorialToopPickUp = true;
+    }
+
+    private void OnToolPickUpTutorialEnd() {
+        tutorialToopPickUp = false;
+        actionButtonCanvas.SetActive(false);
+    }
+
+    private void OnToolPickedUp(Tool.ToolType type, int playerNum) {
+        if (tutorialToopPickUp) {
+            actionButtonCanvas.SetActive(true);
+        }
+    }
+
     void OnDestroy() {
         DoctorEvents.Instance.onPatientCriticalEventStart -= OnPatientCriticalEventStart;
         DoctorEvents.Instance.onPatientCriticalEventEnded -= OnPatientCriticalEventEnded;
@@ -467,5 +486,8 @@ public class Patient : Interactable {
         DoctorEvents.Instance.onToolPickedUpForSurgery -= OnToolForSurgeryPickedUp;
         DoctorEvents.Instance.onToolDroppedForSurgery -= OnToolForSurgeryDropped;
         DoctorEvents.Instance.GameOver -= OnPatientDead;
+        TutorialEventController.Instance.OnPickupToolsStart -= OnToolPickUpTutorialStart;
+        TutorialEventController.Instance.OnPickupToolsEnd -= OnToolPickUpTutorialEnd;
+        TutorialEventController.Instance.OnToolPickedUp -= OnToolPickedUp;
     }
 }
