@@ -235,7 +235,7 @@ public class Doctor : MonoBehaviour {
 			}
 		}
         if (TutorialEventController.Instance.tutorialActive) {
-
+            TutorialEventController.Instance.InformAButtonPressed(gameObject.GetComponent<DoctorInputController>().playerNum);
         }
 	}
 
