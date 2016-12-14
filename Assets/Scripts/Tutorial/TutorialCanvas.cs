@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class TutorialCanvas : MonoBehaviour {
+    public GameObject welcomePanel;
+    public GameObject playGamePanel;
     public GameObject washingHandsPanel;
     public GameObject pickUpToolPanel;
     public GameObject surgeryPanel;
@@ -13,6 +15,7 @@ public class TutorialCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //TutorialEventController.Instance.On
         TutorialEventController.Instance.OnWashingHandsStart += OnWashHandsStart;
         TutorialEventController.Instance.OnPickupToolsStart += OnPickUpToolStart;
         TutorialEventController.Instance.OnSurgeryOnPatientStart += OnSurgeryStart;
