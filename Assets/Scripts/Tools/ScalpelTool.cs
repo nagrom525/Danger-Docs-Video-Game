@@ -10,6 +10,8 @@ public class ScalpelTool : Tool {
         DoctorEvents.Instance.patientNeedsCutOpen += OnScalpelNeeded;
         DoctorEvents.Instance.onSurgeryOperationFirst += OnSurgeryInitiated;
         DoctorEvents.Instance.onToolDroppedForSurgery += OnScalpelDroppedForSurgery;
+       // TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
+        
     }
 
 
