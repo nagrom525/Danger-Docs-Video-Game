@@ -9,7 +9,9 @@ public class TutorialEventController : MonoBehaviour {
 
     public enum TutorialStates
 	{
-        WELCOME,
+        PICK_UP_TOOL_GO_TO_PATIENT,
+		SURGERY_ON_PATIENT,
+		WELCOME,
 		WASH_HANDS,
 		ANESTHETIC_MACHINE,
         HEART_ATTACK,
@@ -126,12 +128,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.WASH_HANDS:
                 WashHandsUpdate();
                 break;
-            //case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
-            //    PickUpToolGoToPatientUpdate();
-            //    break;
-            //case TutorialStates.SURGERY_ON_PATIENT:
-            //    SurgeryOnPatientUpdate();
-            //    break;
+            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
+                PickUpToolGoToPatientUpdate();
+                break;
+            case TutorialStates.SURGERY_ON_PATIENT:
+                SurgeryOnPatientUpdate();
+                break;
             case TutorialStates.ANESTHETIC_MACHINE:
                 AnestheticMachineUpdate();
                 break;
@@ -524,12 +526,12 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.WASH_HANDS:
                 StartWashHands();
                 break;
-            //case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
-            //    StartPickUpToolGoToPatient();
-            //    break;
-            //case TutorialStates.SURGERY_ON_PATIENT:
-            //    StartSurgeryOnPatient();
-            //    break;
+            case TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT:
+                StartPickUpToolGoToPatient();
+                break;
+            case TutorialStates.SURGERY_ON_PATIENT:
+                StartSurgeryOnPatient();
+                break;
             case TutorialStates.ANESTHETIC_MACHINE:
                 StartAnestheticMachine();
                 break;
