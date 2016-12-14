@@ -9,17 +9,19 @@ public class TutorialEventController : MonoBehaviour {
 
     public enum TutorialStates
 	{
-        PICK_UP_TOOL_GO_TO_PATIENT,
-		SURGERY_ON_PATIENT,
-		WELCOME,
-		WASH_HANDS,
-		ANESTHETIC_MACHINE,
+        WELCOME,
         HEART_ATTACK,
         FIRE,
+        WASH_HANDS,
+        PICK_UP_TOOL_GO_TO_PATIENT,
+		SURGERY_ON_PATIENT,
+		ANESTHETIC_MACHINE,
+       
+        
 		SCARE_AWAY_RACCON,
         SCARE_AWAY_BEAR,
         PLAY_GAME,
-		DONE,
+        DONE,
 		UNINITIALIZED
 	}
 
@@ -73,9 +75,12 @@ public class TutorialEventController : MonoBehaviour {
 
     // --          Heart Attack          -- //
     public GeneralEvent OnHeartAttackStart;
+    public PlayerNumEvent OnHeartAttackAdverted;
 
     // --              Fire              -- //
     public GeneralEvent OnFireStart;
+    public PlayerNumEvent OnFirePutOut;
+    public int playerHasBucket;
 
     // --        Scare Away Raccoon      -- //
     private bool[] scaredAwayRaccon  = new bool[4];
@@ -287,6 +292,9 @@ public class TutorialEventController : MonoBehaviour {
         if (tutorialActive) {
             toolsHeldByDoctor[playerNum] = type;
             OnToolPickedUp(type, playerNum);
+            if(type == Tool.ToolType.BUCKET) {
+                playerHasBucket = playerNum;
+            }
         } 
     }
 
@@ -422,7 +430,10 @@ public class TutorialEventController : MonoBehaviour {
         StartNewState(current_state);
     }
 
-    public void InfromFirePutOut() {
+    public void InformFirePutOut() {
+        if(OnFirePutOut != null) {
+            OnFirePutOut(playerHasBucket);
+        }
         FireComplete();
     }
 

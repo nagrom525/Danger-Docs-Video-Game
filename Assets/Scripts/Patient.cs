@@ -406,6 +406,9 @@ public class Patient : Interactable {
 			if (defibulationsRemaining == 0)
 			{
 				DoctorEvents.Instance.PatientCriticalAdverted();
+                if (TutorialEventController.Instance.tutorialActive) {
+                    TutorialEventController.Instance.InformHeartAttackAdverted();
+                }
 			}		
 		}
         return newInputController;

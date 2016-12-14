@@ -249,6 +249,9 @@ public class Flame : MonoBehaviour
         flameCount--;
         if (flameCount == 0) {
             DoctorEvents.Instance.InformFirePutOut();
+            if (TutorialEventController.Instance.tutorialActive) {
+                TutorialEventController.Instance.InformFirePutOut();
+            }
         }
         DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
         DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;

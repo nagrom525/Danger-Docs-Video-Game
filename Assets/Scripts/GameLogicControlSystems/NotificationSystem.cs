@@ -61,6 +61,9 @@ public class NotificationSystem : MonoBehaviour {
         DoctorEvents.Instance.onAnestheticMachineReturned += OnAnestheticMachineReturned;
         DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
         DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashingHands;
+        if (TutorialEventController.Instance.tutorialActive) {
+            this.gameObject.SetActive(false);
+        }
 
 	}
 	
