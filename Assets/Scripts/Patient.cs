@@ -376,7 +376,6 @@ public class Patient : Interactable {
 				GameObject scalpel = (GameObject)Instantiate(duplicateScalpelSurgeryTool, toolSpawnPositions[0].transform);
 				newInputController = scalpel.GetComponent<SurgeryToolInput>();
 				newInputController.playerNum = doctorNumber;
-				scalpel1Placed = true;
 			}
 
 
