@@ -16,8 +16,6 @@ public class TutorialEventController : MonoBehaviour {
         PICK_UP_TOOL_GO_TO_PATIENT,
 		SURGERY_ON_PATIENT,
 		ANESTHETIC_MACHINE,
-       
-        
 		SCARE_AWAY_RACCON,
         SCARE_AWAY_BEAR,
         PLAY_GAME,
