@@ -38,6 +38,7 @@ public class LevelUserInterface : MonoBehaviour {
 	private float timedelta1 = 1.0f;
 	private float timedelta2 = 0.2f;
     private float bpm;
+    private bool heartMonitorActive = true;
     private SpriteAnimator heartRateAnimator;
 
 
@@ -105,12 +106,22 @@ public class LevelUserInterface : MonoBehaviour {
 	}
 
     // -- HEART MONITOR -- //
-    private void HeartMonitorUpdate() {
-        heartRateAnimator.fps = BpmToFps(bpm);
+    public void SetHeartMonitorActive(bool active) {
+        heartMonitor.gameObject.SetActive(active);
+        heartMonitorActive = active;
     }
 
+    private void HeartMonitorUpdate() {
+        if (heartMonitorActive) {
+            heartRateAnimator.fps = BpmToFps(bpm);
+        }
+    }
+
+
     private int BpmToFps(float bpm) {
-        return Mathf.RoundToInt((bpm / 60.0f) * heartRateAnimator.numFrames);
+        if (heartMonitorActive) {
+            return Mathf.RoundToInt((bpm / 60.0f) * heartRateAnimator.numFrames);
+        } else return -1;
     }
 
 	public void UpdateBpm(float bpm) {
@@ -118,15 +129,19 @@ public class LevelUserInterface : MonoBehaviour {
 	}
 
     private void SetHeartMonitorNormal() {
-        heartRateAnimator.updateFrames(normalHeartMonitorSpritesName);
-        heartMonitor.GetComponent<Image>().sprite = normalHeartMonitorSprite;
-        heartRateAnimator.startAnimation(true);
+        if (heartMonitorActive) {
+            heartRateAnimator.updateFrames(normalHeartMonitorSpritesName);
+            heartMonitor.GetComponent<Image>().sprite = normalHeartMonitorSprite;
+            heartRateAnimator.startAnimation(true);
+        }
     }
 
     private void SetHeartMonitorAttacking() {
-        heartRateAnimator.updateFrames(attackingHeartMonitorSpritesName);
-        heartMonitor.GetComponent<Image>().sprite = attackingHeartMonitorSprite;
-        heartRateAnimator.startAnimation(true);
+        if (heartMonitorActive) {
+            heartRateAnimator.updateFrames(attackingHeartMonitorSpritesName);
+            heartMonitor.GetComponent<Image>().sprite = attackingHeartMonitorSprite;
+            heartRateAnimator.startAnimation(true);
+        }
     }
 
     // -- // -- //

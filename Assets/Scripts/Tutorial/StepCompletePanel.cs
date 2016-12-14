@@ -39,7 +39,7 @@ public class StepCompletePanel : MonoBehaviour {
         TutorialEventController.Instance.OnDoctorLeavesPatient += OnDoctorLeavesPatient;
         TutorialEventController.Instance.OnSurgeryComplete += OnSurgeryComplete;
         TutorialEventController.Instance.OnBatteryUsed += OnBatteryUsed;
-        DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
+        TutorialEventController.Instance.OnFirePutOut += OnFirePutOut;
         DoctorEvents.Instance.onPatientCriticalEventEnded += OnHeartAttackAdverted;
         TutorialEventController.Instance.OnPlayerScaredRaccoon += OnScareAwayRaccoon;
         TutorialEventController.Instance.OnPlayerScaredBear += OnScareAwayBear;
@@ -80,6 +80,15 @@ public class StepCompletePanel : MonoBehaviour {
                 AddPlayerCircle(playerNum, true);
             }
             playerBuffer.Clear();
+        }
+
+        // special case for fire and heart attack
+        if(panel_type == TutorialEventController.TutorialStates.FIRE || panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
+            if (playerCircleShown[0]) {
+                current_state = StepCompletePanelState.WAITING_TO_LEAVE;
+                timeLastState = Time.time;
+                return;
+            }
         }
         foreach(var playerShown in playerCircleShown) {
             if (!playerShown) {
@@ -233,9 +242,9 @@ public class StepCompletePanel : MonoBehaviour {
         }
     }
 
-    private void OnFirePutOut(float duration) {
+    private void OnFirePutOut(int playerNum) {
         if (panel_type == TutorialEventController.TutorialStates.FIRE) {
-
+            AddPlayerCircle(playerNum, true);
         }
     }
 
@@ -271,7 +280,7 @@ public class StepCompletePanel : MonoBehaviour {
         TutorialEventController.Instance.OnDoctorLeavesPatient -= OnDoctorLeavesPatient;
         TutorialEventController.Instance.OnSurgeryComplete -= OnSurgeryComplete;
         TutorialEventController.Instance.OnBatteryUsed -= OnBatteryUsed;
-        DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+        TutorialEventController.Instance.OnFirePutOut -= OnFirePutOut;
         DoctorEvents.Instance.onPatientCriticalEventEnded -= OnHeartAttackAdverted;
         TutorialEventController.Instance.OnPlayerScaredRaccoon -= OnScareAwayRaccoon;
         TutorialEventController.Instance.OnPlayerScaredBear -= OnScareAwayBear;
