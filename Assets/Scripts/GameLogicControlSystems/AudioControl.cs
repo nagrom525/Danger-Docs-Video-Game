@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class AudioControl : MonoBehaviour {
@@ -34,6 +35,9 @@ public class AudioControl : MonoBehaviour {
 	public AudioClip operationSuccessful;
 	public AudioClip tutorialTaskComplete;
 
+	public AudioClip tutorialBeginMusic;
+	public AudioClip tutorialLoopMusic;
+
 
     private AudioSource mainGameMusicAudioSrc;
 	private AudioSource heartRateAudioSrc;
@@ -54,6 +58,8 @@ public class AudioControl : MonoBehaviour {
 	private AudioSource raccoonStealAudioSrc;
 	private AudioSource operationSuccessfulAudioSrc;
 	private AudioSource tutorialTaskCompleteAudioSrc;
+	private AudioSource tutorialBeginMusicSrc;
+	private AudioSource tutorialLoopMusicSrc;
 
     private static AudioControl _instance;
     public static AudioControl Instance {
@@ -93,6 +99,8 @@ public class AudioControl : MonoBehaviour {
 			raccoonStealAudioSrc = sources[19];
 			operationSuccessfulAudioSrc = sources[20];
 			tutorialTaskCompleteAudioSrc = sources[21];
+			tutorialBeginMusicSrc = sources[22];
+			tutorialLoopMusicSrc = sources[23];
         }
 
 
@@ -100,12 +108,22 @@ public class AudioControl : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-	    
+		if (SceneManager.GetActiveScene().name == "Tutorial")
+		{
+			tutorialBeginMusicSrc.clip = tutorialBeginMusic;
+			tutorialBeginMusicSrc.Play();
+			Invoke( "PlayTutorialMusicLoop", tutorialBeginMusic.length);
+		}
+		else 
+		{
+			mainGameMusicAudioSrc.Play();
+		}
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-	
+	void Update()
+	{
+				
 	}
 
     public void PlayHeartMonitorBeep() {
@@ -226,5 +244,11 @@ public class AudioControl : MonoBehaviour {
 	{
 		tutorialTaskCompleteAudioSrc.clip = tutorialTaskComplete;
 		tutorialTaskCompleteAudioSrc.Play();
+	}
+
+	public void PlayTutorialMusicLoop()
+	{
+		tutorialLoopMusicSrc.clip = tutorialLoopMusic;
+		tutorialLoopMusicSrc.Play();
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class BearAI : MonoBehaviour {
@@ -26,6 +27,8 @@ public class BearAI : MonoBehaviour {
 	private int currpos = 0;
 	public int MAX_POSITION_STANDS = 4;
 
+	private bool tutorial = false;
+
 	void OnEnable()
 	{
 		AudioControl.Instance.PlayBearEnter();
@@ -42,6 +45,10 @@ public class BearAI : MonoBehaviour {
 		}
 		bearRenderer = bearModel.GetComponent<Renderer>();
 		defaultMat = bearRenderer.sharedMaterial;
+		if (SceneManager.GetActiveScene().name == "Tutorial")
+		{
+			tutorial = true;
+		}
 	}
 
 	// Use this for initialization
@@ -96,6 +103,8 @@ public class BearAI : MonoBehaviour {
 			{
 				PatientGurney.parent = null;
 				patient.transform.parent = null;
+				this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+				agent.Stop();
 				BearSwitchToCave();
 				actionButtonCanvas.SetActive(false);
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -170,7 +179,14 @@ public class BearAI : MonoBehaviour {
 		} 
 		else 
 		{
-			BearSwitchToCave();
+			if (tutorial)
+			{
+				currpos = 0;
+			}
+			else 
+			{
+				BearSwitchToCave();
+			}
 		}
 	}
 
