@@ -15,7 +15,8 @@ public class TutorialCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //TutorialEventController.Instance.On
+        TutorialEventController.Instance.OnWelcomeStart += OnWelcomeStart;
+        TutorialEventController.Instance.OnPlayGameStart += OnPlayGameStart;
         TutorialEventController.Instance.OnWashingHandsStart += OnWashHandsStart;
         TutorialEventController.Instance.OnPickupToolsStart += OnPickUpToolStart;
         TutorialEventController.Instance.OnSurgeryOnPatientStart += OnSurgeryStart;
@@ -30,6 +31,14 @@ public class TutorialCanvas : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    private void OnWelcomeStart() {
+        welcomePanel.SetActive(true);
+    }
+
+    private void OnPlayGameStart() {
+        playGamePanel.SetActive(true);
+    }
 
     private void OnWashHandsStart() {
         washingHandsPanel.SetActive(true);

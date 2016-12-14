@@ -252,7 +252,7 @@ public class StepCompletePanel : MonoBehaviour {
     }
 
     private void OnScareAwayBear(int playerNum) {
-        if (panel_type == TutorialEventController.TutorialStates.SCARE_AWAY_BEAR) {
+        if(panel_type == TutorialEventController.TutorialStates.SCARE_AWAY_BEAR) {
             AddPlayerCircle(playerNum, true);
         }
     }
