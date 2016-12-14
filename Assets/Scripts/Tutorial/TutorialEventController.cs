@@ -76,11 +76,13 @@ public class TutorialEventController : MonoBehaviour {
     // --          Heart Attack          -- //
     public GeneralEvent OnHeartAttackStart;
     public PlayerNumEvent OnHeartAttackAdverted;
+    private int playerHasDefibulator;
+
 
     // --              Fire              -- //
     public GeneralEvent OnFireStart;
     public PlayerNumEvent OnFirePutOut;
-    public int playerHasBucket;
+    private int playerHasBucket;
 
     // --        Scare Away Raccoon      -- //
     private bool[] scaredAwayRaccon  = new bool[4];
@@ -295,6 +297,9 @@ public class TutorialEventController : MonoBehaviour {
             if(type == Tool.ToolType.BUCKET) {
                 playerHasBucket = playerNum;
             }
+            if(type == Tool.ToolType.DEFIBULATOR) {
+                playerHasDefibulator = playerNum;
+            }
         } 
     }
 
@@ -408,6 +413,9 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     public void InformHeartAttackAdverted() {
+        if(OnHeartAttackAdverted != null) {
+            OnHeartAttackAdverted(playerHasDefibulator);
+        }
         HeartAttackComplete();
     }
 

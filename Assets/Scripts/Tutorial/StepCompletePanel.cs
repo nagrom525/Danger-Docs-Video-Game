@@ -24,6 +24,7 @@ public class StepCompletePanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        print("Start: " + panel_type);
         timeLastState = Time.time;
         rectTrans = GetComponent<RectTransform>();
         rect3posOrig = rectTrans.position;
@@ -40,7 +41,7 @@ public class StepCompletePanel : MonoBehaviour {
         TutorialEventController.Instance.OnSurgeryComplete += OnSurgeryComplete;
         TutorialEventController.Instance.OnBatteryUsed += OnBatteryUsed;
         TutorialEventController.Instance.OnFirePutOut += OnFirePutOut;
-        DoctorEvents.Instance.onPatientCriticalEventEnded += OnHeartAttackAdverted;
+        TutorialEventController.Instance.OnHeartAttackAdverted += OnHeartAttackAdverted;
         TutorialEventController.Instance.OnPlayerScaredRaccoon += OnScareAwayRaccoon;
         TutorialEventController.Instance.OnPlayerScaredBear += OnScareAwayBear;
         TutorialEventController.Instance.OnAPressed += OnAButtonPressed;
@@ -84,7 +85,7 @@ public class StepCompletePanel : MonoBehaviour {
 
         // special case for fire and heart attack
         if(panel_type == TutorialEventController.TutorialStates.FIRE || panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
-            if (playerCircleShown[0]) {
+            if (circlesFilled[0] != -1) {
                 current_state = StepCompletePanelState.WAITING_TO_LEAVE;
                 timeLastState = Time.time;
                 return;
@@ -248,9 +249,9 @@ public class StepCompletePanel : MonoBehaviour {
         }
     }
 
-    private void OnHeartAttackAdverted(float duration) {
+    private void OnHeartAttackAdverted(int playerNum) {
         if (panel_type == TutorialEventController.TutorialStates.HEART_ATTACK) {
-
+            AddPlayerCircle(playerNum, true);
         }
     }
 
@@ -281,7 +282,7 @@ public class StepCompletePanel : MonoBehaviour {
         TutorialEventController.Instance.OnSurgeryComplete -= OnSurgeryComplete;
         TutorialEventController.Instance.OnBatteryUsed -= OnBatteryUsed;
         TutorialEventController.Instance.OnFirePutOut -= OnFirePutOut;
-        DoctorEvents.Instance.onPatientCriticalEventEnded -= OnHeartAttackAdverted;
+        TutorialEventController.Instance.OnHeartAttackAdverted -= OnHeartAttackAdverted;
         TutorialEventController.Instance.OnPlayerScaredRaccoon -= OnScareAwayRaccoon;
         TutorialEventController.Instance.OnPlayerScaredBear -= OnScareAwayBear;
         TutorialEventController.Instance.OnAPressed -= OnAButtonPressed;
