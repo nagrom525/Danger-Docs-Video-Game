@@ -63,7 +63,7 @@ public class SpawningFactory : MonoBehaviour
 		TutorialEventController.Instance.OnScareAwayBearEnd += ScareAwayBearEnd;
 
 		// Fire
-		TutorialEventController.Instance.OnFire += FireStart;
+		TutorialEventController.Instance.OnFireStart += FireStart;
 	}
 
 	// Update is called once per frame
@@ -250,6 +250,6 @@ public class SpawningFactory : MonoBehaviour
 		TutorialEventController.Instance.OnScareAwayBearEnd -= ScareAwayBearEnd;
 
 		// Fire
-		TutorialEventController.Instance.OnFire += FireStart;
+		TutorialEventController.Instance.OnFireStart += FireStart;
     }
 }

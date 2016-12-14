@@ -228,10 +228,15 @@ public class Doctor : MonoBehaviour {
                     full = bucket.hasWater;
                 }
                 DoctorEvents.Instance.InformToolPickedUp(nearestTool.GetToolType(), full);
-				TutorialEventController.Instance.InformToolPickedUp(nearestTool.GetToolType(), GetComponent<DoctorInputController>().playerNum);
+                if (TutorialEventController.Instance.tutorialActive) {
+                    TutorialEventController.Instance.InformToolPickedUp(nearestTool.GetToolType(), GetComponent<DoctorInputController>().playerNum);
+                }
 				AudioControl.Instance.PlayToolPickup();
 			}
 		}
+        if (TutorialEventController.Instance.tutorialActive) {
+
+        }
 	}
 
 	

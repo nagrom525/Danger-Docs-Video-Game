@@ -9,10 +9,14 @@ public class TutorialEventController : MonoBehaviour {
 
     public enum TutorialStates
 	{
+        WELCOME,
 		WASH_HANDS,
 		ANESTHETIC_MACHINE,
+        HEART_ATTACK,
+        FIRE,
 		SCARE_AWAY_RACCON,
-		//SCARE_AWAY_BEAR,
+        SCARE_AWAY_BEAR,
+        PLAY_GAME,
 		DONE,
 		UNINITIALIZED
 	}
@@ -25,11 +29,22 @@ public class TutorialEventController : MonoBehaviour {
 
     public bool tutorialActive = false;
 
+    // -- Welcome -- //
+    private bool[] aPressedWelcome = new bool[4];
+    public PlayerNumEvent OnAPressed;
+    public GeneralEvent OnWelcomeStart;
+    public GeneralEvent OnWelcomeEnd;
+
+    // -- Time to play game -- // 
+    private bool[] aPressedStartGame = new bool[4];
+    public GeneralEvent OnPlayGameStart;
+    public GeneralEvent OnPlayGameEnd;
 
     // --            Wash Hands          -- //
     private float[] precentHandsWashed = new float[4];
     public PrecentPlayerNumEvent OnHandsWashed;
     public GeneralEvent OnWashingHandsStart;
+    public GeneralEvent OnWashingHandsEnd;
 
     // -- Pick Up Tool and Go To Patient -- //
     private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
@@ -58,7 +73,7 @@ public class TutorialEventController : MonoBehaviour {
     public GeneralEvent OnHeartAttackStart;
 
     // --              Fire              -- //
-    public GeneralEvent OnFire;
+    public GeneralEvent OnFireStart;
 
     // --        Scare Away Raccoon      -- //
     private bool[] scaredAwayRaccon  = new bool[4];
@@ -102,6 +117,12 @@ public class TutorialEventController : MonoBehaviour {
             SceneTransitionController.Instance.NextScene();
         }
         switch (current_state) {
+            case TutorialStates.WELCOME:
+                WelcomeUpdate();
+                break;
+            case TutorialStates.PLAY_GAME:
+                PlayGameUpdate();
+                break;
             case TutorialStates.WASH_HANDS:
                 WashHandsUpdate();
                 break;
@@ -114,20 +135,82 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.ANESTHETIC_MACHINE:
                 AnestheticMachineUpdate();
                 break;
-            //case TutorialStates.HEART_ATTACK:
-            //    HeartAttackUpdate();
-            //    break;
-            //case TutorialStates.FIRE:
-            //    FireUpdate();
-            //    break;
+            case TutorialStates.HEART_ATTACK:
+                HeartAttackUpdate();
+                break;
+            case TutorialStates.FIRE:
+                FireUpdate();
+                break;
             case TutorialStates.SCARE_AWAY_RACCON:
                 ScareAwayRacconUpdate();
                 break;
-            //case TutorialStates.SCARE_AWAY_BEAR:
-            //    ScareAwayBearUpdate();
-            //    break;
+            case TutorialStates.SCARE_AWAY_BEAR:
+                ScareAwayBearUpdate();
+                break;
         }
 	}
+
+    // -- Welcome -- //
+    public void StartWelcome() {
+        if(OnWelcomeStart != null) {
+            OnWelcomeStart();
+        }
+    }
+
+    public void WelcomeUpdate() {
+        foreach(var aPressed in aPressedWelcome) {
+            if (!aPressed) {
+                return;
+            }
+        }
+        WelcomeComplete();
+    }
+
+    public void WelcomeComplete() {
+        current_state = GetNextState(current_state);
+        StartNewState(current_state);
+        timeStateStart = Time.time;
+        if(OnWelcomeEnd != null) {
+            OnWelcomeEnd();
+        }
+    }
+
+    public void InformAButtonPressed(int playerNum) {
+        if(current_state == TutorialStates.WELCOME) {
+            aPressedWelcome[playerNum] = true;
+        } else if(current_state == TutorialStates.PLAY_GAME) {
+            aPressedStartGame[playerNum] = true;
+        }
+        if(OnAPressed != null) {
+            OnAPressed(playerNum);
+        }
+    }
+
+    // -- Play Game -- //
+
+    public void StartPlayGame() {
+        if(OnPlayGameStart != null) {
+            OnPlayGameStart();
+        }
+    }
+
+    public void PlayGameUpdate() {
+        foreach(var aPressed in aPressedStartGame) {
+            if (!aPressed) {
+                return;
+            }
+        }
+        PlayGameComplete();
+    }
+
+    public void PlayGameComplete() {
+        current_state = GetNextState(current_state);
+        StartNewState(current_state);
+        timeStateStart = Time.time;
+        if(OnPlayGameEnd != null) {
+            OnPlayGameEnd();
+        }
+    }
 
     // -- Wash Hands -- //
     private void StartWashHands() {
@@ -149,6 +232,9 @@ public class TutorialEventController : MonoBehaviour {
         current_state = GetNextState(current_state);
         StartNewState(current_state);
         timeStateStart = Time.time;
+        if(OnWashingHandsEnd != null) {
+            OnWashingHandsEnd();
+        }
     }
 
     // player Num is indexed from 0
@@ -319,8 +405,8 @@ public class TutorialEventController : MonoBehaviour {
     // -- Fire -- //
 
     private void StartFire() {
-        if(OnFire != null) {
-            OnFire();
+        if(OnFireStart != null) {
+            OnFireStart();
         }
     }
      
@@ -429,6 +515,12 @@ public class TutorialEventController : MonoBehaviour {
 
     private void StartNewState(TutorialStates newState) {
         switch (newState) {
+            case TutorialStates.WELCOME:
+                StartWelcome();
+                break;
+            case TutorialStates.PLAY_GAME:
+                StartPlayGame();
+                break;
             case TutorialStates.WASH_HANDS:
                 StartWashHands();
                 break;
@@ -441,18 +533,18 @@ public class TutorialEventController : MonoBehaviour {
             case TutorialStates.ANESTHETIC_MACHINE:
                 StartAnestheticMachine();
                 break;
-            //case TutorialStates.HEART_ATTACK:
-            //    StartHeartAttack();
-            //    break;
-            //case TutorialStates.FIRE:
-            //    StartFire();
-            //    break;
+            case TutorialStates.HEART_ATTACK:
+                StartHeartAttack();
+                break;
+            case TutorialStates.FIRE:
+                StartFire();
+                break;
             case TutorialStates.SCARE_AWAY_RACCON:
                 StartScareAwayRaccoon();
                 break;
-            //case TutorialStates.SCARE_AWAY_BEAR:
-            //    StartScareAwayBear();
-            //    break;
+            case TutorialStates.SCARE_AWAY_BEAR:
+                StartScareAwayBear();
+                break;
 
         }
     }

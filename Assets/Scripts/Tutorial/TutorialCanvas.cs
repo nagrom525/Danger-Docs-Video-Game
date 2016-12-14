@@ -18,7 +18,7 @@ public class TutorialCanvas : MonoBehaviour {
         TutorialEventController.Instance.OnSurgeryOnPatientStart += OnSurgeryStart;
         TutorialEventController.Instance.OnAnestheticMachineStart += OnAnestheticStart;
         TutorialEventController.Instance.OnHeartAttackStart += OnHeartAttackStart;
-        TutorialEventController.Instance.OnFire += OnFireStart;
+        TutorialEventController.Instance.OnFireStart += OnFireStart;
         TutorialEventController.Instance.OnScareAwayRacconStart += OnRacconStart;
         TutorialEventController.Instance.OnScareAwayBearStart += OnBearStart;
     }
@@ -70,7 +70,7 @@ public class TutorialCanvas : MonoBehaviour {
         TutorialEventController.Instance.OnSurgeryOnPatientStart -= OnSurgeryStart;
         TutorialEventController.Instance.OnAnestheticMachineStart -= OnAnestheticStart;
         TutorialEventController.Instance.OnHeartAttackStart -= OnHeartAttackStart;
-        TutorialEventController.Instance.OnFire -= OnFireStart;
+        TutorialEventController.Instance.OnFireStart -= OnFireStart;
         TutorialEventController.Instance.OnScareAwayRacconStart -= OnRacconStart;
         TutorialEventController.Instance.OnScareAwayBearStart -= OnBearStart;
     }
