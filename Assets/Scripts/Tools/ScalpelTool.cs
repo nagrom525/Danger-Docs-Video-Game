@@ -5,13 +5,17 @@ using System;
 public class ScalpelTool : Tool {
     public GameObject actionButtonCanvas;
     private bool surgeryInitiated = false;
+    private bool tutorialPickUpTools = false;
      
     void Start() {
         DoctorEvents.Instance.patientNeedsCutOpen += OnScalpelNeeded;
         DoctorEvents.Instance.onSurgeryOperationFirst += OnSurgeryInitiated;
         DoctorEvents.Instance.onToolDroppedForSurgery += OnScalpelDroppedForSurgery;
-       // TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
-        
+        TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
+        TutorialEventController.Instance.OnToolPickedUp += OnToolPickedUp;
+        TutorialEventController.Instance.OnPickupToolsStart += OnTutorialPickUpToolsStart;
+        TutorialEventController.Instance.OnPickupToolsEnd += OnTutorialPickUpToolsEnd;
+
     }
 
 
@@ -50,10 +54,34 @@ public class ScalpelTool : Tool {
         }
     }
 
+    private void OnToolDroppedTutorial(ToolType type, int playerNum) {
+        if (tutorialPickUpTools && type == ToolType.SCALPEL) {
+            actionButtonCanvas.SetActive(true);
+        }
+    }
+
+    private void OnToolPickedUp(ToolType type, int playerNum) {
+        if(tutorialPickUpTools && type == ToolType.SCALPEL) {
+            actionButtonCanvas.SetActive(false);
+        }
+    }
+
+    private void OnTutorialPickUpToolsStart() {
+        tutorialPickUpTools = true;
+    }
+
+    private void OnTutorialPickUpToolsEnd() {
+        tutorialPickUpTools = true;
+    }
+
     void OnDestroy() {
         DoctorEvents.Instance.patientNeedsCutOpen -= OnScalpelNeeded;
         DoctorEvents.Instance.onSurgeryOperationFirst -= OnSurgeryInitiated;
         DoctorEvents.Instance.onToolDroppedForSurgery -= OnScalpelDroppedForSurgery;
+        TutorialEventController.Instance.OnToolDropped -= OnToolDroppedTutorial;
+        TutorialEventController.Instance.OnToolPickedUp -= OnToolPickedUp;
+        TutorialEventController.Instance.OnPickupToolsStart -= OnTutorialPickUpToolsStart;
+        TutorialEventController.Instance.OnPickupToolsEnd -= OnTutorialPickUpToolsEnd;
     }
 
 }
