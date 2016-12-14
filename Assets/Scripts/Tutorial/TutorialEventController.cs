@@ -10,13 +10,14 @@ public class TutorialEventController : MonoBehaviour {
     public enum TutorialStates
 	{
         WELCOME,
+        WASH_HANDS,
         PICK_UP_TOOL_GO_TO_PATIENT,
         SURGERY_ON_PATIENT,
         SCARE_AWAY_BEAR,
         
         HEART_ATTACK,
         FIRE,
-        WASH_HANDS,
+        
       
 		ANESTHETIC_MACHINE,
 		SCARE_AWAY_RACCON,
