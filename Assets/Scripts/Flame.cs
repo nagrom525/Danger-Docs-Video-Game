@@ -52,6 +52,7 @@ public class Flame : MonoBehaviour
         DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
         DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
         DoctorEvents.Instance.onBucketEmptied += OnBucketEmptied;
+
 	}
 
 	// Update is called once per frame

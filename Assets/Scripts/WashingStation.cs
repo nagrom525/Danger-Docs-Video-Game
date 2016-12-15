@@ -12,14 +12,18 @@ public class WashingStation : Interactable {
     private bool washHandsActionButtonActive = false;
     private bool firePutOutOnce = false;
     private bool washedHandTutorialActive = false;
+    private bool fire = false;
 
 
     void Start() {
         DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
         DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashedHands;
+        DoctorEvents.Instance.onBucketFilled += OnBucketFilled;
+        DoctorEvents.Instance.onBucketEmptied += OnBucketEmptied;
         DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
         DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
         DoctorEvents.Instance.onFirePutOut += OnFirePutOut;
+        DoctorEvents.Instance.onFire += OnFire;
         TutorialEventController.Instance.OnWashingHandsStart += OnWashHandsTutorialStart;
         TutorialEventController.Instance.OnWashingHandsEnd += OnWashHandsTutorialEnd;
     }
@@ -75,8 +79,8 @@ public class WashingStation : Interactable {
     }
 
     private void OnBucketPickedUp(bool full) {
-        if (!washHandsActionButtonActive) {
-            if (!full && !firePutOutOnce) {
+        if (!full && !firePutOutOnce) {
+            if(!TutorialEventController.Instance.tutorialActive || fire) {
                 fireActionButtonActive = true;
                 actionButtonCanvas.SetActive(true);
                 actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
@@ -84,20 +88,41 @@ public class WashingStation : Interactable {
         }
     }
 
-    private void OnBucketDropped(bool full) {
-        if (!washHandsActionButtonActive) {
+    private void OnBucketFilled(float duration) {
+        if (!washHandsActionButtonActive && !washedHandTutorialActive) {
             actionButtonCanvas.SetActive(false);
             fireActionButtonActive = false;
         }
     }
 
+    private void OnBucketEmptied(float duration) {
+        if(fire) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+            fireActionButtonActive = true;
+        }
+    }
+
+    private void OnBucketDropped(bool full) {
+        if (!washHandsActionButtonActive && !washedHandTutorialActive) {
+            actionButtonCanvas.SetActive(false);
+            fireActionButtonActive = false;
+        }
+    }
+
+    private void OnFire(float duration) {
+        fire = true;
+    }
+
     private void OnFirePutOut(float duration) {
         firePutOutOnce = true;
+        fire = false;
     }
 
     private void OnWashHandsTutorialStart() {
         actionButtonCanvas.SetActive(true);
         washedHandTutorialActive = true;
+        actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
     }
 
     private void OnWashHandsTutorialEnd() {
@@ -111,7 +136,10 @@ public class WashingStation : Interactable {
         DoctorEvents.Instance.onBucketPickedUp -= OnBucketPickedUp;
         DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
         DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+        DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
+        DoctorEvents.Instance.onBucketEmptied -= OnBucketEmptied;
         TutorialEventController.Instance.OnWashingHandsStart -= OnWashHandsTutorialStart;
         TutorialEventController.Instance.OnWashingHandsEnd -= OnWashHandsTutorialEnd;
+        DoctorEvents.Instance.onFire -= OnFire;
     }
 }

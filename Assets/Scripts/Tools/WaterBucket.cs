@@ -17,6 +17,7 @@ public class WaterBucket : Tool
     public GameObject actionButtonCanvas;
     private bool fire = false;
     private bool bucketFilledOnce = false;
+    private bool bucketHeldTutorial = false;
 
 	public override ToolType GetToolType()
 	{
@@ -30,6 +31,10 @@ public class WaterBucket : Tool
 		originalMaterial = transform.GetComponentInChildren<Renderer>().material;
 		ps = transform.GetComponentInChildren<ParticleSystem>();
         DoctorEvents.Instance.onFire += OnFire;
+        TutorialEventController.Instance.OnFireStart += OnFireStartTutorial;
+        TutorialEventController.Instance.OnFirePutOut += OnfireEndTutorial;
+        TutorialEventController.Instance.OnToolPickedUp += OnToolPickedUpTutorial;
+        TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
         DoctorEvents.Instance.onBucketPickedUp += OnBucketPickedUp;
         DoctorEvents.Instance.onBucketDropped += OnBucketDropped;
         DoctorEvents.Instance.onBucketFilled += OnBucketFilled;
@@ -88,6 +93,19 @@ public class WaterBucket : Tool
         }
     }
 
+    private void OnFireStartTutorial() {
+        fire = true;
+        if (!bucketHeldTutorial) {
+            actionButtonCanvas.SetActive(true);
+        }
+        
+    }
+
+    private void OnfireEndTutorial(int playerNum) {
+        fire = false;
+        actionButtonCanvas.SetActive(false);
+    }
+
     private void OnFirePutOut(float duration) {
         fire = false;
     }
@@ -104,7 +122,28 @@ public class WaterBucket : Tool
     }
 
     private void OnBucketFilled(float duration) {
-        bucketFilledOnce = true;
+        if (!TutorialEventController.Instance.tutorialActive) {
+            bucketFilledOnce = true;
+        }
+    }
+
+    private void OnFireTutorial() {
+        OnFire(0.0f);
+    }
+
+
+
+    private void OnToolPickedUpTutorial(Tool.ToolType type, int playerNum) {
+        if(type == ToolType.BUCKET) {
+            bucketHeldTutorial = true;
+        }
+
+    }
+
+    private void OnToolDroppedTutorial(Tool.ToolType type, int playerNum) {
+        if(type == ToolType.BUCKET) {
+            bucketHeldTutorial = false;
+        }
     }
 
     void OnDestroy() {
@@ -113,5 +152,9 @@ public class WaterBucket : Tool
         DoctorEvents.Instance.onBucketDropped -= OnBucketDropped;
         DoctorEvents.Instance.onBucketFilled -= OnBucketFilled;
         DoctorEvents.Instance.onFirePutOut -= OnFirePutOut;
+        TutorialEventController.Instance.OnFireStart -= OnFireStartTutorial;
+        TutorialEventController.Instance.OnFirePutOut -= OnfireEndTutorial;
+        TutorialEventController.Instance.OnToolPickedUp -= OnToolPickedUpTutorial;
+        TutorialEventController.Instance.OnToolDropped -= OnToolDroppedTutorial;
     }
 }
