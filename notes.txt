@@ -1,90 +1,9 @@
-We need at least one cooperative surgery
+--- Final Short List
 
-Soundc effects throughout entire game.
-
-Tool Parachute drops old prefabs
-
-Raccoons fly to grab elevated objects
-
-Can't do surgery after bear moves patient
-
-Update tutorial slides
-
-When bear comes to patient, break operation
-
-doctor is immune to fire while in surgery
-
-
-
----- Live Demo Notes 12/4
-
-I think everything broke.
-
-Don't force them to click to restart
-
-We're seeing some build only bugs.
-
-There's no visual feeback to inform that bear is being deterred.
-    - Il y a buecoup de options
-
-Dashing is really unclear --
-
-Definitely focus on simplification
-
-We could make a killer trailer.
-
-Signal progress in a more transparent way
-        - Pie chart indicator
-
-Tutorial / Sandbox level?
-
-----
-
-Bucket bug
-
-Bear deterence mechanic
-
-Sprinting
-
-
----- Tutorial Planning (Gamma)
-
-- [x] Improve Dashing Affordence / Signaling
-
-- [x] Dash to get rid of raccoons as well as bear.
-
-- [x] Make it more obvious that the dash is working on the bear.
-
-- [x] Require all players to work together on bear
-
-- Display graphic to explicitly instruct player
-
-- Progress bar (for player progress through task and tutorial overall)
-
-- [x] Tutorial Events controller
-    + Maintain state for tutorial
-    + Monitor progress
-    + Checkboxes above doctor heads
-
-- Spawning Controller
-    + Handles timing of the spawning
-
-- Table by the patient
-
-- [x] Transitions!
-    + Cannot have people using the mouse
-
-- Signal dirt level more obviously
-
-## Tutorial Order
-
-1. Pickup a random tool
-1. Spawn each type of surgery step
-1. Each player completes a different surgery step
-  + Somewhat of a forces specialization
-1. Teach anestetic machine
-1. Teach heart attack
-  + To just one person
-1. Teach raccoon
-1. Teach bear
+* Dirt level has obvious presence
+* Identify final bugs
+* Burndown Chart
+* Justification Document
+* Start Screen
+* Progress Bar for Surgery
 
