@@ -14,6 +14,7 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public Image washingMeter;
+	public Image Bar;
 	private int washingMeterFramesRemaining;
 
 	public Material hlMat;
@@ -53,8 +54,12 @@ public class Doctor : MonoBehaviour {
 
 		interacting = false;
 
-		washingMeter = transform.GetComponentInChildren<Image> ();
+		Image[] objects = transform.GetComponentsInChildren<Image>();
+
+		washingMeter = objects[1];
 		washingMeter.enabled = false;
+		Bar = objects[0];
+		Bar.enabled = false;
 		washingMeterFramesRemaining = 0;
 		interactionBoxHalfExtents = Vector3.one * 2.2f;
 
@@ -445,6 +450,7 @@ public class Doctor : MonoBehaviour {
 
 	public void displayWashingMeter() {
 		washingMeter.enabled = true;
+		Bar.enabled = true;
 		washingMeterFramesRemaining = 120;
 	}
 
@@ -455,6 +461,7 @@ public class Doctor : MonoBehaviour {
 
 	private void hideWashingMeter() {
 		washingMeter.enabled = false;
+		Bar.enabled = false;
 	}
 
 	// For my convenience

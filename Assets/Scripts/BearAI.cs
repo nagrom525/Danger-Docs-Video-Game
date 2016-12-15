@@ -147,7 +147,6 @@ public class BearAI : MonoBehaviour {
 		else if (other.transform.tag == "NextPositionStand")
 		{
 			Debug.Log("we got here");
-			//Debug.Log("is this true? " + (other.gameObject == Circlearound[currpos]));
 			Debug.Log("what is the current position?" + currpos);
 			if (currpos < MAX_POSITION_STANDS && other.gameObject.transform == Circlearound[currpos].transform)
 			{
