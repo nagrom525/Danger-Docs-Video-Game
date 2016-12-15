@@ -233,7 +233,9 @@ public class SpawningFactory : MonoBehaviour
 	private void FireStart() {
 		GameObject fireSpawn = GameObject.Find("FireSpawnPos");
 		GameObject fireObj = (GameObject)Instantiate(firePrefab);
+        fireObj.GetComponent<Flame>().motherFlame = true;
 		fireObj.transform.position = fireSpawn.transform.position;
+        DoctorEvents.Instance.onFire(0.0f);
 	}
 
 

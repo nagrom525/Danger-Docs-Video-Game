@@ -62,7 +62,7 @@ public class NotificationSystem : MonoBehaviour {
         DoctorEvents.Instance.onDoctorNeedsToWashHands += OnDoctorNeedsToWashHands;
         DoctorEvents.Instance.onDoctorWashedHands += OnDoctorWashingHands;
         if (TutorialEventController.Instance.tutorialActive) {
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
 
 	}
