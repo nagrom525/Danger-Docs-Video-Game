@@ -15,6 +15,7 @@ public class BearAI : MonoBehaviour {
 	private int push_back_num = 0;
     public GameObject actionButtonCanvas;
     public static bool scaredAwayOnce = false;
+    private bool[] playersHitBear = new bool[4];
 
 	public float doctorDashTimerPadding = 1f;   //if all doctors dash the bear within a second of each other
 
@@ -93,14 +94,17 @@ public class BearAI : MonoBehaviour {
 			//Debug.Log("bear-doctor collision");
 			if (other.gameObject.GetComponent<Doctor>().justDashed)
 			{
-				print("you better not");
-				push_back_num++;
-				bearRenderer.material = hitMat;
-				Invoke("ResetMaterial", .2f);
-                if (TutorialEventController.Instance.tutorialActive) {
-                    TutorialEventController.Instance.InfromPlayerScaredBear(other.gameObject.GetComponent<DoctorInputController>().playerNum);
+                int playerNum = other.gameObject.GetComponent<DoctorInputController>().playerNum;
+                if (!playersHitBear[playerNum]) {
+                    playersHitBear[playerNum] = true;
+                    print("you better not");
+                    push_back_num++;
+                    bearRenderer.material = hitMat;
+                    Invoke("ResetMaterial", .2f);
+                    if (TutorialEventController.Instance.tutorialActive) {
+                        TutorialEventController.Instance.InfromPlayerScaredBear(playerNum);
+                    }
                 }
-				
 			}
 
 
