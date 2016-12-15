@@ -129,7 +129,9 @@ public class AnestheticMachine : Interactable {
 		print ("anesthetic_levels :: " + anesthetic_levels);
 		displayAnestheticMeter ();
         canisterUsedOnce = true;
-        actionButtonCanvas.SetActive(false);
+        if (!inTutorialState) {
+            actionButtonCanvas.SetActive(false);
+        }
 	}
 
 
@@ -148,7 +150,9 @@ public class AnestheticMachine : Interactable {
 	}
 
     private void OnCanisterPickedUp(float duration) {
-        if(!canisterUsedOnce) {
+        if (inTutorialState) {
+            actionButtonCanvas.SetActive(true);
+        } else if(!canisterUsedOnce) {
             actionButtonCanvas.SetActive(true);
             actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
         }
@@ -167,7 +171,8 @@ public class AnestheticMachine : Interactable {
 
 	private void OnTutorialStateEnd() {
 		inTutorialState = false;
-		// Reset variables and such
+        // Reset variables and such
+        actionButtonCanvas.SetActive(false);
 		Start();
 	}
 
