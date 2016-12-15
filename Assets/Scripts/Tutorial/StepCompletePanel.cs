@@ -176,7 +176,7 @@ public class StepCompletePanel : MonoBehaviour {
                 }
             } else if(toolType == Tool.ToolType.GAUZE) {
                 i = 2;
-            } else {
+            } else if(toolType == Tool.ToolType.SUTURE){
                 i = 3;
             }
             circlesFilled[i] = playerNum;
