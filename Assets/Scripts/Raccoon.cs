@@ -34,6 +34,8 @@ public class Raccoon : MonoBehaviour {
 		InvokeRepeating("GetNearestTool", .1f, .2f);
         if (TutorialEventController.Instance.tutorialActive) {
             actionButtonCanvas.SetActive(true);
+        } else {
+            actionButtonCanvas.SetActive(false);
         }
 	}
 
