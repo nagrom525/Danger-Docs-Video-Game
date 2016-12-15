@@ -431,7 +431,7 @@ public class Doctor : MonoBehaviour {
 
 	public void makeDirty (float addedDirt) {
 		dirtLevel += addedDirt;
-		displayWashingMeter ();
+		//displayWashingMeter ();
 	}
 
 	public void washHands(float washRate) {
