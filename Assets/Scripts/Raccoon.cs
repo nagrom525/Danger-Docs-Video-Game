@@ -19,6 +19,7 @@ public class Raccoon : MonoBehaviour {
 	public Transform 		pickupAnchor;
 	public Transform 		dropAnchor;
 	public GameObject 		closestPickup;
+    public GameObject actionButtonCanvas;
 
 	public Tool 			currentPickup;
 
@@ -31,6 +32,9 @@ public class Raccoon : MonoBehaviour {
 		GetNearestTool();
 		leavingTarget = transform.position;
 		InvokeRepeating("GetNearestTool", .1f, .2f);
+        if (TutorialEventController.Instance.tutorialActive) {
+            actionButtonCanvas.SetActive(true);
+        }
 	}
 
 	public void GetNearestTool()
@@ -194,5 +198,6 @@ public class Raccoon : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
 }
 
