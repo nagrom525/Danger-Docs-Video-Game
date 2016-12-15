@@ -17,9 +17,9 @@ public class Patient : Interactable {
 	public GameObject 		sutureHotspotsPrefab;
 	public GameObject 		gauzeHotspotsPrefab;
 
-	public bool 			sutureHotspotsPlaced;
-	public GameObject 		duplicateSutureHotspots;
-	public GameObject 		duplicateSutureSurgeryTool;
+	public bool 			scalpel1Placed;
+	public GameObject 		duplicateScalpelTrack;
+	public GameObject 		duplicateScalpelSurgeryTool;
 
 	public GameObject[] 	toolSpawnPositions;
 
@@ -48,6 +48,7 @@ public class Patient : Interactable {
     private FlashColor flash_color;
 	private PatientCriticalState critical_state;
 	private Material NormalStateMaterial;
+    private bool tutorialToopPickUp = false;
 
     private float adverted_bpm;
     //	private float flash_timer = 0.0f;
@@ -94,10 +95,10 @@ public class Patient : Interactable {
 
 	}
 
-	public void OnTutorialSutureDuplicate()
+	public void OnTutorialScalpelDuplicate()
 	{
-		Instantiate(duplicateSutureHotspots, hotspotSpawnPos);
-		requiredTool = Tool.ToolType.SUTURE;
+		Instantiate(duplicateScalpelTrack, hotspotSpawnPos);
+		requiredTool = Tool.ToolType.SCALPEL;
 
 	}
 
@@ -128,10 +129,13 @@ public class Patient : Interactable {
         DoctorEvents.Instance.GameOver += OnPatientDead;
 
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSuture;
-		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSutureDuplicate;
+		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpelDuplicate;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialScalpel;
 		TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialGauze;
-	}
+        TutorialEventController.Instance.OnPickupToolsStart += OnToolPickUpTutorialStart;
+        TutorialEventController.Instance.OnPickupToolsEnd += OnToolPickUpTutorialEnd;
+        TutorialEventController.Instance.OnToolPickedUp += OnToolPickedUp;
+    }
 
     // Update is called once per frame
     void Update() {
@@ -336,22 +340,11 @@ public class Patient : Interactable {
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
 
-			//Create tool and give control to Doctor
-			if (!sutureHotspotsPlaced)
-			{
-				GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
-				newInputController = suture.GetComponent<SurgeryToolInput>();
-				newInputController.playerNum = doctorNumber;
-				sutureHotspotsPlaced = true;
-				sutureHotspotsPlaced = true;
-			}
-			else
-			{
-				GameObject suture = (GameObject)Instantiate(duplicateSutureSurgeryTool, toolSpawnPositions[0].transform);
-				newInputController = suture.GetComponent<SurgeryToolInput>();
-				newInputController.playerNum = doctorNumber;
-				sutureHotspotsPlaced = true;
-			}
+			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
+			newInputController = suture.GetComponent<SurgeryToolInput>();
+			newInputController.playerNum = doctorNumber;
+
+
 
 
 
@@ -370,10 +363,25 @@ public class Patient : Interactable {
 			//Disable their input component
 			doc.GetComponent<DoctorInputController>().enabled = false;
 			
+
+
+
 			//Create tool and give control to Doctor
-			GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
-            newInputController = scalpel.GetComponent<SurgeryToolInput>();
-			newInputController.playerNum = doctorNumber;
+			if (!scalpel1Placed)
+			{
+				//Create tool and give control to Doctor
+				GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
+				newInputController = scalpel.GetComponent<SurgeryToolInput>();
+				newInputController.playerNum = doctorNumber;
+				scalpel1Placed = true;
+			}
+			else
+			{
+				GameObject scalpel = (GameObject)Instantiate(duplicateScalpelSurgeryTool, toolSpawnPositions[0].transform);
+				newInputController = scalpel.GetComponent<SurgeryToolInput>();
+				newInputController.playerNum = doctorNumber;
+			}
+
 
 			Debug.Log("recieving scalpel operation");
 		}
@@ -454,6 +462,21 @@ public class Patient : Interactable {
         actionButtonCanvas.SetActive(false);
     }
 
+    private void OnToolPickUpTutorialStart() {
+        tutorialToopPickUp = true;
+    }
+
+    private void OnToolPickUpTutorialEnd() {
+        tutorialToopPickUp = false;
+        actionButtonCanvas.SetActive(false);
+    }
+
+    private void OnToolPickedUp(Tool.ToolType type, int playerNum) {
+        if (tutorialToopPickUp) {
+            actionButtonCanvas.SetActive(true);
+        }
+    }
+
     void OnDestroy() {
         DoctorEvents.Instance.onPatientCriticalEventStart -= OnPatientCriticalEventStart;
         DoctorEvents.Instance.onPatientCriticalEventEnded -= OnPatientCriticalEventEnded;
@@ -463,5 +486,8 @@ public class Patient : Interactable {
         DoctorEvents.Instance.onToolPickedUpForSurgery -= OnToolForSurgeryPickedUp;
         DoctorEvents.Instance.onToolDroppedForSurgery -= OnToolForSurgeryDropped;
         DoctorEvents.Instance.GameOver -= OnPatientDead;
+        TutorialEventController.Instance.OnPickupToolsStart -= OnToolPickUpTutorialStart;
+        TutorialEventController.Instance.OnPickupToolsEnd -= OnToolPickUpTutorialEnd;
+        TutorialEventController.Instance.OnToolPickedUp -= OnToolPickedUp;
     }
 }

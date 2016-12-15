@@ -5,13 +5,18 @@ using System;
 public class ScalpelTool : Tool {
     public GameObject actionButtonCanvas;
     private bool surgeryInitiated = false;
+    private bool tutorialPickUpTools = false;
+    private bool pickedUpForTutorial = false;
      
     void Start() {
         DoctorEvents.Instance.patientNeedsCutOpen += OnScalpelNeeded;
         DoctorEvents.Instance.onSurgeryOperationFirst += OnSurgeryInitiated;
         DoctorEvents.Instance.onToolDroppedForSurgery += OnScalpelDroppedForSurgery;
-       // TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
-        
+        TutorialEventController.Instance.OnToolDropped += OnToolDroppedTutorial;
+        TutorialEventController.Instance.OnToolPickedUp += OnToolPickedUpTutorial;
+        TutorialEventController.Instance.OnPickupToolsStart += OnTutorialPickUpToolsStart;
+        TutorialEventController.Instance.OnPickupToolsEnd += OnTutorialPickUpToolsEnd;
+
     }
 
 
@@ -50,10 +55,44 @@ public class ScalpelTool : Tool {
         }
     }
 
+    private void OnToolDroppedTutorial(ToolType type, int playerNum) {
+        if (tutorialPickUpTools && type == ToolType.SCALPEL) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        } else if (type == ToolType.SCALPEL) {
+            pickedUpForTutorial = false;
+        }
+    }
+
+    private void OnToolPickedUpTutorial(ToolType type, int playerNum) {
+        if(tutorialPickUpTools && type == ToolType.SCALPEL) {
+            actionButtonCanvas.SetActive(false);
+        } else if(type == ToolType.SCALPEL) {
+            pickedUpForTutorial = true;
+        }
+    }
+
+    private void OnTutorialPickUpToolsStart() {
+        tutorialPickUpTools = true;
+        if (!pickedUpForTutorial) {
+            actionButtonCanvas.SetActive(true);
+            actionButtonCanvas.GetComponent<BounceUpAndDown>().initiateBounce();
+        }
+    }
+
+    private void OnTutorialPickUpToolsEnd() {
+        tutorialPickUpTools = true;
+        actionButtonCanvas.SetActive(false);
+    }
+
     void OnDestroy() {
         DoctorEvents.Instance.patientNeedsCutOpen -= OnScalpelNeeded;
         DoctorEvents.Instance.onSurgeryOperationFirst -= OnSurgeryInitiated;
         DoctorEvents.Instance.onToolDroppedForSurgery -= OnScalpelDroppedForSurgery;
+        TutorialEventController.Instance.OnToolDropped -= OnToolDroppedTutorial;
+        TutorialEventController.Instance.OnToolPickedUp -= OnToolPickedUpTutorial;
+        TutorialEventController.Instance.OnPickupToolsStart -= OnTutorialPickUpToolsStart;
+        TutorialEventController.Instance.OnPickupToolsEnd -= OnTutorialPickUpToolsEnd;
     }
 
 }

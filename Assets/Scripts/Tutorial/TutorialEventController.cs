@@ -10,12 +10,15 @@ public class TutorialEventController : MonoBehaviour {
     public enum TutorialStates
 	{
         WELCOME,
-        SCARE_AWAY_BEAR,
         PICK_UP_TOOL_GO_TO_PATIENT,
         SURGERY_ON_PATIENT,
+        WASH_HANDS,
+        
+        SCARE_AWAY_BEAR,
+        
         HEART_ATTACK,
         FIRE,
-        WASH_HANDS,
+        
       
 		ANESTHETIC_MACHINE,
 		SCARE_AWAY_RACCON,
