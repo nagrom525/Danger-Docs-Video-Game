@@ -3,22 +3,17 @@ using System.Collections;
 
 public class TutorialEventController : MonoBehaviour {
 
-    // HEARTATTACK AND FIRE // 
-    // PICK_UP_TOOL_GO_TO_PATIENT,
-    // SURGERY_ON_PATIENT,
-
     public enum TutorialStates
 	{
         WELCOME,
-        SCARE_AWAY_RACCON,
-        ANESTHETIC_MACHINE,
+        WASH_HANDS,
         PICK_UP_TOOL_GO_TO_PATIENT,
         SURGERY_ON_PATIENT,
-        WASH_HANDS,        
-        SCARE_AWAY_BEAR, 
+        ANESTHETIC_MACHINE,
         HEART_ATTACK,
         FIRE,
-	
+        SCARE_AWAY_RACCON,
+        SCARE_AWAY_BEAR,
         PLAY_GAME,
         DONE,
 		UNINITIALIZED
