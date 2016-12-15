@@ -54,12 +54,14 @@ public class BearAI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		AudioControl.Instance.PlayBearEnter();
-		//Circlearound = new GameObject[MAX_POSITION_STANDS];
+
 		patient = Patient.Instance.gameObject;
 		this.agent = GetComponent<NavMeshAgent>();
 		this.agent.destination = patient.transform.position;
+		print(patient.name);
+
 		this.gameObject.transform.LookAt(patient.transform.position);
-		//targetAcheived = false;
+
 		startposition = this.gameObject.transform.position;
         if (scaredAwayOnce) {
             actionButtonCanvas.SetActive(false);
@@ -72,23 +74,26 @@ public class BearAI : MonoBehaviour {
 	{
 		// bear stealing patient table
 		//HACK: Super hacky way of doing this 
-		if (other.transform.tag == "PatientTable" && other.gameObject.transform.parent.parent == null )
+		if (other.transform.tag == "PatientTable" && other.gameObject.transform.parent.parent == null)
 		{
-			//print("how often do you happen?");
+			print("wtf?");
 			//PatientGurney = other.gameObject.transform.parent.transform;
-			makeParent(other);
-			this.GetComponent<Rigidbody>().velocity = Vector3.zero;
-			agent.Stop();
-			BearMoveToNext();
-			//BearSwitchToCave();
-			AudioControl.Instance.PlayBearExit();
-			DoctorEvents.Instance.InformBearStealingPatient();
+			if (agent.destination != Cave.transform.position){
+				print("don't you dare");
+				makeParent(other);
+				this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+				agent.Stop();
+				BearMoveToNext();
+				//AudioControl.Instance.PlayBearExit();
+				DoctorEvents.Instance.InformBearStealingPatient();
+			}
 		}
 		else if (other.transform.tag == "Doctor")
 		{
 			//Debug.Log("bear-doctor collision");
 			if (other.gameObject.GetComponent<Doctor>().justDashed)
 			{
+				print("you better not");
 				push_back_num++;
 				bearRenderer.material = hitMat;
 				Invoke("ResetMaterial", .2f);
@@ -106,6 +111,7 @@ public class BearAI : MonoBehaviour {
 				this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 				agent.Stop();
 				BearSwitchToCave();
+				AudioControl.Instance.PlayBearExit();
 				actionButtonCanvas.SetActive(false);
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
@@ -136,8 +142,9 @@ public class BearAI : MonoBehaviour {
 			BearInCave();
 			this.gameObject.transform.position = startposition;
 
-		} else if (other.transform.tag == "NextPositionStand")
-			//HACK: Super ridiculous I apologize
+		} 
+		//HACK: Super ridiculous I apologize
+		else if (other.transform.tag == "NextPositionStand")
 		{
 			Debug.Log("we got here");
 			//Debug.Log("is this true? " + (other.gameObject == Circlearound[currpos]));
@@ -167,7 +174,7 @@ public class BearAI : MonoBehaviour {
 
 	void BearMoveToNext()
 	{
-		//print("it's happening");
+		print("it's happening why am I getting called??");
 
 		if (currpos < MAX_POSITION_STANDS)
 		{
