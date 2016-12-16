@@ -348,7 +348,7 @@ public class Doctor : MonoBehaviour {
             TutorialEventController.Instance.InformDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
         }
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
-		if(currentTool.GetToolType() == Tool.ToolType.DEFIBULATOR)
+		if(currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
 			currentTool.gameObject.SetActive(false);
 	}
 
