@@ -7,6 +7,7 @@ public class Doctor : MonoBehaviour {
     public Tool currentTool {get; private set;}
 
 	public float dirtLevel;
+	public ParticleSystem dirtPS;
 	public bool interacting;
     private bool inSurgery = false;
 	public bool dirtyHands {
@@ -70,6 +71,8 @@ public class Doctor : MonoBehaviour {
 		drSpeedCoefficient = 10f;
 
 		docRB = GetComponent<Rigidbody>();
+
+		dirtPS.Play();
 	}
 	
 	// Update is called once per frame
@@ -432,21 +435,24 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void makeDirty (float addedDirt) {
-		dirtLevel += addedDirt;
-		//displayWashingMeter ();
+		dirtLevel = Mathf.Clamp(dirtLevel + addedDirt, 0f, 1f);
+		displayWashingMeter ();
+
+		if (dirtPS.isStopped) {
+			dirtPS.Play();
+		}
 	}
 
 	public void washHands(float washRate) {
-		dirtLevel -= washRate;
-		if (dirtLevel <= 0f) {
-			dirtLevel = 0f;
-		}
+		dirtLevel = Mathf.Clamp(dirtLevel - washRate, 0f, 1f);
 		displayWashingMeter ();
-		print ("dirtLevel ::" + dirtLevel);
 		if (TutorialEventController.Instance.tutorialActive) {
 			DoctorInputController thisInput = transform.GetComponentInChildren<DoctorInputController>();
 			int this_player_num = thisInput.playerNum;
 			TutorialEventController.Instance.InformWashingHands(1f - dirtLevel, this_player_num);
+		}
+		if (dirtLevel > (1f - Mathf.Epsilon)) {
+			dirtPS.Stop();
 		}
 	}
 
