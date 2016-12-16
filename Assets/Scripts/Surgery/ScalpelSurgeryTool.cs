@@ -23,6 +23,7 @@ public class ScalpelSurgeryTool : SurgeryTool {
 	{
 		model = transform.GetChild(0);
 		idlePos = model.localPosition;
+        idlePos = new Vector3(0f,0f,0f);
 	}
 
 
