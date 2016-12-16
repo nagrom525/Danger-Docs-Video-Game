@@ -382,6 +382,14 @@ public class Patient : Interactable {
                     newInputController = scalpel.GetComponent<SurgeryToolInput>();
                     newInputController.playerNum = doctorNumber;
                 }
+                else
+                {
+                    //Create tool and give control to Doctor
+                    GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
+                    newInputController = scalpel.GetComponent<SurgeryToolInput>();
+                    newInputController.playerNum = doctorNumber;
+                    scalpel1Placed = true;
+                }
 			}
 
 
