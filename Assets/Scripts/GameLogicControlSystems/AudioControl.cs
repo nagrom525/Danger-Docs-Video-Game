@@ -39,6 +39,7 @@ public class AudioControl : MonoBehaviour {
 	public AudioClip tutorialLoopMusic;
 	public AudioClip dashCharge;
 	public AudioClip playAddTutorialCircle;
+	public AudioClip notAllowed;
 
     private AudioSource mainGameMusicAudioSrc;
 	private AudioSource heartRateAudioSrc;
@@ -63,6 +64,7 @@ public class AudioControl : MonoBehaviour {
 	private AudioSource tutorialLoopMusicSrc;
 	private AudioSource dashChargeSrc;
 	private AudioSource playAddTutorialCircleSrc;
+	private AudioSource notAllowedAudioSrc;
 
     private static AudioControl _instance;
     public static AudioControl Instance {
@@ -106,6 +108,7 @@ public class AudioControl : MonoBehaviour {
 			tutorialLoopMusicSrc = sources[23];
 			dashChargeSrc = sources[24];
 			playAddTutorialCircleSrc = sources[25];
+			notAllowedAudioSrc = sources[26];
         }
 		//toolPickupAudioSrc.clip = toolPickup;
 		//toolPickupAudioSrc.Play();
@@ -300,5 +303,11 @@ public class AudioControl : MonoBehaviour {
 	{
 		dashChargeSrc.clip = dashCharge;
 		dashChargeSrc.Play();
+	}
+
+	public void PlayNotAllowed()
+	{
+		notAllowedAudioSrc.clip = notAllowed;
+		notAllowedAudioSrc.Play();
 	}
 }
