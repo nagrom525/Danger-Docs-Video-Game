@@ -451,7 +451,7 @@ public class Doctor : MonoBehaviour {
 			int this_player_num = thisInput.playerNum;
 			TutorialEventController.Instance.InformWashingHands(1f - dirtLevel, this_player_num);
 		}
-		if (dirtLevel > (1f - Mathf.Epsilon)) {
+		if (dirtLevel < (0f + Mathf.Epsilon)) {
 			dirtPS.Stop();
 		}
 	}
