@@ -310,4 +310,3 @@ public class AudioControl : MonoBehaviour {
 		notAllowedAudioSrc.clip = notAllowed;
 		notAllowedAudioSrc.Play();
 	}
-}
