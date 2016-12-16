@@ -3,7 +3,7 @@
 * Dirt level has obvious presence
 * Identify final bugs
 * Burndown Chart
-* Justification Document
+* [x] Justification Document
 * Start Screen
-* Progress Bar for Surgery
+* [x] Progress Bar for Surgery
 
