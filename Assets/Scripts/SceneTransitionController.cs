@@ -92,7 +92,6 @@ public class SceneTransitionController : MonoBehaviour {
     {
         //fade out canvas group
         blackCanvasGroup.alpha = 0f;
-        yield return new WaitForSeconds(.1f);
         while (blackCanvasGroup.alpha < 1f)
         {
             blackCanvasGroup.alpha += blackTransitionRate;
