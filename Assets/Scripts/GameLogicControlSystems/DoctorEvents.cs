@@ -41,6 +41,7 @@ public class DoctorEvents : MonoBehaviour {
     public DoctorEvent onPatientCriticalEventStart;
     public DoctorEvent onPatientCriticalEventEnded;
     public DoctorEvent onPatientAboutToDie;
+    public float timeFirstAllowPatientCritical = 10.0f;
 
     // -- Patient Dead Events -- // 
 
@@ -162,14 +163,16 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     private void PatientCriticalUpdate() {
-        if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
-            lastTimePatientCriticalChecked = Time.time;
+        if(Time.time >= timeFirstAllowPatientCritical) {
+            if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
+                lastTimePatientCriticalChecked = Time.time;
 
-            if (UnityEngine.Random.value < probabiltyPatientCritical) {
-                gameState = PatientCriticalState.PATIENT_CRITICAL;
-                patientCriticalStartTime = Time.time;
-                if (onPatientCriticalEventStart != null) {
-                    onPatientCriticalEventStart(patientCriticalDuration);
+                if (UnityEngine.Random.value < probabiltyPatientCritical) {
+                    gameState = PatientCriticalState.PATIENT_CRITICAL;
+                    patientCriticalStartTime = Time.time;
+                    if (onPatientCriticalEventStart != null) {
+                        onPatientCriticalEventStart(patientCriticalDuration);
+                    }
                 }
             }
         }
