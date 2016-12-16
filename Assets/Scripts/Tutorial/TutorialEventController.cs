@@ -177,6 +177,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnWelcomeEnd != null) {
             OnWelcomeEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void InformAButtonPressed(int playerNum) {
@@ -214,6 +215,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnPlayGameEnd != null) {
             OnPlayGameEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     // -- Wash Hands -- //
@@ -239,6 +241,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnWashingHandsEnd != null) {
             OnWashingHandsEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     // player Num is indexed from 0
@@ -282,6 +285,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnPickupToolsEnd != null) {
             OnPickupToolsEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
 
     }
 
@@ -345,6 +349,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnSurgeryOnPatientEnd != null) {
             OnSurgeryOnPatientEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void InformSurgeryComplete(int playerNum) {
@@ -388,6 +393,7 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
 
@@ -407,6 +413,7 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void InformHeartAttackAdverted() {
@@ -433,6 +440,7 @@ public class TutorialEventController : MonoBehaviour {
         timeStateStart = Time.time;
         current_state = GetNextState(current_state);
         StartNewState(current_state);
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void InformFirePutOut() {
@@ -466,6 +474,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnScareAwayRacconEnd != null) {
             OnScareAwayRacconEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void ScaredAwayRaccon(int playerNum) {
@@ -499,6 +508,7 @@ public class TutorialEventController : MonoBehaviour {
         if(OnScareAwayBearEnd != null) {
             OnScareAwayBearEnd();
         }
+        AudioControl.Instance.PlayTutorialTaskComplete();
     }
 
     public void InfromPlayerScaredBear(int playerNum) {
