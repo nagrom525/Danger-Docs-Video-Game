@@ -535,7 +535,8 @@ public class Doctor : MonoBehaviour {
 	{
 		canDash = true;
         doctorRenderer.material = rechargeMaterial;
-        Invoke("ResetMaterial", 1.0f);
+        AudioControl.Instance.PlayDashCharge();
+        Invoke("ResetMaterial", 0.5f);
     }
 
 	void CreateDustPlooms()
