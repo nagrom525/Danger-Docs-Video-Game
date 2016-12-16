@@ -8,6 +8,7 @@ public class SurgeryToolInput : MonoBehaviour {
 	Renderer playerRenderer;
 	public Vector3 dir;
 	public bool enableMovement = true;
+    private bool tutorialSurgeryActive = false;
 
 	// Use this for initialization
 	void Start()
@@ -15,6 +16,8 @@ public class SurgeryToolInput : MonoBehaviour {
 		playerRenderer = GetComponent<Renderer>();
 		surgeryTool = GetComponent<SurgeryTool>();
         DoctorEvents.Instance.onBearStealsPatient += OnBearStealsPatient;
+        TutorialEventController.Instance.OnSurgeryOnPatientStart += OnTutorialSurgeryStart;
+        TutorialEventController.Instance.OnSurgeryOnPatientEnd += OnTutorialSurgeryEnd;
 	}
 
 	void Update()
@@ -68,8 +71,10 @@ public class SurgeryToolInput : MonoBehaviour {
 		else
 		if (inputDevice.Action2)
 		{
-			//B
-			ReturnControlToDoctor();
+            //B
+            if (!tutorialSurgeryActive) {
+                ReturnControlToDoctor();
+            }
 		}
 		else
 		if (inputDevice.Action3.WasPressed)
@@ -111,5 +116,18 @@ public class SurgeryToolInput : MonoBehaviour {
 
     public void OnBearStealsPatient(float duration) {
         ReturnControlToDoctor();
+    }
+
+    private void OnTutorialSurgeryStart() {
+        tutorialSurgeryActive = true;
+    }
+
+    private void OnTutorialSurgeryEnd() {
+        tutorialSurgeryActive = false;
+    }
+
+    public void OnDestroy() {
+        TutorialEventController.Instance.OnSurgeryOnPatientStart -= OnTutorialSurgeryStart;
+        TutorialEventController.Instance.OnSurgeryOnPatientEnd -= OnTutorialSurgeryEnd;
     }
 }

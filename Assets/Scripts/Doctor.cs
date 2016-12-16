@@ -42,14 +42,16 @@ public class Doctor : MonoBehaviour {
 
 	public int onFireFrames;
 	private Vector3 onFireDir;
+    private bool tutoiralSurgeryStepComplete = false;
 
 	// Use this for initialization
 	void Start () {
 		currentTool = null;
-	    // TODO: NEED to register event listner functions to the DoctorEvents singleton delegates
+        // TODO: NEED to register event listner functions to the DoctorEvents singleton delegates
+        TutorialEventController.Instance.OnSurgeryOnPatientEnd += OnTutorialSurgeryStepComplete;
 
-		// Hands start out dirty.
-		dirtLevel = 1f;
+        // Hands start out dirty.
+        dirtLevel = 1f;
 		fireParticles = transform.Find("Fire Particles").gameObject;
 
 		interacting = false;
@@ -308,7 +310,7 @@ public class Doctor : MonoBehaviour {
 			return;
 		}
 
-		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR)
+		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR && !tutoiralSurgeryStepComplete)
 		{
 			DoctorEvents.Instance.InformSurgeryOperation();
 			inSurgery = true;
@@ -524,6 +526,17 @@ public class Doctor : MonoBehaviour {
 
     public void informSurgeryFinished() {
         inSurgery = false;
+    }
+
+    private void OnTutorialSurgeryStepComplete() {
+        if (surgeryInput) {
+            surgeryInput.ReturnControlToDoctor();
+        }
+        tutoiralSurgeryStepComplete = true;
+    }
+
+    private void OnDestroy() {
+        TutorialEventController.Instance.OnSurgeryOnPatientEnd -= OnTutorialSurgeryStepComplete;
     }
 
 }

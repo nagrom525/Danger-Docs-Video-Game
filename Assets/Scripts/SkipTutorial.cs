@@ -18,6 +18,13 @@ public class SkipTutorial : MonoBehaviour {
 				SceneManager.LoadScene("Debug_Ben_2");
 			}
 		}
+		else {
+			if (Input.GetKeyDown(KeyCode.Alpha1))
+			{
+				SceneManager.LoadScene("Tutorial");
+			}
+				
+		}
 
 	}
 }
