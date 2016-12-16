@@ -32,5 +32,13 @@ public class TempMovement : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Q)) {
 			target.GetComponent<Doctor>().OnInteractionButtonPressed();
 		}
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			target.GetComponent<Doctor>().OnInteractionButtonPressed();
+		}
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			target.GetComponent<Doctor>().informSurgeryFinished();
+		}
 	}
 }

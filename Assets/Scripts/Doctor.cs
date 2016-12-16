@@ -53,7 +53,7 @@ public class Doctor : MonoBehaviour {
 
 	public int onFireFrames;
 	private Vector3 onFireDir;
-    private bool tutoiralSurgeryStepComplete = false;
+    private bool tutorialSurgeryStepComplete = false;
 
 	// Use this for initialization
 	void Start () {
@@ -333,7 +333,7 @@ public class Doctor : MonoBehaviour {
 			return;
 		}
 
-		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR && !tutoiralSurgeryStepComplete)
+		if (currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR && !tutorialSurgeryStepComplete)
 		{
 			DoctorEvents.Instance.InformSurgeryOperation();
 			inSurgery = true;
@@ -348,6 +348,7 @@ public class Doctor : MonoBehaviour {
             TutorialEventController.Instance.InformDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
         }
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);
+		currentTool.gameObject.SetActive(false);
 	}
 
 
@@ -566,6 +567,7 @@ public class Doctor : MonoBehaviour {
     }
 
     public void informSurgeryFinished() {
+		currentTool.gameObject.SetActive(true);
         inSurgery = false;
     }
 
@@ -573,7 +575,7 @@ public class Doctor : MonoBehaviour {
         if (surgeryInput) {
             surgeryInput.ReturnControlToDoctor();
         }
-        tutoiralSurgeryStepComplete = true;
+        tutorialSurgeryStepComplete = true;
     }
 
     private void OnDestroy() {
