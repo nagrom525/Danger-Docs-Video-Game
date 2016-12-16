@@ -4,6 +4,8 @@ using System.Collections;
 public class WashingStation : Interactable {
 
     public GameObject actionButtonCanvas;
+    public Material toolNotAllowedMaterial;
+    public float toolNotAllowedFlashTime = 0.5f;
 
 	// Washes hands 10% at a time.
 	private float washRate = 0.1f;
@@ -48,7 +50,10 @@ public class WashingStation : Interactable {
                 actionButtonCanvas.SetActive(false);
             }
 			return false;
-		}
+		} else {
+            AudioControl.Instance.PlayNotAllowed();
+            interactingDoctor.currentTool.flashMaterial(toolNotAllowedMaterial, toolNotAllowedFlashTime);
+        }
 
 
 		Debug.Log("Cannot use this tool with WashingStation");
