@@ -2,20 +2,21 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class AudioControl : MonoBehaviour {
+public class AudioControl : MonoBehaviour
+{
 
 
-    public AudioClip heartMonitorBeep;
-    public AudioClip heartMonitorLong;
+	public AudioClip heartMonitorBeep;
+	public AudioClip heartMonitorLong;
 
 	public AudioClip bearEnter;
 
-	public AudioClip bearExit;	//when bear is succesfully scared away
+	public AudioClip bearExit;  //when bear is succesfully scared away
 
 	public AudioClip toolPickup;
 	public AudioClip toolDrop;
 
-	public AudioClip defibulatorSurge;	//plays when defibulator is used
+	public AudioClip defibulatorSurge;  //plays when defibulator is used
 
 	public AudioClip doctorDash;
 	public AudioClip doctorBump;
@@ -41,7 +42,7 @@ public class AudioControl : MonoBehaviour {
 	public AudioClip playAddTutorialCircle;
 	public AudioClip notAllowed;
 
-    private AudioSource mainGameMusicAudioSrc;
+	private AudioSource mainGameMusicAudioSrc;
 	private AudioSource heartRateAudioSrc;
 	private AudioSource bearEnterAudioSrc;
 	private AudioSource bearExitAudioSrc;
@@ -66,24 +67,30 @@ public class AudioControl : MonoBehaviour {
 	private AudioSource playAddTutorialCircleSrc;
 	private AudioSource notAllowedAudioSrc;
 
-    private static AudioControl _instance;
-    public static AudioControl Instance {
-        get { return _instance; }
-    }
+	private static AudioControl _instance;
+	public static AudioControl Instance
+	{
+		get { return _instance; }
+	}
 
-    void Awake() {
-        if (_instance != null) {
-            Debug.Log("Trying to set two instances of Audio Controller");
-        } else {
-            _instance = this;
-        }
-        // collect audio sources
-        AudioSource[] sources = this.GetComponents<AudioSource>();
-        if(sources.Length < 2) {
-            Debug.Log("Not enough audio sources added");
-        } else {
-            mainGameMusicAudioSrc = sources[0];
-            heartRateAudioSrc = sources[1];
+	void Awake()
+	{
+		if (_instance != null)
+		{
+			Debug.Log("Trying to set two instances of Audio Controller");
+		}
+		else {
+			_instance = this;
+		}
+		// collect audio sources
+		AudioSource[] sources = this.GetComponents<AudioSource>();
+		if (sources.Length < 2)
+		{
+			Debug.Log("Not enough audio sources added");
+		}
+		else {
+			mainGameMusicAudioSrc = sources[0];
+			heartRateAudioSrc = sources[1];
 
 			heartRateAudioSrc = sources[3];
 			heartRateAudioSrc = sources[4];
@@ -109,7 +116,7 @@ public class AudioControl : MonoBehaviour {
 			dashChargeSrc = sources[24];
 			playAddTutorialCircleSrc = sources[25];
 			notAllowedAudioSrc = sources[26];
-        }
+		}
 		//toolPickupAudioSrc.clip = toolPickup;
 		//toolPickupAudioSrc.Play();
 
@@ -148,16 +155,17 @@ public class AudioControl : MonoBehaviour {
 
 
 		//
-    }
-    // Use this for initialization
-    void Start () {
+	}
+	// Use this for initialization
+	void Start()
+	{
 		if (SceneManager.GetActiveScene().name == "Tutorial")
 		{
 			tutorialBeginMusicSrc.clip = tutorialBeginMusic;
 			tutorialBeginMusicSrc.Play();
-			Invoke( "PlayTutorialMusicLoop", tutorialBeginMusic.length);
+			Invoke("PlayTutorialMusicLoop", tutorialBeginMusic.length);
 		}
-		else 
+		else
 		{
 			mainGameMusicAudioSrc.Play();
 		}
@@ -166,21 +174,23 @@ public class AudioControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-				
+
 	}
 
-    public void PlayHeartMonitorBeep() {
+	public void PlayHeartMonitorBeep()
+	{
 		// set clip and play audio
 		//Debug.Log("Beep");
-        heartRateAudioSrc.clip = heartMonitorBeep;
-        heartRateAudioSrc.Play();
-    }
+		heartRateAudioSrc.clip = heartMonitorBeep;
+		heartRateAudioSrc.Play();
+	}
 
-    public void PlayHeartMonitorLong() {
-        // set clip and play audio
-        heartRateAudioSrc.clip = heartMonitorLong;
-        heartRateAudioSrc.Play();
-    }
+	public void PlayHeartMonitorLong()
+	{
+		// set clip and play audio
+		heartRateAudioSrc.clip = heartMonitorLong;
+		heartRateAudioSrc.Play();
+	}
 
 	public void PlayBearEnter()
 	{
@@ -289,10 +299,11 @@ public class AudioControl : MonoBehaviour {
 		tutorialTaskCompleteAudioSrc.Play();
 	}
 
-    public void PlayAddTutorialCircle() {
+	public void PlayAddTutorialCircle()
+	{
 		playAddTutorialCircleSrc.clip = toolDrop;
 		playAddTutorialCircleSrc.Play();
-    }
+	}
 
 	public void PlayTutorialMusicLoop()
 	{
@@ -310,3 +321,4 @@ public class AudioControl : MonoBehaviour {
 		notAllowedAudioSrc.clip = notAllowed;
 		notAllowedAudioSrc.Play();
 	}
+}
