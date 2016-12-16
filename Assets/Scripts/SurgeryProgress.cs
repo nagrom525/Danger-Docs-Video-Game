@@ -23,12 +23,14 @@ public class SurgeryProgress : MonoBehaviour {
 	void Update () {
         if (filling) {
             float t = (Time.time - fillStartTime) / totalFillTIme;
+            
             if(t >= 1.0) {
                 filling = false;
                 progressIndicator.fillAmount = newPrecentComplete;
                 currentPrecentComplete = newPrecentComplete;
+            } else {
+                progressIndicator.fillAmount = Mathfx.Hermite(currentPrecentComplete, newPrecentComplete, t);
             }
-            progressIndicator.fillAmount = currentPrecentComplete + ((newPrecentComplete - currentPrecentComplete) * t);
         }
 	}
 
