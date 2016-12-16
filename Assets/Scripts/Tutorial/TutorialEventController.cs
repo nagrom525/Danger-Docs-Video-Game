@@ -46,7 +46,8 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- Pick Up Tool and Go To Patient -- //
     private Tool.ToolType[] toolsHeldByDoctor = { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
-    private bool[] doctorAtPatient = new bool[4];
+    public bool[] doctorAtPatient = new bool[4];
+    public Tool.ToolType[] playerHasTool = new Tool.ToolType[4] { Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE, Tool.ToolType.NONE };
     public GeneralEvent OnPickupToolsStart;
     public GeneralEvent OnPickupToolsEnd;
     public ToolPlayerNumEvent OnToolPickedUp;
@@ -294,12 +295,14 @@ public class TutorialEventController : MonoBehaviour {
             if(type == Tool.ToolType.DEFIBULATOR) {
                 playerHasDefibulator = playerNum;
             }
+            playerHasTool[playerNum] = type;
         } 
     }
 
     public void InformToolDropped(Tool.ToolType type, int playerNum) {
         toolsHeldByDoctor[playerNum] = Tool.ToolType.NONE;
         OnToolDropped(type, playerNum);
+        playerHasTool[playerNum] = Tool.ToolType.NONE;
     }
 
     public void InformDoctorAtPatient(int playerNum) {

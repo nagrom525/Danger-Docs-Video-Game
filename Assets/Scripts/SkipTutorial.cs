@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Skiptutorial : MonoBehaviour {
+public class SkipTutorial : MonoBehaviour {
 	string scenename = "";
 	// Use this for initialization
 	void Start () {

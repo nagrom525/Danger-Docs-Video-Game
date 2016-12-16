@@ -70,6 +70,17 @@ public class StepCompletePanel : MonoBehaviour {
         if(t >= 1.0) {
             current_state = StepCompletePanelState.SHOWING;
             timeLastState = Time.time;
+            if (panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
+                for(int i = 0; i < TutorialEventController.Instance.playerHasTool.Length; ++i) {
+                    Tool.ToolType type = TutorialEventController.Instance.playerHasTool[i];
+                    bool atPatient = TutorialEventController.Instance.doctorAtPatient[i];
+                    if(atPatient) {
+                        AddPlayerCircle(i, type, true);
+                    } else if(type != Tool.ToolType.NONE) {
+                        AddPlayerCircle(i, type, false);
+                    }
+                }
+            }
         }
         Vector3 newPos = Mathfx.Hermite(startPos, rect3posOrig, t);
         rectTrans.position = newPos;
@@ -179,8 +190,12 @@ public class StepCompletePanel : MonoBehaviour {
             } else if(toolType == Tool.ToolType.SUTURE){
                 i = 3;
             }
+            if(i == 0 && toolType != Tool.ToolType.SCALPEL) {
+                return;
+            }
             circlesFilled[i] = playerNum;
             playerCircleShown[playerNum] = true;
+            playerCirclesChecked[playerNum] = check;
             playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(playerNum, check);
         }
     }
