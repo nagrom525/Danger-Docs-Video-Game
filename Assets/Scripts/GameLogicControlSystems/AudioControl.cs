@@ -286,6 +286,10 @@ public class AudioControl : MonoBehaviour {
 		tutorialTaskCompleteAudioSrc.Play();
 	}
 
+    public void PlayTutorialCircleAdded() {
+        // FIXME
+    }
+
 	public void PlayTutorialMusicLoop()
 	{
 		tutorialLoopMusicSrc.clip = tutorialLoopMusic;
