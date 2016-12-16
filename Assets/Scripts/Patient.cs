@@ -72,19 +72,28 @@ public class Patient : Interactable {
 	//Stitches
 	public void OnSuture(float duration)
 	{
-		Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
+		var go = (GameObject)Instantiate(sutureHotspotsPrefab, hotspotSpawnPos);
+		go.transform.parent = hotspotSpawnPos;
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.identity;
 		requiredTool = Tool.ToolType.SUTURE;
 	}
 
 	public void OnCutPatientOpen(float duration)
 	{
-		Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
+		var go = (GameObject)Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
+		//go.transform.parent = hotspotSpawnPos;
+		//go.transform.localPosition = Vector3.zero;
+		//go.transform.localRotation = Quaternion.identity;
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
 	public void OnSoakBlood(float duration)
 	{
-		Instantiate(gauzeHotspotsPrefab, hotspotSpawnPos);
+		var go = (GameObject)Instantiate(gauzeHotspotsPrefab, hotspotSpawnPos);
+		go.transform.parent = hotspotSpawnPos;
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.identity;
 		requiredTool = Tool.ToolType.GAUZE;
 	}
 
