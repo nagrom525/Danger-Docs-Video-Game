@@ -40,6 +40,12 @@ public class Doctor : MonoBehaviour {
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
+    private bool animatingWaterMeter = false;
+    private float waterMeterStartTime = 0.0f;
+    private float waterMeterEndTime = 0.0f;
+    private float waterMeterEndValue = 0.0f;
+    private float waterMeterStartValue = 0.0f;
+    public float waterMeterDepleatPercentPerSecond = 100.0f;
 
 	public int onFireFrames;
 	private Vector3 onFireDir;
