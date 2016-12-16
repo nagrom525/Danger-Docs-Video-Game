@@ -19,6 +19,8 @@ public class Doctor : MonoBehaviour {
 	private int washingMeterFramesRemaining;
 
 	public Material hlMat;
+    public Material rechargeMaterial;
+    private Material normalMaterial;
 	private Tool last_hl_tool;
 	private Tool current_hl_tool;
 	private Material original_go_material;
@@ -37,6 +39,8 @@ public class Doctor : MonoBehaviour {
 	public float 		timeBetweenDashes = 4f;
 	public bool 		justDashed;
 	public GameObject 	dustParticlePrefab;
+    public GameObject dashColorChanger;
+    private Renderer doctorRenderer;
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
@@ -64,6 +68,9 @@ public class Doctor : MonoBehaviour {
 		interacting = false;
 
 		Image[] objects = transform.GetComponentsInChildren<Image>();
+
+        doctorRenderer = dashColorChanger.GetComponent<Renderer>();
+        normalMaterial = doctorRenderer.material;
 
 		washingMeter = objects[1];
 		washingMeter.enabled = false;
@@ -526,8 +533,10 @@ public class Doctor : MonoBehaviour {
 
 	void AllowDash()
 	{
-		canDash = true;	
-	}
+		canDash = true;
+        doctorRenderer.material = rechargeMaterial;
+        Invoke("ResetMaterial", 1.0f);
+    }
 
 	void CreateDustPlooms()
 	{
@@ -552,6 +561,10 @@ public class Doctor : MonoBehaviour {
 	{
 		justDashed = false;
 	}
+
+    private void ResetMaterial() {
+        doctorRenderer.material = normalMaterial;
+    }
 
     public void informSurgeryFinished() {
         inSurgery = false;
