@@ -187,11 +187,13 @@ public class LevelUserInterface : MonoBehaviour {
 	}
 
     void OnGameOver(float duration) {
-        gameLostPanel.SetActive(true);
+        SceneTransitionController.Instance.GameLost();
+        //gameLostPanel.SetActive(true);
     }
 
     void OnGameWon(float duration) {
-        gameWonPanel.SetActive(true);
+        //gameWonPanel.SetActive(true);
+        SceneTransitionController.Instance.GameWon();
     }
 
     private void OnFirstDoctorEntersSurgery(float duration) {

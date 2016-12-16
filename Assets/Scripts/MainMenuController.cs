@@ -6,7 +6,7 @@ public class MainMenuController : MonoBehaviour
 {
 
     public int playerNum;
-
+    public bool loadStartMenu;
     // Use this for initialization
     void Start()
     {
@@ -31,9 +31,12 @@ public class MainMenuController : MonoBehaviour
     {
         if (inputDevice.Action1.WasPressed)
         {
-            //start game
-            SceneManager.LoadScene("Tutorial");
-   
+            if (loadStartMenu)
+                SceneManager.LoadScene("0_StartMenu");
+            else
+            {
+                SceneManager.LoadScene("Tutorial");
+            }
         }
         else
         if (inputDevice.Action2.WasPressed)

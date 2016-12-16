@@ -64,8 +64,45 @@ public class SceneTransitionController : MonoBehaviour {
 		StartCoroutine(FadeToBlack());
 	}
 
+    public void GameWon()
+    {
+        StartCoroutine(GoToWinScene());
+    }
 
-	IEnumerator FadeToBlack()
+    public void GameLost()
+    {
+        StartCoroutine(GoToLoseScene());
+    }
+
+    IEnumerator GoToWinScene()
+    {
+        //fade out canvas group
+        blackCanvasGroup.alpha = 0f;
+        yield return new WaitForSeconds(.1f);
+        while (blackCanvasGroup.alpha < 1f)
+        {
+            blackCanvasGroup.alpha += blackTransitionRate;
+            yield return new WaitForEndOfFrame();
+        }
+        blackCanvasGroup.alpha = 1f;
+        SceneManager.LoadScene("1_WinScene");
+    }
+
+    IEnumerator GoToLoseScene()
+    {
+        //fade out canvas group
+        blackCanvasGroup.alpha = 0f;
+        yield return new WaitForSeconds(.1f);
+        while (blackCanvasGroup.alpha < 1f)
+        {
+            blackCanvasGroup.alpha += blackTransitionRate;
+            yield return new WaitForEndOfFrame();
+        }
+        blackCanvasGroup.alpha = 1f;
+        SceneManager.LoadScene("2_LoseScene");
+    }
+
+    IEnumerator FadeToBlack()
 	{
 		//fade out canvas group
 
