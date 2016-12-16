@@ -341,7 +341,10 @@ public class Patient : Interactable {
 			doc.GetComponent<DoctorInputController>().enabled = false;
 
 			GameObject suture = (GameObject)Instantiate(sutureToolPrefab, toolSpawnPositions[0].transform);
-			newInputController = suture.GetComponent<SurgeryToolInput>();
+            suture.transform.parent = toolSpawnPositions[0].transform;
+            suture.transform.localPosition = Vector3.zero;
+            suture.transform.parent = null;
+            newInputController = suture.GetComponent<SurgeryToolInput>();
 			newInputController.playerNum = doctorNumber;
 
 
@@ -371,7 +374,10 @@ public class Patient : Interactable {
 			{
 				//Create tool and give control to Doctor
 				GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
-				newInputController = scalpel.GetComponent<SurgeryToolInput>();
+                scalpel.transform.parent = toolSpawnPositions[0].transform;
+                scalpel.transform.localPosition = Vector3.zero;
+                scalpel.transform.parent = null;
+                newInputController = scalpel.GetComponent<SurgeryToolInput>();
 				newInputController.playerNum = doctorNumber;
 				scalpel1Placed = true;
 			}
@@ -379,6 +385,9 @@ public class Patient : Interactable {
 			{
                 if(TutorialEventController.Instance.tutorialActive){
                     GameObject scalpel = (GameObject)Instantiate(duplicateScalpelSurgeryTool, toolSpawnPositions[0].transform);
+                    scalpel.transform.parent = toolSpawnPositions[0].transform;
+                    scalpel.transform.localPosition = Vector3.zero;
+                    scalpel.transform.parent = null;
                     newInputController = scalpel.GetComponent<SurgeryToolInput>();
                     newInputController.playerNum = doctorNumber;
                 }
@@ -386,6 +395,9 @@ public class Patient : Interactable {
                 {
                     //Create tool and give control to Doctor
                     GameObject scalpel = (GameObject)Instantiate(scalpelToolPrefab, toolSpawnPositions[0].transform);
+                    scalpel.transform.parent = toolSpawnPositions[0].transform;
+                    scalpel.transform.localPosition = Vector3.zero;
+                    scalpel.transform.parent = null;
                     newInputController = scalpel.GetComponent<SurgeryToolInput>();
                     newInputController.playerNum = doctorNumber;
                     scalpel1Placed = true;
@@ -408,6 +420,9 @@ public class Patient : Interactable {
 		
 			//Create tool and give control to Doctor
 			GameObject gauze = (GameObject)Instantiate(gauzeToolPrefab, toolSpawnPositions[0].transform);
+            gauze.transform.parent = toolSpawnPositions[0].transform;
+            gauze.transform.localPosition = Vector3.zero;
+            gauze.transform.parent = null;
             newInputController = gauze.GetComponent<SurgeryToolInput>();
 			newInputController.playerNum = doctorNumber;
 
