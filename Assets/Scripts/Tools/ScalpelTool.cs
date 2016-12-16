@@ -81,7 +81,7 @@ public class ScalpelTool : Tool {
     }
 
     private void OnTutorialPickUpToolsEnd() {
-        tutorialPickUpTools = true;
+        tutorialPickUpTools = false;
         actionButtonCanvas.SetActive(false);
     }
 

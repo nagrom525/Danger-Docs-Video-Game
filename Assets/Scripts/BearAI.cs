@@ -33,6 +33,9 @@ public class BearAI : MonoBehaviour {
 	void OnEnable()
 	{
 		AudioControl.Instance.PlayBearEnter();
+        for(int i = 0; i  < playersHitBear.Length; ++i) {
+            playersHitBear[i] = false;
+        }
 	}
 
 	void Awake()

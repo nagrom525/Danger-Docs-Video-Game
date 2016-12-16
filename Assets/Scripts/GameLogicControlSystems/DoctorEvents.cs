@@ -9,9 +9,9 @@ using System;
 public class DoctorEvents : MonoBehaviour {
     // States handlers ///
     public enum MainReciepeState { CUT_OPEN, PULL_OUT_STICK, SOAK_BLOOD, STICH_BODY}
-    public enum GeneralGameState { NORMAL, PATIENT_CRITICAL, POST_PATIENT_CRITICAL, GAME_OVER}
+    public enum PatientCriticalState { NORMAL, PATIENT_CRITICAL, POST_PATIENT_CRITICAL, GAME_OVER}
     public MainReciepeState[] scene1ReciepeElements = new MainReciepeState[4] { MainReciepeState.CUT_OPEN, MainReciepeState.PULL_OUT_STICK, MainReciepeState.SOAK_BLOOD, MainReciepeState.STICH_BODY };
-    private GeneralGameState gameState = GeneralGameState.NORMAL;
+    private PatientCriticalState gameState = PatientCriticalState.NORMAL;
 
     private int currentIndexInReciepe = -1; // must start @ -1
     private bool inRecipePostState = true;
@@ -75,6 +75,7 @@ public class DoctorEvents : MonoBehaviour {
     // -- Surgery Events -- //
     public DoctorEvent onSurgeryOperationFirst;
     public DoctorEvent onSurgeryOperationLeftLast;
+    public DoctorEvent onSurgeryOperationComplete;
 
     // -- Bucket Events -- //
     public BucketEvent onBucketPickedUp;
@@ -139,13 +140,13 @@ public class DoctorEvents : MonoBehaviour {
     void Update() {
         if (!TutorialEventController.Instance.tutorialActive) {
             switch (gameState) {
-                case GeneralGameState.NORMAL:
-                    GameNormalUpdate();
+                case PatientCriticalState.NORMAL:
+                    PatientCriticalUpdate();
                     break;
-                case GeneralGameState.PATIENT_CRITICAL:
+                case PatientCriticalState.PATIENT_CRITICAL:
                     GamePatientCriticalUpdate();
                     break;
-                case GeneralGameState.POST_PATIENT_CRITICAL:
+                case PatientCriticalState.POST_PATIENT_CRITICAL:
                     GamePostPatientCriticalUpdate();
                     break;
             }
@@ -160,12 +161,12 @@ public class DoctorEvents : MonoBehaviour {
         }
     }
 
-    private void GameNormalUpdate() {
+    private void PatientCriticalUpdate() {
         if ((Time.time - lastTimePatientCriticalChecked) >= 1.0f) {
             lastTimePatientCriticalChecked = Time.time;
 
             if (UnityEngine.Random.value < probabiltyPatientCritical) {
-                gameState = GeneralGameState.PATIENT_CRITICAL;
+                gameState = PatientCriticalState.PATIENT_CRITICAL;
                 patientCriticalStartTime = Time.time;
                 if (onPatientCriticalEventStart != null) {
                     onPatientCriticalEventStart(patientCriticalDuration);
@@ -216,7 +217,7 @@ public class DoctorEvents : MonoBehaviour {
 
     private void GamePostPatientCriticalUpdate() {
         if ((Time.time - patientCriticalStartTime) > postPatientCriticalDuration) {
-            gameState = gameState = GeneralGameState.NORMAL;
+            gameState = gameState = PatientCriticalState.NORMAL;
             lastTimePatientCriticalChecked = Time.time;
             patientCriticalStartTime = Time.time;
         }
@@ -225,7 +226,7 @@ public class DoctorEvents : MonoBehaviour {
 
 
     private void EndPatientCritical() {
-        gameState = GeneralGameState.POST_PATIENT_CRITICAL;
+        gameState = PatientCriticalState.POST_PATIENT_CRITICAL;
         patientCriticalStartTime = Time.time;
         if(onPatientCriticalEventEnded != null) {
             onPatientCriticalEventEnded(postPatientCriticalDuration);
@@ -238,8 +239,8 @@ public class DoctorEvents : MonoBehaviour {
     // will do nothing if the patient was just critical or is still critical
     public void InducePatientCritical() {
 		Debug.Log("InducePatientCritical()");
-		if(gameState == GeneralGameState.NORMAL) {
-            gameState = GeneralGameState.PATIENT_CRITICAL;
+		if(gameState == PatientCriticalState.NORMAL) {
+            gameState = PatientCriticalState.PATIENT_CRITICAL;
             patientCriticalStartTime = Time.time;
             if (onPatientCriticalEventStart != null) {
                 onPatientCriticalEventStart(patientCriticalDuration);
@@ -248,7 +249,7 @@ public class DoctorEvents : MonoBehaviour {
     }
 
     public void PatientCriticalAdverted() {
-        if (gameState == GeneralGameState.PATIENT_CRITICAL) {
+        if (gameState == PatientCriticalState.PATIENT_CRITICAL) {
             EndPatientCritical();
         } else {
             Debug.Log("Heart Attack adverted when the patient wasn't in a Heart Attack");
@@ -259,7 +260,7 @@ public class DoctorEvents : MonoBehaviour {
     // if the player critical state isn't adverted
     public void InducePatientDeath() {
         Time.timeScale = 0.0f;
-        gameState = GeneralGameState.GAME_OVER;
+        gameState = PatientCriticalState.GAME_OVER;
         if (GameOver != null) {
             GameOver(0.0f);
         }
@@ -287,6 +288,9 @@ public class DoctorEvents : MonoBehaviour {
             if (patientDoneCutOpen != null) {
                 patientDoneCutOpen(0);
             }
+            if(onSurgeryOperationComplete != null) {
+                onSurgeryOperationComplete(0.0f);
+            }
         }
     }
 
@@ -295,6 +299,9 @@ public class DoctorEvents : MonoBehaviour {
             SetRecipePostState();
             if (patientDonePullOutStick != null) {
                 patientDonePullOutStick(0);
+            }
+            if (onSurgeryOperationComplete != null) {
+                onSurgeryOperationComplete(0.0f);
             }
         }
     }
@@ -305,6 +312,9 @@ public class DoctorEvents : MonoBehaviour {
             if (patientDoneBloodSoak != null) {
                 patientDoneBloodSoak(0);
             }
+            if (onSurgeryOperationComplete != null) {
+                onSurgeryOperationComplete(0.0f);
+            }
         }
     }
 
@@ -313,6 +323,9 @@ public class DoctorEvents : MonoBehaviour {
             SetRecipePostState();
             if (patientDoneStitches != null) {
                 patientDoneStitches(0);
+            }
+            if (onSurgeryOperationComplete != null) {
+                onSurgeryOperationComplete(0.0f);
             }
         }
     }
@@ -580,6 +593,14 @@ public class DoctorEvents : MonoBehaviour {
 
     private void OnTutorialHeartAttack() {
         InducePatientCritical();
+    }
+
+    public float GetSurgeryPrecentComplete() {
+        float realIndex = currentIndexInReciepe;
+        if (inRecipePostState) {
+            realIndex += 1;
+        }
+        return realIndex / ((float)scene1ReciepeElements.Length);
     }
 
     private void OnDestroy() {
