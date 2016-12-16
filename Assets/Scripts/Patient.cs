@@ -346,14 +346,14 @@ public class Patient : Interactable {
             suture.transform.parent = null;
             newInputController = suture.GetComponent<SurgeryToolInput>();
 			newInputController.playerNum = doctorNumber;
+            suture.transform.parent = this.transform;
 
 
 
 
 
 
-
-			Debug.Log("recieving suture operation");
+            Debug.Log("recieving suture operation");
 		}
 		else if (tool.GetToolType() == Tool.ToolType.SCALPEL)
 		{
@@ -380,7 +380,8 @@ public class Patient : Interactable {
                 newInputController = scalpel.GetComponent<SurgeryToolInput>();
 				newInputController.playerNum = doctorNumber;
 				scalpel1Placed = true;
-			}
+                scalpel.transform.parent = this.transform;
+            }
 			else
 			{
                 if(TutorialEventController.Instance.tutorialActive){
@@ -390,6 +391,7 @@ public class Patient : Interactable {
                     scalpel.transform.parent = null;
                     newInputController = scalpel.GetComponent<SurgeryToolInput>();
                     newInputController.playerNum = doctorNumber;
+                    scalpel.transform.parent = this.transform;
                 }
                 else
                 {
@@ -401,6 +403,7 @@ public class Patient : Interactable {
                     newInputController = scalpel.GetComponent<SurgeryToolInput>();
                     newInputController.playerNum = doctorNumber;
                     scalpel1Placed = true;
+                    scalpel.transform.parent = this.transform;
                 }
 			}
 
@@ -425,8 +428,9 @@ public class Patient : Interactable {
             gauze.transform.parent = null;
             newInputController = gauze.GetComponent<SurgeryToolInput>();
 			newInputController.playerNum = doctorNumber;
+            gauze.transform.parent = this.transform;
 
-			Debug.Log("recieving gauze operation");
+            Debug.Log("recieving gauze operation");
 		}
 		else {
 			print("defibulationsRemaining: " + defibulationsRemaining);
