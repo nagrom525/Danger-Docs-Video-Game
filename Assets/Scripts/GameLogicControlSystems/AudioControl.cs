@@ -104,41 +104,41 @@ public class AudioControl : MonoBehaviour {
 			tutorialLoopMusicSrc = sources[23];
 			dashChargeSrc = sources[24];
         }
-		toolPickupAudioSrc.clip = toolPickup;
-		toolPickupAudioSrc.Play();
+		//toolPickupAudioSrc.clip = toolPickup;
+		//toolPickupAudioSrc.Play();
 
-		toolDropAudioSrc.clip = toolDrop;
-		toolDropAudioSrc.PlayDelayed(toolPickup.length);
+		//toolDropAudioSrc.clip = toolDrop;
+		//toolDropAudioSrc.PlayDelayed(toolPickup.length);
 
-		defibulatorSurgeAudioSrc.clip = defibulatorSurge;
-		defibulatorSurgeAudioSrc.PlayDelayed(toolDrop.length);
+		//defibulatorSurgeAudioSrc.clip = defibulatorSurge;
+		//defibulatorSurgeAudioSrc.PlayDelayed(toolDrop.length);
 
-		doctorBumpAudioSrc.clip = doctorBump;
-		doctorBumpAudioSrc.PlayDelayed(defibulatorSurge.length);
+		//doctorBumpAudioSrc.clip = doctorBump;
+		//doctorBumpAudioSrc.PlayDelayed(defibulatorSurge.length);
 
-		surgeryInteractAudioSrc.clip = surgeryInteract;
-		surgeryInteractAudioSrc.PlayDelayed(doctorBump.length);
+		//surgeryInteractAudioSrc.clip = surgeryInteract;
+		//surgeryInteractAudioSrc.PlayDelayed(doctorBump.length);
 
-		waterBucketDumpAudioSrc.clip = waterBucketDump;
-		waterBucketDumpAudioSrc.PlayDelayed(surgeryInteract.length);
+		//waterBucketDumpAudioSrc.clip = waterBucketDump;
+		//waterBucketDumpAudioSrc.PlayDelayed(surgeryInteract.length);
 
-		waterBucketFillAudioSrc.clip = waterBucketFill;
-		waterBucketFillAudioSrc.PlayDelayed(waterBucketDump.length);
+		//waterBucketFillAudioSrc.clip = waterBucketFill;
+		//waterBucketFillAudioSrc.PlayDelayed(waterBucketDump.length);
 
-		fireLoopAudioSrc.clip = fireLoop;
-		fireLoopAudioSrc.PlayDelayed(waterBucketFill.length);
+		//fireLoopAudioSrc.clip = fireLoop;
+		//fireLoopAudioSrc.PlayDelayed(waterBucketFill.length);
 
-		anestheticMachineFillAudioSrc.clip = anestheticMachineFill;
-		anestheticMachineFillAudioSrc.PlayDelayed(fireLoop.length);
+		//anestheticMachineFillAudioSrc.clip = anestheticMachineFill;
+		//anestheticMachineFillAudioSrc.PlayDelayed(fireLoop.length);
 
-		raccoonStealAudioSrc.clip = raccoonSteal;
-		raccoonStealAudioSrc.PlayDelayed(anestheticMachineFill.length);
+		//raccoonStealAudioSrc.clip = raccoonSteal;
+		//raccoonStealAudioSrc.PlayDelayed(anestheticMachineFill.length);
 
-		operationSuccessfulAudioSrc.clip = operationSuccessful;
-		operationSuccessfulAudioSrc.PlayDelayed(raccoonSteal.length);
+		//operationSuccessfulAudioSrc.clip = operationSuccessful;
+		//operationSuccessfulAudioSrc.PlayDelayed(raccoonSteal.length);
 
-		tutorialTaskCompleteAudioSrc.clip = tutorialTaskComplete;
-		tutorialTaskCompleteAudioSrc.PlayDelayed(operationSuccessful.length);
+		//tutorialTaskCompleteAudioSrc.clip = tutorialTaskComplete;
+		//tutorialTaskCompleteAudioSrc.PlayDelayed(operationSuccessful.length);
 
 
 		//
