@@ -7,16 +7,12 @@ public class Canister : Tool {
 
     void Start() {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        if(Time.time <= 0.1) {
-            GetComponent<Rigidbody>().useGravity = false;
-        }
     }
 	public override Tool.ToolType GetToolType() {
 		return Tool.ToolType.CANISTER;
 	}
 
 	public override void OnDoctorInitatedInteracting() {
-        GetComponent<Rigidbody>().useGravity = true;
 		return;
 	}
 	public override void OnDoctorTerminatedInteracting() {
