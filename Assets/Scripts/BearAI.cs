@@ -149,7 +149,7 @@ public class BearAI : MonoBehaviour {
 
 		} 
 		//HACK: Super ridiculous I apologize
-		else if (other.transform.tag == "NextPositionStand")
+		else if (other.transform.tag == "NextPositionStand" && patient.transform.parent == this.gameObject.transform)
 		{
 			Debug.Log("we got here");
 			Debug.Log("what is the current position?" + currpos);
