@@ -199,7 +199,7 @@ public class AudioControl : MonoBehaviour {
 
 	public void PlayToolDrop()
 	{
-		toolDropAudioSrc.clip = toolDrop;
+		toolDropAudioSrc.clip = toolPickup;
 		toolDropAudioSrc.Play();
 	}
 
