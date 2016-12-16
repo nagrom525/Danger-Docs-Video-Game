@@ -301,4 +301,8 @@ public class AudioControl : MonoBehaviour {
 		dashChargeSrc.clip = dashCharge;
 		dashChargeSrc.Play();
 	}
+
+    public void PlayNotAllowed() {
+
+    }
 }
