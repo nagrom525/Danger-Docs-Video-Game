@@ -49,4 +49,19 @@ public abstract class Tool : MonoBehaviour {
 		}
 		highlighted = true;
 	}
+
+    public void flashMaterial(Material newMaterial, float time) { 
+       MeshRenderer mr = highlightedComponent.GetComponentInChildren<MeshRenderer>();
+        if (mr != null) {
+            mr.material = newMaterial;
+        }
+        Invoke("resetMaterial", time);
+    }
+
+    private void resetMaterial() {
+        MeshRenderer mr = highlightedComponent.GetComponentInChildren<MeshRenderer>();
+        if (mr != null) {
+            mr.material = originalMaterial;
+        }
+    }
 }
