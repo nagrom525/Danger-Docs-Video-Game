@@ -7,6 +7,7 @@ public class Doctor : MonoBehaviour {
     public Tool currentTool {get; private set;}
 
 	public float dirtLevel;
+	public ParticleSystem dirtPS;
 	public bool interacting;
     private bool inSurgery = false;
 	public bool dirtyHands {
@@ -39,6 +40,12 @@ public class Doctor : MonoBehaviour {
 
 	// Radius of sphere for checking for interactiables.
 	private float interactionRange = 8f;
+    private bool animatingWaterMeter = false;
+    private float waterMeterStartTime = 0.0f;
+    private float waterMeterTotalTime = 0.0f;
+    private float waterMeterEndValue = 0.0f;
+    private float waterMeterStartValue = 0.0f;
+    public float waterMeterDepleatPercentPerSecond = 100.0f;
 
 	public int onFireFrames;
 	private Vector3 onFireDir;
@@ -70,6 +77,8 @@ public class Doctor : MonoBehaviour {
 		drSpeedCoefficient = 10f;
 
 		docRB = GetComponent<Rigidbody>();
+
+		dirtPS.Play();
 	}
 	
 	// Update is called once per frame
@@ -79,6 +88,15 @@ public class Doctor : MonoBehaviour {
 		} else {
 			hideWashingMeter ();
 		}
+        if (animatingWaterMeter) {
+            float t = (Time.time - waterMeterStartTime) / waterMeterTotalTime;
+            if(t >= 1.0) {
+                animatingWaterMeter = false;
+                dirtLevel = waterMeterEndValue;
+            } else {
+                dirtLevel = Mathfx.Hermite(waterMeterStartValue, waterMeterEndValue, t);
+            }
+        }
 
 		// Update highlighting system
 		updateHighlights();
@@ -432,15 +450,21 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void makeDirty (float addedDirt) {
-		dirtLevel += addedDirt;
-		//displayWashingMeter ();
+		waterMeterEndValue = Mathf.Clamp(dirtLevel + addedDirt, 0f, 1f);
+        waterMeterStartTime = Time.time;
+        waterMeterStartValue = dirtLevel;
+        animatingWaterMeter = true;
+        waterMeterTotalTime = ((waterMeterEndValue - waterMeterStartValue) * 100) / waterMeterDepleatPercentPerSecond;
+
+		displayWashingMeter ();
+
+		if (dirtPS.isStopped) {
+			dirtPS.Play();
+		}
 	}
 
 	public void washHands(float washRate) {
-		dirtLevel -= washRate;
-		if (dirtLevel <= 0f) {
-			dirtLevel = 0f;
-		}
+		dirtLevel = Mathf.Clamp(dirtLevel - washRate, 0f, 1f);
 		displayWashingMeter ();
 		print ("dirtLevel ::" + dirtLevel);
 		AudioControl.Instance.PlayWaterBucketFill();
@@ -448,6 +472,9 @@ public class Doctor : MonoBehaviour {
 			DoctorInputController thisInput = transform.GetComponentInChildren<DoctorInputController>();
 			int this_player_num = thisInput.playerNum;
 			TutorialEventController.Instance.InformWashingHands(1f - dirtLevel, this_player_num);
+		}
+		if (dirtLevel < (0f + Mathf.Epsilon)) {
+			dirtPS.Stop();
 		}
 	}
 
@@ -460,6 +487,7 @@ public class Doctor : MonoBehaviour {
 	private void updateWashingMeter() {
 		washingMeterFramesRemaining--;
 		washingMeter.fillAmount = 1f - dirtLevel;
+       
 	}
 
 	private void hideWashingMeter() {
