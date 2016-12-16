@@ -443,6 +443,7 @@ public class Doctor : MonoBehaviour {
 		}
 		displayWashingMeter ();
 		print ("dirtLevel ::" + dirtLevel);
+		AudioControl.Instance.PlayWaterBucketFill();
 		if (TutorialEventController.Instance.tutorialActive) {
 			DoctorInputController thisInput = transform.GetComponentInChildren<DoctorInputController>();
 			int this_player_num = thisInput.playerNum;

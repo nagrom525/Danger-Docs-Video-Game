@@ -37,7 +37,7 @@ public class AudioControl : MonoBehaviour {
 
 	public AudioClip tutorialBeginMusic;
 	public AudioClip tutorialLoopMusic;
-
+	public AudioClip dashCharge;
 
     private AudioSource mainGameMusicAudioSrc;
 	private AudioSource heartRateAudioSrc;
@@ -60,6 +60,7 @@ public class AudioControl : MonoBehaviour {
 	private AudioSource tutorialTaskCompleteAudioSrc;
 	private AudioSource tutorialBeginMusicSrc;
 	private AudioSource tutorialLoopMusicSrc;
+	private AudioSource dashChargeSrc;
 
     private static AudioControl _instance;
     public static AudioControl Instance {
@@ -101,7 +102,43 @@ public class AudioControl : MonoBehaviour {
 			tutorialTaskCompleteAudioSrc = sources[21];
 			tutorialBeginMusicSrc = sources[22];
 			tutorialLoopMusicSrc = sources[23];
+			dashChargeSrc = sources[24];
         }
+		toolPickupAudioSrc.clip = toolPickup;
+		toolPickupAudioSrc.Play();
+
+		toolDropAudioSrc.clip = toolDrop;
+		toolDropAudioSrc.PlayDelayed(toolPickup.length);
+
+		defibulatorSurgeAudioSrc.clip = defibulatorSurge;
+		defibulatorSurgeAudioSrc.PlayDelayed(toolDrop.length);
+
+		doctorBumpAudioSrc.clip = doctorBump;
+		doctorBumpAudioSrc.PlayDelayed(defibulatorSurge.length);
+
+		surgeryInteractAudioSrc.clip = surgeryInteract;
+		surgeryInteractAudioSrc.PlayDelayed(doctorBump.length);
+
+		waterBucketDumpAudioSrc.clip = waterBucketDump;
+		waterBucketDumpAudioSrc.PlayDelayed(surgeryInteract.length);
+
+		waterBucketFillAudioSrc.clip = waterBucketFill;
+		waterBucketFillAudioSrc.PlayDelayed(waterBucketDump.length);
+
+		fireLoopAudioSrc.clip = fireLoop;
+		fireLoopAudioSrc.PlayDelayed(waterBucketFill.length);
+
+		anestheticMachineFillAudioSrc.clip = anestheticMachineFill;
+		anestheticMachineFillAudioSrc.PlayDelayed(fireLoop.length);
+
+		raccoonStealAudioSrc.clip = raccoonSteal;
+		raccoonStealAudioSrc.PlayDelayed(anestheticMachineFill.length);
+
+		operationSuccessfulAudioSrc.clip = operationSuccessful;
+		operationSuccessfulAudioSrc.PlayDelayed(raccoonSteal.length);
+
+		tutorialTaskCompleteAudioSrc.clip = tutorialTaskComplete;
+		tutorialTaskCompleteAudioSrc.PlayDelayed(operationSuccessful.length);
 
 
 		//
@@ -250,5 +287,10 @@ public class AudioControl : MonoBehaviour {
 	{
 		tutorialLoopMusicSrc.clip = tutorialLoopMusic;
 		tutorialLoopMusicSrc.Play();
+	}
+	public void PlayDashCharge()
+	{
+		dashChargeSrc.clip = dashCharge;
+		dashChargeSrc.Play();
 	}
 }
