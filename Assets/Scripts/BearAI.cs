@@ -123,8 +123,6 @@ public class BearAI : MonoBehaviour {
 				this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 			}
-
-			Invoke("ResetThreshold", doctorDashTimerPadding);
 		}
 		
 	}
