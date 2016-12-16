@@ -42,7 +42,7 @@ public class Doctor : MonoBehaviour {
 	private float interactionRange = 8f;
     private bool animatingWaterMeter = false;
     private float waterMeterStartTime = 0.0f;
-    private float waterMeterEndTime = 0.0f;
+    private float waterMeterTotalTime = 0.0f;
     private float waterMeterEndValue = 0.0f;
     private float waterMeterStartValue = 0.0f;
     public float waterMeterDepleatPercentPerSecond = 100.0f;
@@ -88,6 +88,15 @@ public class Doctor : MonoBehaviour {
 		} else {
 			hideWashingMeter ();
 		}
+        if (animatingWaterMeter) {
+            float t = (Time.time - waterMeterStartTime) / waterMeterTotalTime;
+            if(t >= 1.0) {
+                animatingWaterMeter = false;
+                dirtLevel = waterMeterEndValue;
+            } else {
+                dirtLevel = Mathfx.Hermite(waterMeterStartValue, waterMeterEndValue, t);
+            }
+        }
 
 		// Update highlighting system
 		updateHighlights();
@@ -441,7 +450,12 @@ public class Doctor : MonoBehaviour {
 	}
 
 	public void makeDirty (float addedDirt) {
-		dirtLevel = Mathf.Clamp(dirtLevel + addedDirt, 0f, 1f);
+		waterMeterEndValue = Mathf.Clamp(dirtLevel + addedDirt, 0f, 1f);
+        waterMeterStartTime = Time.time;
+        waterMeterStartValue = dirtLevel;
+        animatingWaterMeter = true;
+        waterMeterTotalTime = ((waterMeterEndValue - waterMeterStartValue) * 100) / waterMeterDepleatPercentPerSecond;
+
 		displayWashingMeter ();
 
 		if (dirtPS.isStopped) {
@@ -471,6 +485,7 @@ public class Doctor : MonoBehaviour {
 	private void updateWashingMeter() {
 		washingMeterFramesRemaining--;
 		washingMeter.fillAmount = 1f - dirtLevel;
+       
 	}
 
 	private void hideWashingMeter() {

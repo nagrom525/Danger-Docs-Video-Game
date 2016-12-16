@@ -28,8 +28,9 @@ public class SurgeryProgress : MonoBehaviour {
                 filling = false;
                 progressIndicator.fillAmount = newPrecentComplete;
                 currentPrecentComplete = newPrecentComplete;
+            } else {
+                progressIndicator.fillAmount = Mathfx.Hermite(currentPrecentComplete, newPrecentComplete, t);
             }
-            progressIndicator.fillAmount = Mathfx.Hermite(currentPrecentComplete, newPrecentComplete, t);
         }
 	}
 
