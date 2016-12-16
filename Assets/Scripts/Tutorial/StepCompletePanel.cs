@@ -153,6 +153,7 @@ public class StepCompletePanel : MonoBehaviour {
                     circlesFilled[i] = playerNum;
                     playerCircleShown[playerNum] = true;
                     playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumAndInitiateAnimation(playerNum, check);
+                    AudioControl.Instance.PlayAddTutorialCircle();
                     return;
                 }
             }
@@ -167,7 +168,8 @@ public class StepCompletePanel : MonoBehaviour {
         }
         for(int i = 0; i < circlesFilled.Length; ++i) {
             if (playerNum == circlesFilled[i]) {
-                    playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumNoAnimation(playerNum, check);
+                playerCircles[i].GetComponent<PlayerCircle>().SetPlayerNumNoAnimation(playerNum, check);
+                AudioControl.Instance.PlayAddTutorialCircle();
                 return;
             }
         }
@@ -192,6 +194,9 @@ public class StepCompletePanel : MonoBehaviour {
             }
             if(i == 0 && toolType != Tool.ToolType.SCALPEL) {
                 return;
+            }
+            if (check) {
+                AudioControl.Instance.PlayAddTutorialCircle();
             }
             circlesFilled[i] = playerNum;
             playerCircleShown[playerNum] = true;

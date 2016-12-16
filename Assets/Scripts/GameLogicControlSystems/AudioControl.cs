@@ -286,7 +286,7 @@ public class AudioControl : MonoBehaviour {
 		tutorialTaskCompleteAudioSrc.Play();
 	}
 
-    public void PlayTutorialCircleAdded() {
+    public void PlayAddTutorialCircle() {
 		playAddTutorialCircleSrc.clip = toolDrop;
 		playAddTutorialCircleSrc.Play();
     }

@@ -271,8 +271,6 @@ public class Doctor : MonoBehaviour {
         }
 	}
 
-	
-
 	private void equipTool(Tool tool) {
 		currentTool = tool;
 		tool.transform.parent = this.transform;
