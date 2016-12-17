@@ -36,6 +36,7 @@ public class BearAI : MonoBehaviour {
         for(int i = 0; i  < playersHitBear.Length; ++i) {
             playersHitBear[i] = false;
         }
+		this.gameObject.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
 	}
 
 	void Awake()
