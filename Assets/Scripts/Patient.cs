@@ -82,9 +82,9 @@ public class Patient : Interactable {
 	public void OnCutPatientOpen(float duration)
 	{
 		var go = (GameObject)Instantiate(scalpelTrackPrefab, hotspotSpawnPos);
-		//go.transform.parent = hotspotSpawnPos;
-		//go.transform.localPosition = Vector3.zero;
-		//go.transform.localRotation = Quaternion.identity;
+		go.transform.parent = hotspotSpawnPos;
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.identity;
 		requiredTool = Tool.ToolType.SCALPEL;
 	}
 
