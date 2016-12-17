@@ -37,7 +37,7 @@ public class SurgeryToolInput : MonoBehaviour {
 	public void ReturnControlToDoctor()
 	{
         if (TutorialEventController.Instance.tutorialActive) {
-            TutorialEventController.Instance.OnDoctorLeavesPatient(playerNum);
+			TutorialEventController.Instance.InformDoctorLeftPatient(playerNum);
         }
 		
 		//Get Doctor that initiated operation

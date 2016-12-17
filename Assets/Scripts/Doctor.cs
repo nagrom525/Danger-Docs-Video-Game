@@ -344,7 +344,7 @@ public class Doctor : MonoBehaviour {
 			AudioControl.Instance.PlayDefibulatorSurge();
 		}
         // Use current tool on patient.
-        if (TutorialEventController.Instance.tutorialActive) {
+		if (TutorialEventController.Instance.tutorialActive && currentTool!= null && currentTool.GetToolType() != Tool.ToolType.DEFIBULATOR) {
             TutorialEventController.Instance.InformDoctorAtPatient(GetComponent<DoctorInputController>().playerNum);
         }
         surgeryInput =  Patient.Instance.receiveOperation (currentTool, GetComponent<DoctorInputController>().playerNum);

@@ -228,13 +228,13 @@ public class StepCompletePanel : MonoBehaviour {
     }
 
     private void OnToolPickedUp(Tool.ToolType type, int playerNum) {
-        if (panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
+		if (panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT && type != Tool.ToolType.DEFIBULATOR) {
             AddPlayerCircle(playerNum, type, false);
         }
     }
 
     private void OnToolDropped(Tool.ToolType type, int playerNum) {
-        if (panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT) {
+		if (panel_type == TutorialEventController.TutorialStates.PICK_UP_TOOL_GO_TO_PATIENT && type != Tool.ToolType.DEFIBULATOR) {
             RemovePlayerCircle(playerNum);
         }
     }
