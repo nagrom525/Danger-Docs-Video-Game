@@ -155,13 +155,13 @@ public class TutorialEventController : MonoBehaviour {
 	}
 
     // -- Welcome -- //
-    public void StartWelcome() {
+    private void StartWelcome() {
         if(OnWelcomeStart != null) {
             OnWelcomeStart();
         }
     }
 
-    public void WelcomeUpdate() {
+    private void WelcomeUpdate() {
         foreach(var aPressed in aPressedWelcome) {
             if (!aPressed) {
                 return;
@@ -170,7 +170,7 @@ public class TutorialEventController : MonoBehaviour {
         WelcomeComplete();
     }
 
-    public void WelcomeComplete() {
+    private void WelcomeComplete() {
         current_state = GetNextState(current_state);
         StartNewState(current_state);
         timeStateStart = Time.time;
@@ -193,13 +193,13 @@ public class TutorialEventController : MonoBehaviour {
 
     // -- Play Game -- //
 
-    public void StartPlayGame() {
+    private void StartPlayGame() {
         if(OnPlayGameStart != null) {
             OnPlayGameStart();
         }
     }
 
-    public void PlayGameUpdate() {
+    private void PlayGameUpdate() {
         foreach(var aPressed in aPressedStartGame) {
             if (!aPressed) {
                 return;
@@ -208,7 +208,7 @@ public class TutorialEventController : MonoBehaviour {
         PlayGameComplete();
     }
 
-    public void PlayGameComplete() {
+    private void PlayGameComplete() {
         current_state = GetNextState(current_state);
         StartNewState(current_state);
         timeStateStart = Time.time;
@@ -417,10 +417,12 @@ public class TutorialEventController : MonoBehaviour {
     }
 
     public void InformHeartAttackAdverted() {
-        if(OnHeartAttackAdverted != null) {
-            OnHeartAttackAdverted(playerHasDefibulator);
+        if(current_state == TutorialStates.HEART_ATTACK) {
+            if (OnHeartAttackAdverted != null) {
+                OnHeartAttackAdverted(playerHasDefibulator);
+            }
+            HeartAttackComplete();
         }
-        HeartAttackComplete();
     }
 
 
