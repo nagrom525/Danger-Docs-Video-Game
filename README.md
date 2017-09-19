@@ -26,3 +26,30 @@ You have been dispatched to the woods in order to perform a lifesaving surgery. 
 1. Download the release 7z and unzip the .app folder.
 2. Run the .app folder and select your resolution.
 3. Your good to go! There will be a little tutorial to get you started.
+
+## Sources
+
+### Heart Monitor Beep
+https://www.freesound.org/people/samfk360/sounds/148897/
+
+### Caduceus
+http://www.vectorportal.com/stockvectors/Various/medical-symbol-free-vector/9252.aspx
+
+### Flame Icon
+http://www.clipartpanda.com/clipart_images/a-candle-flame-gif-35981149
+
+### Hands Icon
+Designed by Ddraw - Freepik.com
+
+### Bear and raccoon sounds
+https://www.freesoundeffects.com/licence.php
+
+### Electrical Surge
+https://www.partnersinrhyme.com/pir/PIRsfx.shtml
+or Logic's built in sound effects
+
+### Sink faucet sounds
+http://www.salamisound.com/1020009-faucet-at-hand-sink-with#
+
+### Dash Sounds
+https://www.freesound.org/people/theta4/sounds/66136/
